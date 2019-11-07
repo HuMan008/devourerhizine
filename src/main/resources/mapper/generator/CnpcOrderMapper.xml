@@ -1,0 +1,1004 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petroun.devourerhizine.model.mapper.CnpcOrderMapper">
+  <resultMap id="BaseResultMap" type="com.petroun.devourerhizine.model.entity.CnpcOrder">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="director" jdbcType="TINYINT" property="director" />
+    <result column="director_card" jdbcType="VARCHAR" property="directorCard" />
+    <result column="director_order" jdbcType="VARCHAR" property="directorOrder" />
+    <result column="uid" jdbcType="BIGINT" property="uid" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="fee" jdbcType="INTEGER" property="fee" />
+    <result column="uflow" jdbcType="VARCHAR" property="uflow" />
+    <result column="uextra" jdbcType="VARCHAR" property="uextra" />
+    <result column="rhi_flow" jdbcType="BIGINT" property="rhiFlow" />
+    <result column="rhi_throughs" jdbcType="INTEGER" property="rhiThroughs" />
+    <result column="channel" jdbcType="INTEGER" property="channel" />
+    <result column="channel_order" jdbcType="VARCHAR" property="channelOrder" />
+    <result column="channel_throughs" jdbcType="INTEGER" property="channelThroughs" />
+    <result column="inquires" jdbcType="INTEGER" property="inquires" />
+    <result column="through_mask" jdbcType="INTEGER" property="throughMask" />
+    <result column="regain" jdbcType="INTEGER" property="regain" />
+    <result column="regain_at" jdbcType="TIMESTAMP" property="regainAt" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="failure_reason" jdbcType="VARCHAR" property="failureReason" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, director, director_card, director_order, uid, mobile, fee, uflow, uextra, rhi_flow, 
+    rhi_throughs, channel, channel_order, channel_throughs, inquires, through_mask, regain, 
+    regain_at, state, failure_reason, created_at, updated_at
+  </sql>
+  <select id="selectByExample" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrderExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from de_cnpc_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from de_cnpc_order
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from de_cnpc_order
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrderExample">
+    delete from de_cnpc_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrder">
+    insert into de_cnpc_order (id, director, director_card, 
+      director_order, uid, mobile, 
+      fee, uflow, uextra, 
+      rhi_flow, rhi_throughs, channel, 
+      channel_order, channel_throughs, inquires, 
+      through_mask, regain, regain_at, 
+      state, failure_reason, created_at, 
+      updated_at)
+    values (#{id,jdbcType=BIGINT}, #{director,jdbcType=TINYINT}, #{directorCard,jdbcType=VARCHAR}, 
+      #{directorOrder,jdbcType=VARCHAR}, #{uid,jdbcType=BIGINT}, #{mobile,jdbcType=VARCHAR}, 
+      #{fee,jdbcType=INTEGER}, #{uflow,jdbcType=VARCHAR}, #{uextra,jdbcType=VARCHAR}, 
+      #{rhiFlow,jdbcType=BIGINT}, #{rhiThroughs,jdbcType=INTEGER}, #{channel,jdbcType=INTEGER}, 
+      #{channelOrder,jdbcType=VARCHAR}, #{channelThroughs,jdbcType=INTEGER}, #{inquires,jdbcType=INTEGER}, 
+      #{throughMask,jdbcType=INTEGER}, #{regain,jdbcType=INTEGER}, #{regainAt,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=INTEGER}, #{failureReason,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, 
+      #{updatedAt,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrder">
+    insert into de_cnpc_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="director != null">
+        director,
+      </if>
+      <if test="directorCard != null">
+        director_card,
+      </if>
+      <if test="directorOrder != null">
+        director_order,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="fee != null">
+        fee,
+      </if>
+      <if test="uflow != null">
+        uflow,
+      </if>
+      <if test="uextra != null">
+        uextra,
+      </if>
+      <if test="rhiFlow != null">
+        rhi_flow,
+      </if>
+      <if test="rhiThroughs != null">
+        rhi_throughs,
+      </if>
+      <if test="channel != null">
+        channel,
+      </if>
+      <if test="channelOrder != null">
+        channel_order,
+      </if>
+      <if test="channelThroughs != null">
+        channel_throughs,
+      </if>
+      <if test="inquires != null">
+        inquires,
+      </if>
+      <if test="throughMask != null">
+        through_mask,
+      </if>
+      <if test="regain != null">
+        regain,
+      </if>
+      <if test="regainAt != null">
+        regain_at,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="failureReason != null">
+        failure_reason,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="director != null">
+        #{director,jdbcType=TINYINT},
+      </if>
+      <if test="directorCard != null">
+        #{directorCard,jdbcType=VARCHAR},
+      </if>
+      <if test="directorOrder != null">
+        #{directorOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="fee != null">
+        #{fee,jdbcType=INTEGER},
+      </if>
+      <if test="uflow != null">
+        #{uflow,jdbcType=VARCHAR},
+      </if>
+      <if test="uextra != null">
+        #{uextra,jdbcType=VARCHAR},
+      </if>
+      <if test="rhiFlow != null">
+        #{rhiFlow,jdbcType=BIGINT},
+      </if>
+      <if test="rhiThroughs != null">
+        #{rhiThroughs,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null">
+        #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="channelOrder != null">
+        #{channelOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="channelThroughs != null">
+        #{channelThroughs,jdbcType=INTEGER},
+      </if>
+      <if test="inquires != null">
+        #{inquires,jdbcType=INTEGER},
+      </if>
+      <if test="throughMask != null">
+        #{throughMask,jdbcType=INTEGER},
+      </if>
+      <if test="regain != null">
+        #{regain,jdbcType=INTEGER},
+      </if>
+      <if test="regainAt != null">
+        #{regainAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="failureReason != null">
+        #{failureReason,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrderExample" resultType="java.lang.Long">
+    select count(*) from de_cnpc_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update de_cnpc_order
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.director != null">
+        director = #{record.director,jdbcType=TINYINT},
+      </if>
+      <if test="record.directorCard != null">
+        director_card = #{record.directorCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.directorOrder != null">
+        director_order = #{record.directorOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uid != null">
+        uid = #{record.uid,jdbcType=BIGINT},
+      </if>
+      <if test="record.mobile != null">
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fee != null">
+        fee = #{record.fee,jdbcType=INTEGER},
+      </if>
+      <if test="record.uflow != null">
+        uflow = #{record.uflow,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uextra != null">
+        uextra = #{record.uextra,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rhiFlow != null">
+        rhi_flow = #{record.rhiFlow,jdbcType=BIGINT},
+      </if>
+      <if test="record.rhiThroughs != null">
+        rhi_throughs = #{record.rhiThroughs,jdbcType=INTEGER},
+      </if>
+      <if test="record.channel != null">
+        channel = #{record.channel,jdbcType=INTEGER},
+      </if>
+      <if test="record.channelOrder != null">
+        channel_order = #{record.channelOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="record.channelThroughs != null">
+        channel_throughs = #{record.channelThroughs,jdbcType=INTEGER},
+      </if>
+      <if test="record.inquires != null">
+        inquires = #{record.inquires,jdbcType=INTEGER},
+      </if>
+      <if test="record.throughMask != null">
+        through_mask = #{record.throughMask,jdbcType=INTEGER},
+      </if>
+      <if test="record.regain != null">
+        regain = #{record.regain,jdbcType=INTEGER},
+      </if>
+      <if test="record.regainAt != null">
+        regain_at = #{record.regainAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.failureReason != null">
+        failure_reason = #{record.failureReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdAt != null">
+        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedAt != null">
+        updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update de_cnpc_order
+    set id = #{record.id,jdbcType=BIGINT},
+      director = #{record.director,jdbcType=TINYINT},
+      director_card = #{record.directorCard,jdbcType=VARCHAR},
+      director_order = #{record.directorOrder,jdbcType=VARCHAR},
+      uid = #{record.uid,jdbcType=BIGINT},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      fee = #{record.fee,jdbcType=INTEGER},
+      uflow = #{record.uflow,jdbcType=VARCHAR},
+      uextra = #{record.uextra,jdbcType=VARCHAR},
+      rhi_flow = #{record.rhiFlow,jdbcType=BIGINT},
+      rhi_throughs = #{record.rhiThroughs,jdbcType=INTEGER},
+      channel = #{record.channel,jdbcType=INTEGER},
+      channel_order = #{record.channelOrder,jdbcType=VARCHAR},
+      channel_throughs = #{record.channelThroughs,jdbcType=INTEGER},
+      inquires = #{record.inquires,jdbcType=INTEGER},
+      through_mask = #{record.throughMask,jdbcType=INTEGER},
+      regain = #{record.regain,jdbcType=INTEGER},
+      regain_at = #{record.regainAt,jdbcType=TIMESTAMP},
+      state = #{record.state,jdbcType=INTEGER},
+      failure_reason = #{record.failureReason,jdbcType=VARCHAR},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrder">
+    update de_cnpc_order
+    <set>
+      <if test="director != null">
+        director = #{director,jdbcType=TINYINT},
+      </if>
+      <if test="directorCard != null">
+        director_card = #{directorCard,jdbcType=VARCHAR},
+      </if>
+      <if test="directorOrder != null">
+        director_order = #{directorOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="fee != null">
+        fee = #{fee,jdbcType=INTEGER},
+      </if>
+      <if test="uflow != null">
+        uflow = #{uflow,jdbcType=VARCHAR},
+      </if>
+      <if test="uextra != null">
+        uextra = #{uextra,jdbcType=VARCHAR},
+      </if>
+      <if test="rhiFlow != null">
+        rhi_flow = #{rhiFlow,jdbcType=BIGINT},
+      </if>
+      <if test="rhiThroughs != null">
+        rhi_throughs = #{rhiThroughs,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null">
+        channel = #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="channelOrder != null">
+        channel_order = #{channelOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="channelThroughs != null">
+        channel_throughs = #{channelThroughs,jdbcType=INTEGER},
+      </if>
+      <if test="inquires != null">
+        inquires = #{inquires,jdbcType=INTEGER},
+      </if>
+      <if test="throughMask != null">
+        through_mask = #{throughMask,jdbcType=INTEGER},
+      </if>
+      <if test="regain != null">
+        regain = #{regain,jdbcType=INTEGER},
+      </if>
+      <if test="regainAt != null">
+        regain_at = #{regainAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="failureReason != null">
+        failure_reason = #{failureReason,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrder">
+    update de_cnpc_order
+    set director = #{director,jdbcType=TINYINT},
+      director_card = #{directorCard,jdbcType=VARCHAR},
+      director_order = #{directorOrder,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=BIGINT},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      fee = #{fee,jdbcType=INTEGER},
+      uflow = #{uflow,jdbcType=VARCHAR},
+      uextra = #{uextra,jdbcType=VARCHAR},
+      rhi_flow = #{rhiFlow,jdbcType=BIGINT},
+      rhi_throughs = #{rhiThroughs,jdbcType=INTEGER},
+      channel = #{channel,jdbcType=INTEGER},
+      channel_order = #{channelOrder,jdbcType=VARCHAR},
+      channel_throughs = #{channelThroughs,jdbcType=INTEGER},
+      inquires = #{inquires,jdbcType=INTEGER},
+      through_mask = #{throughMask,jdbcType=INTEGER},
+      regain = #{regain,jdbcType=INTEGER},
+      regain_at = #{regainAt,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=INTEGER},
+      failure_reason = #{failureReason,jdbcType=VARCHAR},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <resultMap id="BaseResultMap" type="com.petroun.devourerhizine.model.entity.CnpcOrder">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="director" jdbcType="TINYINT" property="director" />
+    <result column="director_card" jdbcType="VARCHAR" property="directorCard" />
+    <result column="director_order" jdbcType="VARCHAR" property="directorOrder" />
+    <result column="uid" jdbcType="BIGINT" property="uid" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="fee" jdbcType="INTEGER" property="fee" />
+    <result column="promo" jdbcType="INTEGER" property="promo" />
+    <result column="promoid" jdbcType="INTEGER" property="promoid" />
+    <result column="uflow" jdbcType="VARCHAR" property="uflow" />
+    <result column="uextra" jdbcType="VARCHAR" property="uextra" />
+    <result column="rhi_flow" jdbcType="BIGINT" property="rhiFlow" />
+    <result column="rhi_throughs" jdbcType="INTEGER" property="rhiThroughs" />
+    <result column="channel" jdbcType="INTEGER" property="channel" />
+    <result column="channel_order" jdbcType="VARCHAR" property="channelOrder" />
+    <result column="channel_throughs" jdbcType="INTEGER" property="channelThroughs" />
+    <result column="inquires" jdbcType="INTEGER" property="inquires" />
+    <result column="through_mask" jdbcType="INTEGER" property="throughMask" />
+    <result column="regain" jdbcType="INTEGER" property="regain" />
+    <result column="regain_at" jdbcType="TIMESTAMP" property="regainAt" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="failure_reason" jdbcType="VARCHAR" property="failureReason" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, director, director_card, director_order, uid, mobile, fee, promo, promoid, uflow, 
+    uextra, rhi_flow, rhi_throughs, channel, channel_order, channel_throughs, inquires, 
+    through_mask, regain, regain_at, state, failure_reason, created_at, updated_at
+  </sql>
+  <select id="selectByExample" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrderExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from de_cnpc_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from de_cnpc_order
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from de_cnpc_order
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrderExample">
+    delete from de_cnpc_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrder">
+    insert into de_cnpc_order (id, director, director_card, 
+      director_order, uid, mobile, 
+      fee, promo, promoid, 
+      uflow, uextra, rhi_flow, 
+      rhi_throughs, channel, channel_order, 
+      channel_throughs, inquires, through_mask, 
+      regain, regain_at, state, 
+      failure_reason, created_at, updated_at
+      )
+    values (#{id,jdbcType=BIGINT}, #{director,jdbcType=TINYINT}, #{directorCard,jdbcType=VARCHAR}, 
+      #{directorOrder,jdbcType=VARCHAR}, #{uid,jdbcType=BIGINT}, #{mobile,jdbcType=VARCHAR}, 
+      #{fee,jdbcType=INTEGER}, #{promo,jdbcType=INTEGER}, #{promoid,jdbcType=INTEGER}, 
+      #{uflow,jdbcType=VARCHAR}, #{uextra,jdbcType=VARCHAR}, #{rhiFlow,jdbcType=BIGINT}, 
+      #{rhiThroughs,jdbcType=INTEGER}, #{channel,jdbcType=INTEGER}, #{channelOrder,jdbcType=VARCHAR}, 
+      #{channelThroughs,jdbcType=INTEGER}, #{inquires,jdbcType=INTEGER}, #{throughMask,jdbcType=INTEGER}, 
+      #{regain,jdbcType=INTEGER}, #{regainAt,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, 
+      #{failureReason,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrder">
+    insert into de_cnpc_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="director != null">
+        director,
+      </if>
+      <if test="directorCard != null">
+        director_card,
+      </if>
+      <if test="directorOrder != null">
+        director_order,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="fee != null">
+        fee,
+      </if>
+      <if test="promo != null">
+        promo,
+      </if>
+      <if test="promoid != null">
+        promoid,
+      </if>
+      <if test="uflow != null">
+        uflow,
+      </if>
+      <if test="uextra != null">
+        uextra,
+      </if>
+      <if test="rhiFlow != null">
+        rhi_flow,
+      </if>
+      <if test="rhiThroughs != null">
+        rhi_throughs,
+      </if>
+      <if test="channel != null">
+        channel,
+      </if>
+      <if test="channelOrder != null">
+        channel_order,
+      </if>
+      <if test="channelThroughs != null">
+        channel_throughs,
+      </if>
+      <if test="inquires != null">
+        inquires,
+      </if>
+      <if test="throughMask != null">
+        through_mask,
+      </if>
+      <if test="regain != null">
+        regain,
+      </if>
+      <if test="regainAt != null">
+        regain_at,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="failureReason != null">
+        failure_reason,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="director != null">
+        #{director,jdbcType=TINYINT},
+      </if>
+      <if test="directorCard != null">
+        #{directorCard,jdbcType=VARCHAR},
+      </if>
+      <if test="directorOrder != null">
+        #{directorOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="fee != null">
+        #{fee,jdbcType=INTEGER},
+      </if>
+      <if test="promo != null">
+        #{promo,jdbcType=INTEGER},
+      </if>
+      <if test="promoid != null">
+        #{promoid,jdbcType=INTEGER},
+      </if>
+      <if test="uflow != null">
+        #{uflow,jdbcType=VARCHAR},
+      </if>
+      <if test="uextra != null">
+        #{uextra,jdbcType=VARCHAR},
+      </if>
+      <if test="rhiFlow != null">
+        #{rhiFlow,jdbcType=BIGINT},
+      </if>
+      <if test="rhiThroughs != null">
+        #{rhiThroughs,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null">
+        #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="channelOrder != null">
+        #{channelOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="channelThroughs != null">
+        #{channelThroughs,jdbcType=INTEGER},
+      </if>
+      <if test="inquires != null">
+        #{inquires,jdbcType=INTEGER},
+      </if>
+      <if test="throughMask != null">
+        #{throughMask,jdbcType=INTEGER},
+      </if>
+      <if test="regain != null">
+        #{regain,jdbcType=INTEGER},
+      </if>
+      <if test="regainAt != null">
+        #{regainAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="failureReason != null">
+        #{failureReason,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrderExample" resultType="java.lang.Long">
+    select count(*) from de_cnpc_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update de_cnpc_order
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.director != null">
+        director = #{record.director,jdbcType=TINYINT},
+      </if>
+      <if test="record.directorCard != null">
+        director_card = #{record.directorCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.directorOrder != null">
+        director_order = #{record.directorOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uid != null">
+        uid = #{record.uid,jdbcType=BIGINT},
+      </if>
+      <if test="record.mobile != null">
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fee != null">
+        fee = #{record.fee,jdbcType=INTEGER},
+      </if>
+      <if test="record.promo != null">
+        promo = #{record.promo,jdbcType=INTEGER},
+      </if>
+      <if test="record.promoid != null">
+        promoid = #{record.promoid,jdbcType=INTEGER},
+      </if>
+      <if test="record.uflow != null">
+        uflow = #{record.uflow,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uextra != null">
+        uextra = #{record.uextra,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rhiFlow != null">
+        rhi_flow = #{record.rhiFlow,jdbcType=BIGINT},
+      </if>
+      <if test="record.rhiThroughs != null">
+        rhi_throughs = #{record.rhiThroughs,jdbcType=INTEGER},
+      </if>
+      <if test="record.channel != null">
+        channel = #{record.channel,jdbcType=INTEGER},
+      </if>
+      <if test="record.channelOrder != null">
+        channel_order = #{record.channelOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="record.channelThroughs != null">
+        channel_throughs = #{record.channelThroughs,jdbcType=INTEGER},
+      </if>
+      <if test="record.inquires != null">
+        inquires = #{record.inquires,jdbcType=INTEGER},
+      </if>
+      <if test="record.throughMask != null">
+        through_mask = #{record.throughMask,jdbcType=INTEGER},
+      </if>
+      <if test="record.regain != null">
+        regain = #{record.regain,jdbcType=INTEGER},
+      </if>
+      <if test="record.regainAt != null">
+        regain_at = #{record.regainAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.failureReason != null">
+        failure_reason = #{record.failureReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdAt != null">
+        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedAt != null">
+        updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update de_cnpc_order
+    set id = #{record.id,jdbcType=BIGINT},
+      director = #{record.director,jdbcType=TINYINT},
+      director_card = #{record.directorCard,jdbcType=VARCHAR},
+      director_order = #{record.directorOrder,jdbcType=VARCHAR},
+      uid = #{record.uid,jdbcType=BIGINT},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      fee = #{record.fee,jdbcType=INTEGER},
+      promo = #{record.promo,jdbcType=INTEGER},
+      promoid = #{record.promoid,jdbcType=INTEGER},
+      uflow = #{record.uflow,jdbcType=VARCHAR},
+      uextra = #{record.uextra,jdbcType=VARCHAR},
+      rhi_flow = #{record.rhiFlow,jdbcType=BIGINT},
+      rhi_throughs = #{record.rhiThroughs,jdbcType=INTEGER},
+      channel = #{record.channel,jdbcType=INTEGER},
+      channel_order = #{record.channelOrder,jdbcType=VARCHAR},
+      channel_throughs = #{record.channelThroughs,jdbcType=INTEGER},
+      inquires = #{record.inquires,jdbcType=INTEGER},
+      through_mask = #{record.throughMask,jdbcType=INTEGER},
+      regain = #{record.regain,jdbcType=INTEGER},
+      regain_at = #{record.regainAt,jdbcType=TIMESTAMP},
+      state = #{record.state,jdbcType=INTEGER},
+      failure_reason = #{record.failureReason,jdbcType=VARCHAR},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrder">
+    update de_cnpc_order
+    <set>
+      <if test="director != null">
+        director = #{director,jdbcType=TINYINT},
+      </if>
+      <if test="directorCard != null">
+        director_card = #{directorCard,jdbcType=VARCHAR},
+      </if>
+      <if test="directorOrder != null">
+        director_order = #{directorOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="fee != null">
+        fee = #{fee,jdbcType=INTEGER},
+      </if>
+      <if test="promo != null">
+        promo = #{promo,jdbcType=INTEGER},
+      </if>
+      <if test="promoid != null">
+        promoid = #{promoid,jdbcType=INTEGER},
+      </if>
+      <if test="uflow != null">
+        uflow = #{uflow,jdbcType=VARCHAR},
+      </if>
+      <if test="uextra != null">
+        uextra = #{uextra,jdbcType=VARCHAR},
+      </if>
+      <if test="rhiFlow != null">
+        rhi_flow = #{rhiFlow,jdbcType=BIGINT},
+      </if>
+      <if test="rhiThroughs != null">
+        rhi_throughs = #{rhiThroughs,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null">
+        channel = #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="channelOrder != null">
+        channel_order = #{channelOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="channelThroughs != null">
+        channel_throughs = #{channelThroughs,jdbcType=INTEGER},
+      </if>
+      <if test="inquires != null">
+        inquires = #{inquires,jdbcType=INTEGER},
+      </if>
+      <if test="throughMask != null">
+        through_mask = #{throughMask,jdbcType=INTEGER},
+      </if>
+      <if test="regain != null">
+        regain = #{regain,jdbcType=INTEGER},
+      </if>
+      <if test="regainAt != null">
+        regain_at = #{regainAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="failureReason != null">
+        failure_reason = #{failureReason,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrder">
+    update de_cnpc_order
+    set director = #{director,jdbcType=TINYINT},
+      director_card = #{directorCard,jdbcType=VARCHAR},
+      director_order = #{directorOrder,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=BIGINT},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      fee = #{fee,jdbcType=INTEGER},
+      promo = #{promo,jdbcType=INTEGER},
+      promoid = #{promoid,jdbcType=INTEGER},
+      uflow = #{uflow,jdbcType=VARCHAR},
+      uextra = #{uextra,jdbcType=VARCHAR},
+      rhi_flow = #{rhiFlow,jdbcType=BIGINT},
+      rhi_throughs = #{rhiThroughs,jdbcType=INTEGER},
+      channel = #{channel,jdbcType=INTEGER},
+      channel_order = #{channelOrder,jdbcType=VARCHAR},
+      channel_throughs = #{channelThroughs,jdbcType=INTEGER},
+      inquires = #{inquires,jdbcType=INTEGER},
+      through_mask = #{throughMask,jdbcType=INTEGER},
+      regain = #{regain,jdbcType=INTEGER},
+      regain_at = #{regainAt,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=INTEGER},
+      failure_reason = #{failureReason,jdbcType=VARCHAR},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

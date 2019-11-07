@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: Devourerhizine
+  datasource:
+    url: "jdbc:mysql://172.200.209.12:3306/devourerhizine?character_set_server=utf8mb4&useUnicode=true&useLegacyDatetimeCode=false&serverTimezone=PRC"
+    username: sa
+    password: Our@petro919
+    test-while-idle: true
+    driver-class-name: "com.mysql.cj.jdbc.Driver"
+    validation-query: "select 1"
+  redis:
+    host: 127.0.0.1
+    database: 0
+rabbitmq:
+  host: 127.0.0.1
+  port: 5672
+  user: cluries
+  password: danseens
+bill:
+  defaultAuthenticationType: Signature
+  keyOfHashCompareAuthenticationProviderClass: com.petroun.devourerhizine.classes.HashCompareAuthenticationKeyProvider
+  keyOfHashCompareAuthenticationProviderMethod: key
+  keyOfHashCompareAuthenticationXUValidateProviderMethod: uvalidate
+  keyOfHashCompareAuthenticationPathPrefix: "/api/v1"
+  allowDevSkipSignature: "YES"
+  allowAuthDebuger: "YES"
+

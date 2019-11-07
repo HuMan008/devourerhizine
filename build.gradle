@@ -1,0 +1,30 @@
+plugins {
+    id 'org.springframework.boot' version '2.1.8.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+}
+
+group = 'com.petroun'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    maven {
+        url "http://nexus.pgt:8081/repository/pgtmaven/"
+    }
+
+    maven {
+        url 'http://repo.spring.io/plugins-release'
+    }
+}
+
+dependencies {
+    compile('cn.gotoil:bill:2.1.8.1-RELEASE')
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+    compile group: 'com.google.guava', name: 'guava', version: '28.1-jre'
+    compile group: 'com.rabbitmq', name: 'amqp-client', version: '3.6.5'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.10.0'
+    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.10.0'
+    compile group: 'com.mashape.unirest', name: 'unirest-java', version: '1.4.9'
+
+}

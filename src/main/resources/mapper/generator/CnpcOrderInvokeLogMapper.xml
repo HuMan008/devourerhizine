@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petroun.devourerhizine.model.mapper.CnpcOrderInvokeLogMapper">
+  <resultMap id="BaseResultMap" type="com.petroun.devourerhizine.model.entity.CnpcOrderInvokeLog">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_id" jdbcType="BIGINT" property="orderId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="request" jdbcType="VARCHAR" property="request" />
+    <result column="response" jdbcType="VARCHAR" property="response" />
+    <result column="httpcode" jdbcType="INTEGER" property="httpcode" />
+    <result column="request_at" jdbcType="TIMESTAMP" property="requestAt" />
+    <result column="response_at" jdbcType="TIMESTAMP" property="responseAt" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, order_id, type, request, response, httpcode, request_at, response_at, created_at
+  </sql>
+  <select id="selectByExample" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrderInvokeLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from de_cnpc_order_invoke_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from de_cnpc_order_invoke_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from de_cnpc_order_invoke_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrderInvokeLogExample">
+    delete from de_cnpc_order_invoke_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrderInvokeLog">
+    insert into de_cnpc_order_invoke_log (id, order_id, type, 
+      request, response, httpcode, 
+      request_at, response_at, created_at
+      )
+    values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, 
+      #{request,jdbcType=VARCHAR}, #{response,jdbcType=VARCHAR}, #{httpcode,jdbcType=INTEGER}, 
+      #{requestAt,jdbcType=TIMESTAMP}, #{responseAt,jdbcType=TIMESTAMP}, #{createdAt,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrderInvokeLog">
+    insert into de_cnpc_order_invoke_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="request != null">
+        request,
+      </if>
+      <if test="response != null">
+        response,
+      </if>
+      <if test="httpcode != null">
+        httpcode,
+      </if>
+      <if test="requestAt != null">
+        request_at,
+      </if>
+      <if test="responseAt != null">
+        response_at,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="request != null">
+        #{request,jdbcType=VARCHAR},
+      </if>
+      <if test="response != null">
+        #{response,jdbcType=VARCHAR},
+      </if>
+      <if test="httpcode != null">
+        #{httpcode,jdbcType=INTEGER},
+      </if>
+      <if test="requestAt != null">
+        #{requestAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="responseAt != null">
+        #{responseAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrderInvokeLogExample" resultType="java.lang.Long">
+    select count(*) from de_cnpc_order_invoke_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update de_cnpc_order_invoke_log
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderId != null">
+        order_id = #{record.orderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.request != null">
+        request = #{record.request,jdbcType=VARCHAR},
+      </if>
+      <if test="record.response != null">
+        response = #{record.response,jdbcType=VARCHAR},
+      </if>
+      <if test="record.httpcode != null">
+        httpcode = #{record.httpcode,jdbcType=INTEGER},
+      </if>
+      <if test="record.requestAt != null">
+        request_at = #{record.requestAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.responseAt != null">
+        response_at = #{record.responseAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdAt != null">
+        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update de_cnpc_order_invoke_log
+    set id = #{record.id,jdbcType=INTEGER},
+      order_id = #{record.orderId,jdbcType=BIGINT},
+      type = #{record.type,jdbcType=INTEGER},
+      request = #{record.request,jdbcType=VARCHAR},
+      response = #{record.response,jdbcType=VARCHAR},
+      httpcode = #{record.httpcode,jdbcType=INTEGER},
+      request_at = #{record.requestAt,jdbcType=TIMESTAMP},
+      response_at = #{record.responseAt,jdbcType=TIMESTAMP},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrderInvokeLog">
+    update de_cnpc_order_invoke_log
+    <set>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="request != null">
+        request = #{request,jdbcType=VARCHAR},
+      </if>
+      <if test="response != null">
+        response = #{response,jdbcType=VARCHAR},
+      </if>
+      <if test="httpcode != null">
+        httpcode = #{httpcode,jdbcType=INTEGER},
+      </if>
+      <if test="requestAt != null">
+        request_at = #{requestAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="responseAt != null">
+        response_at = #{responseAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrderInvokeLog">
+    update de_cnpc_order_invoke_log
+    set order_id = #{orderId,jdbcType=BIGINT},
+      type = #{type,jdbcType=INTEGER},
+      request = #{request,jdbcType=VARCHAR},
+      response = #{response,jdbcType=VARCHAR},
+      httpcode = #{httpcode,jdbcType=INTEGER},
+      request_at = #{requestAt,jdbcType=TIMESTAMP},
+      response_at = #{responseAt,jdbcType=TIMESTAMP},
+      created_at = #{createdAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <resultMap id="BaseResultMap" type="com.petroun.devourerhizine.model.entity.CnpcOrderInvokeLog">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_id" jdbcType="BIGINT" property="orderId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="request" jdbcType="VARCHAR" property="request" />
+    <result column="response" jdbcType="VARCHAR" property="response" />
+    <result column="httpcode" jdbcType="INTEGER" property="httpcode" />
+    <result column="request_at" jdbcType="TIMESTAMP" property="requestAt" />
+    <result column="response_at" jdbcType="TIMESTAMP" property="responseAt" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, order_id, type, request, response, httpcode, request_at, response_at, created_at
+  </sql>
+  <select id="selectByExample" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrderInvokeLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from de_cnpc_order_invoke_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from de_cnpc_order_invoke_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from de_cnpc_order_invoke_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrderInvokeLogExample">
+    delete from de_cnpc_order_invoke_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrderInvokeLog">
+    insert into de_cnpc_order_invoke_log (id, order_id, type, 
+      request, response, httpcode, 
+      request_at, response_at, created_at
+      )
+    values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, 
+      #{request,jdbcType=VARCHAR}, #{response,jdbcType=VARCHAR}, #{httpcode,jdbcType=INTEGER}, 
+      #{requestAt,jdbcType=TIMESTAMP}, #{responseAt,jdbcType=TIMESTAMP}, #{createdAt,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrderInvokeLog">
+    insert into de_cnpc_order_invoke_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="request != null">
+        request,
+      </if>
+      <if test="response != null">
+        response,
+      </if>
+      <if test="httpcode != null">
+        httpcode,
+      </if>
+      <if test="requestAt != null">
+        request_at,
+      </if>
+      <if test="responseAt != null">
+        response_at,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="request != null">
+        #{request,jdbcType=VARCHAR},
+      </if>
+      <if test="response != null">
+        #{response,jdbcType=VARCHAR},
+      </if>
+      <if test="httpcode != null">
+        #{httpcode,jdbcType=INTEGER},
+      </if>
+      <if test="requestAt != null">
+        #{requestAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="responseAt != null">
+        #{responseAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrderInvokeLogExample" resultType="java.lang.Long">
+    select count(*) from de_cnpc_order_invoke_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update de_cnpc_order_invoke_log
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderId != null">
+        order_id = #{record.orderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.request != null">
+        request = #{record.request,jdbcType=VARCHAR},
+      </if>
+      <if test="record.response != null">
+        response = #{record.response,jdbcType=VARCHAR},
+      </if>
+      <if test="record.httpcode != null">
+        httpcode = #{record.httpcode,jdbcType=INTEGER},
+      </if>
+      <if test="record.requestAt != null">
+        request_at = #{record.requestAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.responseAt != null">
+        response_at = #{record.responseAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdAt != null">
+        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update de_cnpc_order_invoke_log
+    set id = #{record.id,jdbcType=INTEGER},
+      order_id = #{record.orderId,jdbcType=BIGINT},
+      type = #{record.type,jdbcType=INTEGER},
+      request = #{record.request,jdbcType=VARCHAR},
+      response = #{record.response,jdbcType=VARCHAR},
+      httpcode = #{record.httpcode,jdbcType=INTEGER},
+      request_at = #{record.requestAt,jdbcType=TIMESTAMP},
+      response_at = #{record.responseAt,jdbcType=TIMESTAMP},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrderInvokeLog">
+    update de_cnpc_order_invoke_log
+    <set>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="request != null">
+        request = #{request,jdbcType=VARCHAR},
+      </if>
+      <if test="response != null">
+        response = #{response,jdbcType=VARCHAR},
+      </if>
+      <if test="httpcode != null">
+        httpcode = #{httpcode,jdbcType=INTEGER},
+      </if>
+      <if test="requestAt != null">
+        request_at = #{requestAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="responseAt != null">
+        response_at = #{responseAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrderInvokeLog">
+    update de_cnpc_order_invoke_log
+    set order_id = #{orderId,jdbcType=BIGINT},
+      type = #{type,jdbcType=INTEGER},
+      request = #{request,jdbcType=VARCHAR},
+      response = #{response,jdbcType=VARCHAR},
+      httpcode = #{httpcode,jdbcType=INTEGER},
+      request_at = #{requestAt,jdbcType=TIMESTAMP},
+      response_at = #{responseAt,jdbcType=TIMESTAMP},
+      created_at = #{createdAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
