@@ -10,11 +10,7 @@ sourceCompatibility = '11'
 
 repositories {
     maven {
-        url "http://nexus.pgt:8081/repository/pgtmaven/"
-    }
-
-    maven {
-        url 'http://repo.spring.io/plugins-release'
+        url "http://nexus.petroun.com:8081/repository/maven-public/"
     }
 }
 
