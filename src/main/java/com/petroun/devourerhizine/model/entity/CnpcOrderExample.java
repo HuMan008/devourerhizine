@@ -575,6 +575,126 @@ public class CnpcOrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andPromoIsNull() {
+            addCriterion("promo is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoIsNotNull() {
+            addCriterion("promo is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoEqualTo(Integer value) {
+            addCriterion("promo =", value, "promo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoNotEqualTo(Integer value) {
+            addCriterion("promo <>", value, "promo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoGreaterThan(Integer value) {
+            addCriterion("promo >", value, "promo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoGreaterThanOrEqualTo(Integer value) {
+            addCriterion("promo >=", value, "promo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoLessThan(Integer value) {
+            addCriterion("promo <", value, "promo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoLessThanOrEqualTo(Integer value) {
+            addCriterion("promo <=", value, "promo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoIn(List<Integer> values) {
+            addCriterion("promo in", values, "promo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoNotIn(List<Integer> values) {
+            addCriterion("promo not in", values, "promo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoBetween(Integer value1, Integer value2) {
+            addCriterion("promo between", value1, value2, "promo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoNotBetween(Integer value1, Integer value2) {
+            addCriterion("promo not between", value1, value2, "promo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoidIsNull() {
+            addCriterion("promoid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoidIsNotNull() {
+            addCriterion("promoid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoidEqualTo(Integer value) {
+            addCriterion("promoid =", value, "promoid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoidNotEqualTo(Integer value) {
+            addCriterion("promoid <>", value, "promoid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoidGreaterThan(Integer value) {
+            addCriterion("promoid >", value, "promoid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("promoid >=", value, "promoid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoidLessThan(Integer value) {
+            addCriterion("promoid <", value, "promoid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoidLessThanOrEqualTo(Integer value) {
+            addCriterion("promoid <=", value, "promoid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoidIn(List<Integer> values) {
+            addCriterion("promoid in", values, "promoid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoidNotIn(List<Integer> values) {
+            addCriterion("promoid not in", values, "promoid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoidBetween(Integer value1, Integer value2) {
+            addCriterion("promoid between", value1, value2, "promoid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPromoidNotBetween(Integer value1, Integer value2) {
+            addCriterion("promoid not between", value1, value2, "promoid");
+            return (Criteria) this;
+        }
+
         public Criteria andUflowIsNull() {
             addCriterion("uflow is null");
             return (Criteria) this;

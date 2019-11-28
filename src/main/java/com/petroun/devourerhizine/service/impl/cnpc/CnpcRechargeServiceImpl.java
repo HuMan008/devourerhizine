@@ -19,6 +19,7 @@ import com.petroun.devourerhizine.classes.cnpc.CnpcOrderHelper;
 import com.petroun.devourerhizine.classes.rabbitmq.MQDefiner;
 import com.petroun.devourerhizine.classes.rabbitmq.MQPublisher;
 import com.petroun.devourerhizine.classes.tools.RedisLocker;
+import com.petroun.devourerhizine.config.CnpcConfig;
 import com.petroun.devourerhizine.enums.OrderError;
 import com.petroun.devourerhizine.model.CnpcRegainBit;
 import com.petroun.devourerhizine.model.entity.CnpcOrder;
@@ -53,6 +54,9 @@ import java.util.Map;
 public class CnpcRechargeServiceImpl implements CnpcRechargeService {
 
     private static final Logger logger = LoggerFactory.getLogger(CnpcRechargeServiceImpl.class);
+
+    @Autowired
+    private CnpcConfig cnpcConfig;
 
     @Autowired
     private CnpcOrderService orderService;
@@ -117,6 +121,7 @@ public class CnpcRechargeServiceImpl implements CnpcRechargeService {
         }
 
         CNPC cnpc = new CNPC(order.getChannel());
+        cnpc.setCnpcConfig(cnpcConfig);
         CnpcProviderInquireResult inquireResult = cnpc.inquire(order.getId(), order.getChannelOrder(), order.getDirectorCard());
 
         CnpcOrder ue = new CnpcOrder();
@@ -242,7 +247,7 @@ public class CnpcRechargeServiceImpl implements CnpcRechargeService {
 
         boolean c = false;
         if (BitMask.isSeted(order.getThroughMask().intValue(), THROUGH_PTGC_MASK_BIT)) {
-            BillFlow flow = Rhizine.revocation(order.getRhiFlow(), order.getId().toString() + "R");
+            BillFlow flow = Rhizine.revocation(order.getRhiFlow(), order.getUflow().toString() + "R");
             loggingOperation(flow, order, CnpcOrderInvokeLogType.Regain);
 
             if (FlowHelper.isNormal(flow)) {
@@ -328,7 +333,8 @@ public class CnpcRechargeServiceImpl implements CnpcRechargeService {
         order.setRhiThroughs(pgtcThroughCount);
         ue.setRhiThroughs(pgtcThroughCount);
 
-        BillFlow flow = Rhizine.deduction(order.getUid(), order.getId().toString(), order.getFee(),
+        BillFlow flow = Rhizine.deduction(order.getUid(), order.getUflow(), order.getFee(),
+                order.getPromo(), order.getPromoid(),
                 Director.from(order.getDirector().byteValue()));
 
         if (FlowHelper.isNormal(flow)) {
@@ -393,6 +399,7 @@ public class CnpcRechargeServiceImpl implements CnpcRechargeService {
         } else {
             cnpc = new CNPC(order.getFee(), director);
         }
+        cnpc.setCnpcConfig(cnpcConfig);
 
         if (cnpc.getProvider() == null) {
             logger.error("Unable get provider for order:{} fee:{}, director:{}",

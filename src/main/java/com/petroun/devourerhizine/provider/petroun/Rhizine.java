@@ -49,9 +49,9 @@ public class Rhizine {
         return "加油卡充值";
     }
 
-    public static BillFlow deduction(Long uid, String flowid, Integer face, Director director) {
+    public static BillFlow deduction(Long uid, String flowid, Integer face, Integer promo, Integer promoid, Director director) {
 
-        if (face > 0) {
+        if (face < 0) {
             throw new BillException(1, "face error");
         }
 
@@ -59,8 +59,8 @@ public class Rhizine {
         params.put("uid", uid);
         params.put("flowid", flowid);
         params.put("bussid", bussid(director));
-        params.put("promoid", 0);
-        params.put("promo", 0);
+        params.put("promoid", promoid);
+        params.put("promo", promo);
         params.put("point", POINT);
         params.put("face", 0 - face);
         params.put("title", title(director));

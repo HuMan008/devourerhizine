@@ -3,10 +3,6 @@ package com.petroun.devourerhizine.model.entity;
 import java.util.Date;
 
 public class CnpcOrder {
-
-
-
-
     private Long id;
 
     private Byte director;
@@ -20,6 +16,10 @@ public class CnpcOrder {
     private String mobile;
 
     private Integer fee;
+
+    private Integer promo;
+
+    private Integer promoid;
 
     private String uflow;
 
@@ -105,6 +105,22 @@ public class CnpcOrder {
 
     public void setFee(Integer fee) {
         this.fee = fee;
+    }
+
+    public Integer getPromo() {
+        return promo;
+    }
+
+    public void setPromo(Integer promo) {
+        this.promo = promo;
+    }
+
+    public Integer getPromoid() {
+        return promoid;
+    }
+
+    public void setPromoid(Integer promoid) {
+        this.promoid = promoid;
     }
 
     public String getUflow() {
@@ -240,6 +256,8 @@ public class CnpcOrder {
         sb.append(", uid=").append(uid);
         sb.append(", mobile=").append(mobile);
         sb.append(", fee=").append(fee);
+        sb.append(", promo=").append(promo);
+        sb.append(", promoid=").append(promoid);
         sb.append(", uflow=").append(uflow);
         sb.append(", uextra=").append(uextra);
         sb.append(", rhiFlow=").append(rhiFlow);

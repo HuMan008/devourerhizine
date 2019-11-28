@@ -56,6 +56,8 @@ public class CnpcOrderServiceImpl implements CnpcOrderService {
         order.setUid(recharge.getUid());
         order.setUflow(recharge.getOrderid());
         order.setUextra(recharge.getExtra());
+        order.setPromo(recharge.getPromo());
+        order.setPromoid(recharge.getPromoid());
 
         order.setState(CnpcOrderState.Initialize.getCode());
         order.setInquires(0);
