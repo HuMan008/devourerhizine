@@ -18,7 +18,7 @@ public class Configer {
 
 
     private static final String apiurl = "http://api.jiayouka.cn:11140/";
-    private static final String account = "15922588131";
+    private static final String account = "17784770437";  ///  15922588131
 
 
     private static final String rechargeUrl = apiurl + "trade/gateway";

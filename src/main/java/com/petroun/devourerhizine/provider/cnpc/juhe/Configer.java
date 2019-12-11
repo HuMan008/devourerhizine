@@ -19,9 +19,9 @@ public class Configer {
 
     private static final String balanceUrl = "http://op.juhe.cn/ofpay/mobile/yue";
 
-    private static final String key = "7ec82176fdf041639bde62201a50b262";
+    private static final String key = "44bba72116d3badb45c5b0f7ee0a9724";
 
-    private static final String balanceKey = "82afd61ca8be09137e065eec8f536c44";
+    private static final String balanceKey = "045a8a4d1e29acb826d18e27965483d1";
 
     public static String getThroughUrl() {
         return throughUrl;
