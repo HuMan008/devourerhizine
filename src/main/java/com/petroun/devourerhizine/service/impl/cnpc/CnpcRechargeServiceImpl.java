@@ -13,7 +13,6 @@ package com.petroun.devourerhizine.service.impl.cnpc;
 
 import cn.gotoil.bill.exception.BillException;
 import cn.gotoil.bill.provider.bill.BillFlow;
-import cn.gotoil.bill.tools.date.DateUtils;
 import com.petroun.devourerhizine.classes.BitMask;
 import com.petroun.devourerhizine.classes.cnpc.CnpcOrderHelper;
 import com.petroun.devourerhizine.classes.rabbitmq.MQDefiner;
@@ -68,16 +67,18 @@ public class CnpcRechargeServiceImpl implements CnpcRechargeService {
     private CnpcOrderInvokeLogMapper cnpcOrderInvokeLogMapper;
 
     @Autowired
+    private OptionService optionService;
+
+    @Autowired
     private ConnectionFactory connectionFactory;
 
     @Autowired
     private Connection connection;
 
+
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
-    @Autowired
-    private OptionService optionService;
 
     private static final int MAX_PGTC_THROUGH_COUNT = 120;
     private static final int MAX_PROVIDER_THROUGH_COUNT = 4;

@@ -12,7 +12,7 @@
 package com.petroun.devourerhizine.model;
 
 public class OptionKeys {
-    
+
     public static final String CnpcProviderPriorities = "CnpcProviderPriorities";
 
     public static final String JuheOpenID = "JuheOpenID";
@@ -37,5 +37,9 @@ public class OptionKeys {
     public static final String XunyinKey = "XunyinKey";
 
     public static final String DingxinSecret = "DingxinSecret";
+
+    public static final String RHIZINE_HOST = "RHIZINE_HOST";
+    public static final String RHIZINE_XU = "RHIZINE_XU";
+    public static final String RHIZINE_SECRET = "RHIZINE_SECRET";
 
 }

@@ -15,6 +15,8 @@ import cn.gotoil.bill.tools.ObjectHelper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.petroun.devourerhizine.classes.rabbitmq.MQDefiner;
 import com.petroun.devourerhizine.classes.rabbitmq.SuppressRabbitConsumer;
+import com.petroun.devourerhizine.model.OptionKeys;
+import com.petroun.devourerhizine.provider.petroun.Rhizine;
 import com.petroun.devourerhizine.service.OptionService;
 import com.petroun.devourerhizine.service.cnpc.CnpcRechargeService;
 import com.rabbitmq.client.*;
@@ -47,6 +49,10 @@ public class RabbitMQRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         optionService.reload();
+
+        Rhizine.configure(optionService.get(OptionKeys.RHIZINE_HOST),
+                optionService.get(OptionKeys.RHIZINE_XU),
+                optionService.get(OptionKeys.RHIZINE_SECRET));
 
         logger.info("============start MQ runner============");
         MQDefiner.defineDelayExchangeAndQueues(connection);

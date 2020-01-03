@@ -13,9 +13,17 @@ public class Rhizine {
     private static final Integer CNPC_BUSSID = 40000;
     private static final Integer SINOPEC_BUSSID = 40001;
     private static final Integer POINT = 1;
-    private static final String RHIZINE_HOST = "http://172.200.209.32:8080";
-    private static final String RHIZINE_XU = "1530452732732000155";
-    private static final String RHIZINE_SECRET = "8d97daa4569470b882cadcf284cff5d11e758498";
+    private static String RHIZINE_HOST = "http://172.200.209.32:8080";
+    private static String RHIZINE_XU = "1530452732732000155";
+    private static String RHIZINE_SECRET = "8d97daa4569470b882cadcf284cff5d11e758498";
+    
+
+    public static void configure(String host, String xu, String secret) {
+
+        RHIZINE_HOST = host;
+        RHIZINE_XU = xu;
+        RHIZINE_SECRET = secret;
+    }
 
     private static final BillClient billClient() {
         BillClient billClient = new BillClient();
