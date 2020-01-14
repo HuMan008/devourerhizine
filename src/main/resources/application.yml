@@ -12,10 +12,10 @@ spring:
     host: 127.0.0.1
     database: 0
 rabbitmq:
-  host: 127.0.0.1
+  host: 172.200.209.42
   port: 5672
-  user: cluries
-  password: danseens
+  user: rabbit
+  password: rabbit
 bill:
   defaultAuthenticationType: Signature
   keyOfHashCompareAuthenticationProviderClass: com.petroun.devourerhizine.classes.HashCompareAuthenticationKeyProvider

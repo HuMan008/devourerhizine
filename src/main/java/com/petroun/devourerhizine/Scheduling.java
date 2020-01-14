@@ -19,7 +19,10 @@ public class Scheduling {
 
     @Scheduled(initialDelay = 1000, fixedRate = 60000)
     public void reloadCache() {
+        logger.info("Scheduling reloadCache");
+
         optionService.reload();
+
 
         Rhizine.configure(optionService.get(OptionKeys.RHIZINE_HOST),
                 optionService.get(OptionKeys.RHIZINE_XU),
