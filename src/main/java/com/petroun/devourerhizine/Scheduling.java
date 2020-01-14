@@ -1,3 +1,5 @@
+package com.petroun.devourerhizine;
+
 import com.petroun.devourerhizine.model.OptionKeys;
 import com.petroun.devourerhizine.provider.petroun.Rhizine;
 import com.petroun.devourerhizine.service.OptionService;
@@ -11,7 +13,6 @@ import org.springframework.stereotype.Component;
 public class Scheduling {
 
     private static Logger logger = LoggerFactory.getLogger(Scheduling.class);
-
 
     @Autowired
     private OptionService optionService;
