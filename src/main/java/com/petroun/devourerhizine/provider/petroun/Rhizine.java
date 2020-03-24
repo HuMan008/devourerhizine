@@ -3,9 +3,15 @@ package com.petroun.devourerhizine.provider.petroun;
 import cn.gotoil.bill.exception.BillException;
 import cn.gotoil.bill.provider.bill.BillClient;
 import cn.gotoil.bill.provider.bill.BillFlow;
+import cn.gotoil.bill.tools.ObjectHelper;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.petroun.devourerhizine.provider.cnpc.Director;
+import com.petroun.devourerhizine.web.message.request.sinopec.Promo;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Rhizine {
@@ -57,7 +63,7 @@ public class Rhizine {
         return "加油卡充值";
     }
 
-    public static BillFlow deduction(Long uid, String flowid, Integer face, Integer promo, Integer promoid, Director director) {
+    public static BillFlow deduction(Long uid, String flowid, Integer face, String promsListStr, Director director) {
 
         if (face < 0) {
             throw new BillException(1, "face error");
@@ -67,8 +73,17 @@ public class Rhizine {
         params.put("uid", uid);
         params.put("flowid", flowid);
         params.put("bussid", bussid(director));
-        params.put("promoid", promoid);
-        params.put("promo", promo);
+
+        List<Promo> promos =  new ArrayList<>();
+        try {
+            ObjectHelper.getObjectMapper().readValue(promsListStr,
+                    new TypeReference<List<Promo>>() { });
+            params.put("promos",promos);
+        } catch (IOException e) {
+            e.printStackTrace();
+            params.put("promos",promsListStr);
+        }
+
         params.put("point", POINT);
         params.put("face", 0 - face);
         params.put("title", title(director));
