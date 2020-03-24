@@ -17,9 +17,7 @@ public class CnpcOrder {
 
     private Integer fee;
 
-    private Integer promo;
-
-    private Integer promoid;
+    private String promoList;
 
     private String uflow;
 
@@ -107,20 +105,12 @@ public class CnpcOrder {
         this.fee = fee;
     }
 
-    public Integer getPromo() {
-        return promo;
+    public String getPromoList() {
+        return promoList;
     }
 
-    public void setPromo(Integer promo) {
-        this.promo = promo;
-    }
-
-    public Integer getPromoid() {
-        return promoid;
-    }
-
-    public void setPromoid(Integer promoid) {
-        this.promoid = promoid;
+    public void setPromoList(String promoList) {
+        this.promoList = promoList == null ? null : promoList.trim();
     }
 
     public String getUflow() {
@@ -256,8 +246,7 @@ public class CnpcOrder {
         sb.append(", uid=").append(uid);
         sb.append(", mobile=").append(mobile);
         sb.append(", fee=").append(fee);
-        sb.append(", promo=").append(promo);
-        sb.append(", promoid=").append(promoid);
+        sb.append(", promoList=").append(promoList);
         sb.append(", uflow=").append(uflow);
         sb.append(", uextra=").append(uextra);
         sb.append(", rhiFlow=").append(rhiFlow);

@@ -13,6 +13,7 @@ package com.petroun.devourerhizine.service.impl.cnpc;
 
 import cn.gotoil.bill.classes.billid.BillId;
 import cn.gotoil.bill.exception.BillException;
+import cn.gotoil.bill.tools.ObjectHelper;
 import com.petroun.devourerhizine.enums.OrderError;
 import com.petroun.devourerhizine.model.entity.CnpcOrder;
 import com.petroun.devourerhizine.model.enums.CnpcOrderState;
@@ -56,8 +57,10 @@ public class CnpcOrderServiceImpl implements CnpcOrderService {
         order.setUid(recharge.getUid());
         order.setUflow(recharge.getOrderid());
         order.setUextra(recharge.getExtra());
-        order.setPromo(recharge.getPromo());
-        order.setPromoid(recharge.getPromoid());
+
+        order.setPromoList(ObjectHelper.jsonString(recharge.getPromos()));
+//        order.setPromo(recharge.getPromo());
+//        order.setPromoid(recharge.getPromoid());
 
         order.setState(CnpcOrderState.Initialize.getCode());
         order.setInquires(0);

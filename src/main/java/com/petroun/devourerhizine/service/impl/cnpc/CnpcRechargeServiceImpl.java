@@ -335,7 +335,7 @@ public class CnpcRechargeServiceImpl implements CnpcRechargeService {
         ue.setRhiThroughs(pgtcThroughCount);
 
         BillFlow flow = Rhizine.deduction(order.getUid(), order.getUflow(), order.getFee(),
-                order.getPromo(), order.getPromoid(),
+                order.getPromoList(),
                 Director.from(order.getDirector().byteValue()));
 
         if (FlowHelper.isNormal(flow)) {

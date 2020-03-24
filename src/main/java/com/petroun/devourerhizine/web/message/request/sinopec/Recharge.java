@@ -7,6 +7,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
 
 public class Recharge implements Serializable {
 
@@ -32,27 +33,23 @@ public class Recharge implements Serializable {
     private Long uid;
 
     @NotNull
-    protected Integer promoid;
-
-    @NotNull
-    private Integer promo;
-
+    private List<Promo> promos;
 
     @Size(max = 1024)
     private String extra;
 
     @Override
     public String toString() {
-        return "Recharge{" +
-                "mobile='" + mobile + '\'' +
-                ", card='" + card + '\'' +
-                ", amount=" + amount +
-                ", orderid='" + orderid + '\'' +
-                ", uid=" + uid +
-                ", promoid=" + promoid +
-                ", promo=" + promo +
-                ", extra='" + extra + '\'' +
-                '}';
+        final StringBuilder sb = new StringBuilder("Recharge{");
+        sb.append("mobile='").append(mobile).append('\'');
+        sb.append(", card='").append(card).append('\'');
+        sb.append(", amount=").append(amount);
+        sb.append(", orderid='").append(orderid).append('\'');
+        sb.append(", uid=").append(uid);
+        sb.append(", promos=").append(promos);
+        sb.append(", extra='").append(extra).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 
     public String getMobile() {
@@ -95,22 +92,6 @@ public class Recharge implements Serializable {
         this.uid = uid;
     }
 
-    public Integer getPromoid() {
-        return promoid;
-    }
-
-    public void setPromoid(Integer promoid) {
-        this.promoid = promoid;
-    }
-
-    public Integer getPromo() {
-        return promo;
-    }
-
-    public void setPromo(Integer promo) {
-        this.promo = promo;
-    }
-
     public String getExtra() {
         return extra;
     }
@@ -118,5 +99,16 @@ public class Recharge implements Serializable {
     public void setExtra(String extra) {
         this.extra = extra;
     }
+
+    public List<Promo> getPromos() {
+        return promos;
+    }
+
+    public void setPromos(List<Promo> promos) {
+        this.promos = promos;
+    }
+
+
+
 }
 

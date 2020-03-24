@@ -575,123 +575,73 @@ public class CnpcOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andPromoIsNull() {
-            addCriterion("promo is null");
+        public Criteria andPromoListIsNull() {
+            addCriterion("promo_list is null");
             return (Criteria) this;
         }
 
-        public Criteria andPromoIsNotNull() {
-            addCriterion("promo is not null");
+        public Criteria andPromoListIsNotNull() {
+            addCriterion("promo_list is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPromoEqualTo(Integer value) {
-            addCriterion("promo =", value, "promo");
+        public Criteria andPromoListEqualTo(String value) {
+            addCriterion("promo_list =", value, "promoList");
             return (Criteria) this;
         }
 
-        public Criteria andPromoNotEqualTo(Integer value) {
-            addCriterion("promo <>", value, "promo");
+        public Criteria andPromoListNotEqualTo(String value) {
+            addCriterion("promo_list <>", value, "promoList");
             return (Criteria) this;
         }
 
-        public Criteria andPromoGreaterThan(Integer value) {
-            addCriterion("promo >", value, "promo");
+        public Criteria andPromoListGreaterThan(String value) {
+            addCriterion("promo_list >", value, "promoList");
             return (Criteria) this;
         }
 
-        public Criteria andPromoGreaterThanOrEqualTo(Integer value) {
-            addCriterion("promo >=", value, "promo");
+        public Criteria andPromoListGreaterThanOrEqualTo(String value) {
+            addCriterion("promo_list >=", value, "promoList");
             return (Criteria) this;
         }
 
-        public Criteria andPromoLessThan(Integer value) {
-            addCriterion("promo <", value, "promo");
+        public Criteria andPromoListLessThan(String value) {
+            addCriterion("promo_list <", value, "promoList");
             return (Criteria) this;
         }
 
-        public Criteria andPromoLessThanOrEqualTo(Integer value) {
-            addCriterion("promo <=", value, "promo");
+        public Criteria andPromoListLessThanOrEqualTo(String value) {
+            addCriterion("promo_list <=", value, "promoList");
             return (Criteria) this;
         }
 
-        public Criteria andPromoIn(List<Integer> values) {
-            addCriterion("promo in", values, "promo");
+        public Criteria andPromoListLike(String value) {
+            addCriterion("promo_list like", value, "promoList");
             return (Criteria) this;
         }
 
-        public Criteria andPromoNotIn(List<Integer> values) {
-            addCriterion("promo not in", values, "promo");
+        public Criteria andPromoListNotLike(String value) {
+            addCriterion("promo_list not like", value, "promoList");
             return (Criteria) this;
         }
 
-        public Criteria andPromoBetween(Integer value1, Integer value2) {
-            addCriterion("promo between", value1, value2, "promo");
+        public Criteria andPromoListIn(List<String> values) {
+            addCriterion("promo_list in", values, "promoList");
             return (Criteria) this;
         }
 
-        public Criteria andPromoNotBetween(Integer value1, Integer value2) {
-            addCriterion("promo not between", value1, value2, "promo");
+        public Criteria andPromoListNotIn(List<String> values) {
+            addCriterion("promo_list not in", values, "promoList");
             return (Criteria) this;
         }
 
-        public Criteria andPromoidIsNull() {
-            addCriterion("promoid is null");
+        public Criteria andPromoListBetween(String value1, String value2) {
+            addCriterion("promo_list between", value1, value2, "promoList");
             return (Criteria) this;
         }
 
-        public Criteria andPromoidIsNotNull() {
-            addCriterion("promoid is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPromoidEqualTo(Integer value) {
-            addCriterion("promoid =", value, "promoid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPromoidNotEqualTo(Integer value) {
-            addCriterion("promoid <>", value, "promoid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPromoidGreaterThan(Integer value) {
-            addCriterion("promoid >", value, "promoid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPromoidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("promoid >=", value, "promoid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPromoidLessThan(Integer value) {
-            addCriterion("promoid <", value, "promoid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPromoidLessThanOrEqualTo(Integer value) {
-            addCriterion("promoid <=", value, "promoid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPromoidIn(List<Integer> values) {
-            addCriterion("promoid in", values, "promoid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPromoidNotIn(List<Integer> values) {
-            addCriterion("promoid not in", values, "promoid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPromoidBetween(Integer value1, Integer value2) {
-            addCriterion("promoid between", value1, value2, "promoid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPromoidNotBetween(Integer value1, Integer value2) {
-            addCriterion("promoid not between", value1, value2, "promoid");
+        public Criteria andPromoListNotBetween(String value1, String value2) {
+            addCriterion("promo_list not between", value1, value2, "promoList");
             return (Criteria) this;
         }
 
