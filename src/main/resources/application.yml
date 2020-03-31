@@ -2,20 +2,24 @@ spring:
   application:
     name: Devourerhizine
   datasource:
-    url: "jdbc:mysql://172.200.209.12:3306/devourerhizine?character_set_server=utf8mb4&useUnicode=true&useLegacyDatetimeCode=false&serverTimezone=PRC"
-    username: sa
-    password: Our@petro919
+    url: "jdbc:mysql://10.0.250.1:3306/devourerhizine?character_set_server=utf8mb4&useUnicode=true&useLegacyDatetimeCode=false&serverTimezone=PRC"
+    #username: sa
+    #password: dev
+    username: dev
+    password: ChongQing@MySQL3306
     test-while-idle: true
     driver-class-name: "com.mysql.cj.jdbc.Driver"
     validation-query: "select 1"
   redis:
-    host: 127.0.0.1
+    host: 10.0.250.1
     database: 0
 rabbitmq:
-  host: 172.200.209.42
+  host: 10.0.250.1
   port: 5672
-  user: rabbit
-  password: rabbit
+  user: guest
+  password: guest
+logging:
+  path: logs
 bill:
   defaultAuthenticationType: Signature
   keyOfHashCompareAuthenticationProviderClass: com.petroun.devourerhizine.classes.HashCompareAuthenticationKeyProvider
