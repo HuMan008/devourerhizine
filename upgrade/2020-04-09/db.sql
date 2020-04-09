@@ -1,8 +1,8 @@
 
-修改内容为 优惠信息允许过个
+
 
 --备份
-create table de_cnpc_order_bak as select * from de_cnpc_order;
+create table de_cnpc_order_20200409.bak as select * from de_cnpc_order;
 
 --  优惠修改sql
 -- 1加字段
