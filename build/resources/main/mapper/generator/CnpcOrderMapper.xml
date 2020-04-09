@@ -9,8 +9,7 @@
     <result column="uid" jdbcType="BIGINT" property="uid" />
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
     <result column="fee" jdbcType="INTEGER" property="fee" />
-    <result column="promo" jdbcType="INTEGER" property="promo" />
-    <result column="promoid" jdbcType="INTEGER" property="promoid" />
+    <result column="promo_list" jdbcType="VARCHAR" property="promoList" />
     <result column="uflow" jdbcType="VARCHAR" property="uflow" />
     <result column="uextra" jdbcType="VARCHAR" property="uextra" />
     <result column="rhi_flow" jdbcType="BIGINT" property="rhiFlow" />
@@ -86,7 +85,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, director, director_card, director_order, uid, mobile, fee, promo, promoid, uflow, 
+    id, director, director_card, director_order, uid, mobile, fee, promo_list, uflow, 
     uextra, rhi_flow, rhi_throughs, channel, channel_order, channel_throughs, inquires, 
     through_mask, regain, regain_at, state, failure_reason, created_at, updated_at
   </sql>
@@ -131,22 +130,20 @@
   <insert id="insert" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrder">
     insert into de_cnpc_order (id, director, director_card, 
       director_order, uid, mobile, 
-      fee, promo, promoid, 
-      uflow, uextra, rhi_flow, 
-      rhi_throughs, channel, channel_order, 
-      channel_throughs, inquires, through_mask, 
-      regain, regain_at, state, 
-      failure_reason, created_at, updated_at
-      )
+      fee, promo_list, uflow, 
+      uextra, rhi_flow, rhi_throughs, 
+      channel, channel_order, channel_throughs, 
+      inquires, through_mask, regain, 
+      regain_at, state, failure_reason, 
+      created_at, updated_at)
     values (#{id,jdbcType=BIGINT}, #{director,jdbcType=TINYINT}, #{directorCard,jdbcType=VARCHAR}, 
       #{directorOrder,jdbcType=VARCHAR}, #{uid,jdbcType=BIGINT}, #{mobile,jdbcType=VARCHAR}, 
-      #{fee,jdbcType=INTEGER}, #{promo,jdbcType=INTEGER}, #{promoid,jdbcType=INTEGER}, 
-      #{uflow,jdbcType=VARCHAR}, #{uextra,jdbcType=VARCHAR}, #{rhiFlow,jdbcType=BIGINT}, 
-      #{rhiThroughs,jdbcType=INTEGER}, #{channel,jdbcType=INTEGER}, #{channelOrder,jdbcType=VARCHAR}, 
-      #{channelThroughs,jdbcType=INTEGER}, #{inquires,jdbcType=INTEGER}, #{throughMask,jdbcType=INTEGER}, 
-      #{regain,jdbcType=INTEGER}, #{regainAt,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, 
-      #{failureReason,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
-      )
+      #{fee,jdbcType=INTEGER}, #{promoList,jdbcType=VARCHAR}, #{uflow,jdbcType=VARCHAR}, 
+      #{uextra,jdbcType=VARCHAR}, #{rhiFlow,jdbcType=BIGINT}, #{rhiThroughs,jdbcType=INTEGER}, 
+      #{channel,jdbcType=INTEGER}, #{channelOrder,jdbcType=VARCHAR}, #{channelThroughs,jdbcType=INTEGER}, 
+      #{inquires,jdbcType=INTEGER}, #{throughMask,jdbcType=INTEGER}, #{regain,jdbcType=INTEGER}, 
+      #{regainAt,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, #{failureReason,jdbcType=VARCHAR}, 
+      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrder">
     insert into de_cnpc_order
@@ -172,11 +169,8 @@
       <if test="fee != null">
         fee,
       </if>
-      <if test="promo != null">
-        promo,
-      </if>
-      <if test="promoid != null">
-        promoid,
+      <if test="promoList != null">
+        promo_list,
       </if>
       <if test="uflow != null">
         uflow,
@@ -246,11 +240,8 @@
       <if test="fee != null">
         #{fee,jdbcType=INTEGER},
       </if>
-      <if test="promo != null">
-        #{promo,jdbcType=INTEGER},
-      </if>
-      <if test="promoid != null">
-        #{promoid,jdbcType=INTEGER},
+      <if test="promoList != null">
+        #{promoList,jdbcType=VARCHAR},
       </if>
       <if test="uflow != null">
         #{uflow,jdbcType=VARCHAR},
@@ -329,11 +320,8 @@
       <if test="record.fee != null">
         fee = #{record.fee,jdbcType=INTEGER},
       </if>
-      <if test="record.promo != null">
-        promo = #{record.promo,jdbcType=INTEGER},
-      </if>
-      <if test="record.promoid != null">
-        promoid = #{record.promoid,jdbcType=INTEGER},
+      <if test="record.promoList != null">
+        promo_list = #{record.promoList,jdbcType=VARCHAR},
       </if>
       <if test="record.uflow != null">
         uflow = #{record.uflow,jdbcType=VARCHAR},
@@ -394,8 +382,7 @@
       uid = #{record.uid,jdbcType=BIGINT},
       mobile = #{record.mobile,jdbcType=VARCHAR},
       fee = #{record.fee,jdbcType=INTEGER},
-      promo = #{record.promo,jdbcType=INTEGER},
-      promoid = #{record.promoid,jdbcType=INTEGER},
+      promo_list = #{record.promoList,jdbcType=VARCHAR},
       uflow = #{record.uflow,jdbcType=VARCHAR},
       uextra = #{record.uextra,jdbcType=VARCHAR},
       rhi_flow = #{record.rhiFlow,jdbcType=BIGINT},
@@ -436,11 +423,8 @@
       <if test="fee != null">
         fee = #{fee,jdbcType=INTEGER},
       </if>
-      <if test="promo != null">
-        promo = #{promo,jdbcType=INTEGER},
-      </if>
-      <if test="promoid != null">
-        promoid = #{promoid,jdbcType=INTEGER},
+      <if test="promoList != null">
+        promo_list = #{promoList,jdbcType=VARCHAR},
       </if>
       <if test="uflow != null">
         uflow = #{uflow,jdbcType=VARCHAR},
@@ -498,8 +482,7 @@
       uid = #{uid,jdbcType=BIGINT},
       mobile = #{mobile,jdbcType=VARCHAR},
       fee = #{fee,jdbcType=INTEGER},
-      promo = #{promo,jdbcType=INTEGER},
-      promoid = #{promoid,jdbcType=INTEGER},
+      promo_list = #{promoList,jdbcType=VARCHAR},
       uflow = #{uflow,jdbcType=VARCHAR},
       uextra = #{uextra,jdbcType=VARCHAR},
       rhi_flow = #{rhiFlow,jdbcType=BIGINT},
