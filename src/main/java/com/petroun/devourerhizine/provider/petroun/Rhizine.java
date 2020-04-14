@@ -76,7 +76,7 @@ public class Rhizine {
 
         List<Promo> promos =  new ArrayList<>();
         try {
-            ObjectHelper.getObjectMapper().readValue(promsListStr,
+            promos = ObjectHelper.getObjectMapper().readValue(promsListStr,
                     new TypeReference<List<Promo>>() { });
             params.put("promos",promos);
         } catch (IOException e) {
