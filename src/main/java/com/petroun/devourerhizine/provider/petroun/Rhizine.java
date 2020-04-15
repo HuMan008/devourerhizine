@@ -7,6 +7,7 @@ import cn.gotoil.bill.tools.ObjectHelper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.petroun.devourerhizine.provider.cnpc.Director;
 import com.petroun.devourerhizine.web.message.request.sinopec.Promo;
+import org.json.JSONArray;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -75,13 +76,26 @@ public class Rhizine {
         params.put("bussid", bussid(director));
 
         List<Promo> promos =  new ArrayList<>();
+        List<Map<String,Integer>> promosMapList = new ArrayList<>();
+
         try {
             promos = ObjectHelper.getObjectMapper().readValue(promsListStr,
                     new TypeReference<List<Promo>>() { });
-            params.put("promos",promos);
+            for(Promo p :promos){
+                Map<String,Integer> map =new HashMap<>(2);
+                map.put("id",p.getId());
+                map.put("promo",p.getPromo());
+                promosMapList.add(map);
+            }
+            if(promos.size()>0){
+                params.put("promos",promosMapList);
+            }else{
+                params.put("promos",promos);
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
-            params.put("promos",promsListStr);
+            params.put("promos",promos);
         }
 
         params.put("point", POINT);
