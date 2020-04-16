@@ -12,10 +12,14 @@
 package com.petroun.devourerhizine.web.message.response.sinopec;
 
 
+import com.petroun.devourerhizine.classes.BitMask;
 import com.petroun.devourerhizine.model.entity.CnpcOrder;
-import com.petroun.devourerhizine.model.enums.CnpcOrderState;
 
 public class OrderRHelper {
+    // 贵彬啊，我这边失败了。别查了。
+    private static int FailCode1001 =1001;
+    //需要贵彬再来查
+    private static int FailCode1009 =1009;
     /**
      * @param entity
      * @return
@@ -35,8 +39,10 @@ public class OrderRHelper {
 //        } else {
 //            order.setState(entity.getState());
 //        }
-        
         order.setState(entity.getState());
+        if( BitMask.isSeted(entity.getThroughMask().intValue(), 0) && entity.getState() == FailCode1001){
+            order.setState(FailCode1009);
+        }
 
         order.setFailureReason(entity.getFailureReason());
         order.setExtra(entity.getUextra());
