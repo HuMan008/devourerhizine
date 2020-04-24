@@ -64,7 +64,8 @@ public class Rhizine {
         return "加油卡充值";
     }
 
-    public static BillFlow deduction(Long uid, String flowid, Integer face, String promsListStr, Director director) {
+    public static BillFlow deduction(Long uid, String flowid, Integer face, String promsListStr, Director director,
+                                     String chan) {
 
         if (face < 0) {
             throw new BillException(1, "face error");
@@ -74,6 +75,7 @@ public class Rhizine {
         params.put("uid", uid);
         params.put("flowid", flowid);
         params.put("bussid", bussid(director));
+        params.put("chan",chan);
 
         List<Promo> promos =  new ArrayList<>();
         List<Map<String,Integer>> promosMapList = new ArrayList<>();

@@ -47,6 +47,7 @@ public class OrderRHelper {
         order.setFailureReason(entity.getFailureReason());
         order.setExtra(entity.getUextra());
         order.setOrderid(entity.getUflow());
+        order.setChan(entity.getChan());
         return order;
     }
 }

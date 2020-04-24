@@ -38,6 +38,9 @@ public class Recharge implements Serializable {
     @Size(max = 1024)
     private String extra;
 
+    @Size(max = 64)
+    private String chan;
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Recharge{");
@@ -48,6 +51,7 @@ public class Recharge implements Serializable {
         sb.append(", uid=").append(uid);
         sb.append(", promos=").append(promos);
         sb.append(", extra='").append(extra).append('\'');
+        sb.append(", chan='").append(chan).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -109,6 +113,12 @@ public class Recharge implements Serializable {
     }
 
 
+    public String getChan() {
+        return chan;
+    }
 
+    public void setChan(String chan) {
+        this.chan = chan;
+    }
 }
 

@@ -5,8 +5,10 @@ import com.petroun.devourerhizine.model.entity.OptionExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 @Mapper
+@Repository
 public interface OptionMapper {
     long countByExample(OptionExample example);
 

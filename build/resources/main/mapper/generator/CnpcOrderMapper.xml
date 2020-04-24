@@ -23,6 +23,7 @@
     <result column="regain_at" jdbcType="TIMESTAMP" property="regainAt" />
     <result column="state" jdbcType="INTEGER" property="state" />
     <result column="failure_reason" jdbcType="VARCHAR" property="failureReason" />
+    <result column="chan" jdbcType="VARCHAR" property="chan" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
@@ -87,7 +88,7 @@
   <sql id="Base_Column_List">
     id, director, director_card, director_order, uid, mobile, fee, promo_list, uflow, 
     uextra, rhi_flow, rhi_throughs, channel, channel_order, channel_throughs, inquires, 
-    through_mask, regain, regain_at, state, failure_reason, created_at, updated_at
+    through_mask, regain, regain_at, state, failure_reason, chan, created_at, updated_at
   </sql>
   <select id="selectByExample" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrderExample" resultMap="BaseResultMap">
     select
@@ -135,7 +136,8 @@
       channel, channel_order, channel_throughs, 
       inquires, through_mask, regain, 
       regain_at, state, failure_reason, 
-      created_at, updated_at)
+      chan, created_at, updated_at
+      )
     values (#{id,jdbcType=BIGINT}, #{director,jdbcType=TINYINT}, #{directorCard,jdbcType=VARCHAR}, 
       #{directorOrder,jdbcType=VARCHAR}, #{uid,jdbcType=BIGINT}, #{mobile,jdbcType=VARCHAR}, 
       #{fee,jdbcType=INTEGER}, #{promoList,jdbcType=VARCHAR}, #{uflow,jdbcType=VARCHAR}, 
@@ -143,7 +145,8 @@
       #{channel,jdbcType=INTEGER}, #{channelOrder,jdbcType=VARCHAR}, #{channelThroughs,jdbcType=INTEGER}, 
       #{inquires,jdbcType=INTEGER}, #{throughMask,jdbcType=INTEGER}, #{regain,jdbcType=INTEGER}, 
       #{regainAt,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, #{failureReason,jdbcType=VARCHAR}, 
-      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
+      #{chan,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.petroun.devourerhizine.model.entity.CnpcOrder">
     insert into de_cnpc_order
@@ -210,6 +213,9 @@
       </if>
       <if test="failureReason != null">
         failure_reason,
+      </if>
+      <if test="chan != null">
+        chan,
       </if>
       <if test="createdAt != null">
         created_at,
@@ -281,6 +287,9 @@
       </if>
       <if test="failureReason != null">
         #{failureReason,jdbcType=VARCHAR},
+      </if>
+      <if test="chan != null">
+        #{chan,jdbcType=VARCHAR},
       </if>
       <if test="createdAt != null">
         #{createdAt,jdbcType=TIMESTAMP},
@@ -362,6 +371,9 @@
       <if test="record.failureReason != null">
         failure_reason = #{record.failureReason,jdbcType=VARCHAR},
       </if>
+      <if test="record.chan != null">
+        chan = #{record.chan,jdbcType=VARCHAR},
+      </if>
       <if test="record.createdAt != null">
         created_at = #{record.createdAt,jdbcType=TIMESTAMP},
       </if>
@@ -396,6 +408,7 @@
       regain_at = #{record.regainAt,jdbcType=TIMESTAMP},
       state = #{record.state,jdbcType=INTEGER},
       failure_reason = #{record.failureReason,jdbcType=VARCHAR},
+      chan = #{record.chan,jdbcType=VARCHAR},
       created_at = #{record.createdAt,jdbcType=TIMESTAMP},
       updated_at = #{record.updatedAt,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
@@ -465,6 +478,9 @@
       <if test="failureReason != null">
         failure_reason = #{failureReason,jdbcType=VARCHAR},
       </if>
+      <if test="chan != null">
+        chan = #{chan,jdbcType=VARCHAR},
+      </if>
       <if test="createdAt != null">
         created_at = #{createdAt,jdbcType=TIMESTAMP},
       </if>
@@ -496,6 +512,7 @@
       regain_at = #{regainAt,jdbcType=TIMESTAMP},
       state = #{state,jdbcType=INTEGER},
       failure_reason = #{failureReason,jdbcType=VARCHAR},
+      chan = #{chan,jdbcType=VARCHAR},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
       updated_at = #{updatedAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}

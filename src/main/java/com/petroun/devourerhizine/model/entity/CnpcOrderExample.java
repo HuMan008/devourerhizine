@@ -1465,6 +1465,76 @@ public class CnpcOrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andChanIsNull() {
+            addCriterion("chan is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andChanIsNotNull() {
+            addCriterion("chan is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andChanEqualTo(String value) {
+            addCriterion("chan =", value, "chan");
+            return (Criteria) this;
+        }
+
+        public Criteria andChanNotEqualTo(String value) {
+            addCriterion("chan <>", value, "chan");
+            return (Criteria) this;
+        }
+
+        public Criteria andChanGreaterThan(String value) {
+            addCriterion("chan >", value, "chan");
+            return (Criteria) this;
+        }
+
+        public Criteria andChanGreaterThanOrEqualTo(String value) {
+            addCriterion("chan >=", value, "chan");
+            return (Criteria) this;
+        }
+
+        public Criteria andChanLessThan(String value) {
+            addCriterion("chan <", value, "chan");
+            return (Criteria) this;
+        }
+
+        public Criteria andChanLessThanOrEqualTo(String value) {
+            addCriterion("chan <=", value, "chan");
+            return (Criteria) this;
+        }
+
+        public Criteria andChanLike(String value) {
+            addCriterion("chan like", value, "chan");
+            return (Criteria) this;
+        }
+
+        public Criteria andChanNotLike(String value) {
+            addCriterion("chan not like", value, "chan");
+            return (Criteria) this;
+        }
+
+        public Criteria andChanIn(List<String> values) {
+            addCriterion("chan in", values, "chan");
+            return (Criteria) this;
+        }
+
+        public Criteria andChanNotIn(List<String> values) {
+            addCriterion("chan not in", values, "chan");
+            return (Criteria) this;
+        }
+
+        public Criteria andChanBetween(String value1, String value2) {
+            addCriterion("chan between", value1, value2, "chan");
+            return (Criteria) this;
+        }
+
+        public Criteria andChanNotBetween(String value1, String value2) {
+            addCriterion("chan not between", value1, value2, "chan");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatedAtIsNull() {
             addCriterion("created_at is null");
             return (Criteria) this;

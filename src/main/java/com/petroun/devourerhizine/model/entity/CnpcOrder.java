@@ -45,6 +45,8 @@ public class CnpcOrder {
 
     private String failureReason;
 
+    private String chan;
+
     private Date createdAt;
 
     private Date updatedAt;
@@ -217,6 +219,14 @@ public class CnpcOrder {
         this.failureReason = failureReason == null ? null : failureReason.trim();
     }
 
+    public String getChan() {
+        return chan;
+    }
+
+    public void setChan(String chan) {
+        this.chan = chan == null ? null : chan.trim();
+    }
+
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -260,6 +270,7 @@ public class CnpcOrder {
         sb.append(", regainAt=").append(regainAt);
         sb.append(", state=").append(state);
         sb.append(", failureReason=").append(failureReason);
+        sb.append(", chan=").append(chan);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append("]");

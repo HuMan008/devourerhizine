@@ -336,7 +336,7 @@ public class CnpcRechargeServiceImpl implements CnpcRechargeService {
 
         BillFlow flow = Rhizine.deduction(order.getUid(), order.getUflow(), order.getFee(),
                 order.getPromoList(),
-                Director.from(order.getDirector().byteValue()));
+                Director.from(order.getDirector().byteValue()),order.getChan());
 
         if (FlowHelper.isNormal(flow)) {
             throughMask = BitMask.setBit(throughMask, THROUGH_PTGC_MASK_BIT, true);
@@ -565,7 +565,7 @@ public class CnpcRechargeServiceImpl implements CnpcRechargeService {
     }
 
     /**
-     * @param order
+     * @param id
      * @return
      */
     @Override

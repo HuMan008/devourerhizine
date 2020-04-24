@@ -72,6 +72,9 @@ public class CnpcOrderServiceImpl implements CnpcOrderService {
         order.setCreatedAt(new Date());
         order.setUpdatedAt(order.getCreatedAt());
 
+        //2020年4月23日15:32:58 suyj chan
+        order.setChan(recharge.getChan());
+
 
         try {
             cnpcOrderMapper.insert(order);

@@ -22,7 +22,7 @@ public class Order {
     private String extra;
 
 
-
+    private String chan;
     private Integer state;
 
 
@@ -125,5 +125,13 @@ public class Order {
 
     public void setFailureReason(String failureReason) {
         this.failureReason = failureReason;
+    }
+
+    public String getChan() {
+        return chan;
+    }
+
+    public void setChan(String chan) {
+        this.chan = chan;
     }
 }
