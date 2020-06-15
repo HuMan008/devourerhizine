@@ -7,7 +7,6 @@ import cn.gotoil.bill.tools.ObjectHelper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.petroun.devourerhizine.provider.cnpc.Director;
 import com.petroun.devourerhizine.web.message.request.sinopec.Promo;
-import org.json.JSONArray;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -64,8 +63,7 @@ public class Rhizine {
         return "加油卡充值";
     }
 
-    public static BillFlow deduction(Long uid, String flowid, Integer face, String promsListStr, Director director,
-                                     String chan) {
+    public static BillFlow deduction(Long uid, String flowid, Integer face, String promsListStr, Director director, String chan, String extra) {
 
         if (face < 0) {
             throw new BillException(1, "face error");
@@ -75,6 +73,7 @@ public class Rhizine {
         params.put("uid", uid);
         params.put("flowid", flowid);
         params.put("bussid", bussid(director));
+        params.put("extra", extra);
         params.put("chan",chan);
 
         List<Promo> promos =  new ArrayList<>();
