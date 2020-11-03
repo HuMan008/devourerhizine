@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petroun.devourerhizine.model.mapper.InvokeThirdLogMapper">
+  <resultMap id="BaseResultMap" type="com.petroun.devourerhizine.model.entity.InvokeThirdLog">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="trans_no" jdbcType="VARCHAR" property="transNo" />
+    <result column="Ip_address" jdbcType="VARCHAR" property="ipAddress" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.petroun.devourerhizine.model.entity.InvokeThirdLogWithBLOBs">
+    <result column="request" jdbcType="LONGVARCHAR" property="request" />
+    <result column="response" jdbcType="LONGVARCHAR" property="response" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, type, trans_no, Ip_address, created_at
+  </sql>
+  <sql id="Blob_Column_List">
+    request, response
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.petroun.devourerhizine.model.entity.InvokeThirdLogExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from de_invoke_third_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.petroun.devourerhizine.model.entity.InvokeThirdLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from de_invoke_third_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from de_invoke_third_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from de_invoke_third_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.petroun.devourerhizine.model.entity.InvokeThirdLogExample">
+    delete from de_invoke_third_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.petroun.devourerhizine.model.entity.InvokeThirdLogWithBLOBs">
+    insert into de_invoke_third_log (id, type, trans_no, 
+      Ip_address, created_at, request, 
+      response)
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=TINYINT}, #{transNo,jdbcType=VARCHAR}, 
+      #{ipAddress,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, #{request,jdbcType=LONGVARCHAR}, 
+      #{response,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.petroun.devourerhizine.model.entity.InvokeThirdLogWithBLOBs">
+    insert into de_invoke_third_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="transNo != null">
+        trans_no,
+      </if>
+      <if test="ipAddress != null">
+        Ip_address,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="request != null">
+        request,
+      </if>
+      <if test="response != null">
+        response,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="transNo != null">
+        #{transNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ipAddress != null">
+        #{ipAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="request != null">
+        #{request,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="response != null">
+        #{response,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.petroun.devourerhizine.model.entity.InvokeThirdLogExample" resultType="java.lang.Long">
+    select count(*) from de_invoke_third_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update de_invoke_third_log
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=TINYINT},
+      </if>
+      <if test="record.transNo != null">
+        trans_no = #{record.transNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ipAddress != null">
+        Ip_address = #{record.ipAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdAt != null">
+        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.request != null">
+        request = #{record.request,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.response != null">
+        response = #{record.response,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update de_invoke_third_log
+    set id = #{record.id,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=TINYINT},
+      trans_no = #{record.transNo,jdbcType=VARCHAR},
+      Ip_address = #{record.ipAddress,jdbcType=VARCHAR},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      request = #{record.request,jdbcType=LONGVARCHAR},
+      response = #{record.response,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update de_invoke_third_log
+    set id = #{record.id,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=TINYINT},
+      trans_no = #{record.transNo,jdbcType=VARCHAR},
+      Ip_address = #{record.ipAddress,jdbcType=VARCHAR},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.petroun.devourerhizine.model.entity.InvokeThirdLogWithBLOBs">
+    update de_invoke_third_log
+    <set>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="transNo != null">
+        trans_no = #{transNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ipAddress != null">
+        Ip_address = #{ipAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="request != null">
+        request = #{request,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="response != null">
+        response = #{response,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.petroun.devourerhizine.model.entity.InvokeThirdLogWithBLOBs">
+    update de_invoke_third_log
+    set type = #{type,jdbcType=TINYINT},
+      trans_no = #{transNo,jdbcType=VARCHAR},
+      Ip_address = #{ipAddress,jdbcType=VARCHAR},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      request = #{request,jdbcType=LONGVARCHAR},
+      response = #{response,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.petroun.devourerhizine.model.entity.InvokeThirdLog">
+    update de_invoke_third_log
+    set type = #{type,jdbcType=TINYINT},
+      trans_no = #{transNo,jdbcType=VARCHAR},
+      Ip_address = #{ipAddress,jdbcType=VARCHAR},
+      created_at = #{createdAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

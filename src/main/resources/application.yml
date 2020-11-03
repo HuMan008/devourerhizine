@@ -25,6 +25,11 @@ bill:
   allowDevSkipSignature: "YES"
   allowAuthDebuger: "YES"
 
+gtconfig:
+  url: "http://203.203.28.106:80/GtTripleGate/NoKeyInServlet"
+  copartnerId: 60020021
+  copartnerPassword: 123456
+
 logging:
   path: logs
 

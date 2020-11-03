@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petroun.devourerhizine.model.mapper.OilCardUseMapper">
+  <resultMap id="BaseResultMap" type="com.petroun.devourerhizine.model.entity.OilCardUse">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="card_no" jdbcType="VARCHAR" property="cardNo" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="validity_time" jdbcType="TIMESTAMP" property="validityTime" />
+    <result column="business_id" jdbcType="VARCHAR" property="businessId" />
+    <result column="flowid" jdbcType="VARCHAR" property="flowid" />
+    <result column="face" jdbcType="INTEGER" property="face" />
+    <result column="amount" jdbcType="INTEGER" property="amount" />
+    <result column="merchant" jdbcType="VARCHAR" property="merchant" />
+    <result column="balance" jdbcType="INTEGER" property="balance" />
+    <result column="rise" jdbcType="INTEGER" property="rise" />
+    <result column="rise_after" jdbcType="INTEGER" property="riseAfter" />
+    <result column="oil_price" jdbcType="INTEGER" property="oilPrice" />
+    <result column="transaction_time" jdbcType="DATE" property="transactionTime" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, card_no, mobile, status, validity_time, business_id, flowid, face, amount, merchant, 
+    balance, rise, rise_after, oil_price, transaction_time, created_at
+  </sql>
+  <select id="selectByExample" parameterType="com.petroun.devourerhizine.model.entity.OilCardUseExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from de_oil_card_use
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from de_oil_card_use
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from de_oil_card_use
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.petroun.devourerhizine.model.entity.OilCardUseExample">
+    delete from de_oil_card_use
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.petroun.devourerhizine.model.entity.OilCardUse">
+    insert into de_oil_card_use (id, card_no, mobile, 
+      status, validity_time, business_id, 
+      flowid, face, amount, 
+      merchant, balance, rise, 
+      rise_after, oil_price, transaction_time, 
+      created_at)
+    values (#{id,jdbcType=INTEGER}, #{cardNo,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{status,jdbcType=SMALLINT}, #{validityTime,jdbcType=TIMESTAMP}, #{businessId,jdbcType=VARCHAR}, 
+      #{flowid,jdbcType=VARCHAR}, #{face,jdbcType=INTEGER}, #{amount,jdbcType=INTEGER}, 
+      #{merchant,jdbcType=VARCHAR}, #{balance,jdbcType=INTEGER}, #{rise,jdbcType=INTEGER}, 
+      #{riseAfter,jdbcType=INTEGER}, #{oilPrice,jdbcType=INTEGER}, #{transactionTime,jdbcType=DATE}, 
+      #{createdAt,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.petroun.devourerhizine.model.entity.OilCardUse">
+    insert into de_oil_card_use
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="cardNo != null">
+        card_no,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="validityTime != null">
+        validity_time,
+      </if>
+      <if test="businessId != null">
+        business_id,
+      </if>
+      <if test="flowid != null">
+        flowid,
+      </if>
+      <if test="face != null">
+        face,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="merchant != null">
+        merchant,
+      </if>
+      <if test="balance != null">
+        balance,
+      </if>
+      <if test="rise != null">
+        rise,
+      </if>
+      <if test="riseAfter != null">
+        rise_after,
+      </if>
+      <if test="oilPrice != null">
+        oil_price,
+      </if>
+      <if test="transactionTime != null">
+        transaction_time,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cardNo != null">
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="validityTime != null">
+        #{validityTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="businessId != null">
+        #{businessId,jdbcType=VARCHAR},
+      </if>
+      <if test="flowid != null">
+        #{flowid,jdbcType=VARCHAR},
+      </if>
+      <if test="face != null">
+        #{face,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="merchant != null">
+        #{merchant,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null">
+        #{balance,jdbcType=INTEGER},
+      </if>
+      <if test="rise != null">
+        #{rise,jdbcType=INTEGER},
+      </if>
+      <if test="riseAfter != null">
+        #{riseAfter,jdbcType=INTEGER},
+      </if>
+      <if test="oilPrice != null">
+        #{oilPrice,jdbcType=INTEGER},
+      </if>
+      <if test="transactionTime != null">
+        #{transactionTime,jdbcType=DATE},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.petroun.devourerhizine.model.entity.OilCardUseExample" resultType="java.lang.Long">
+    select count(*) from de_oil_card_use
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update de_oil_card_use
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.cardNo != null">
+        card_no = #{record.cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null">
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=SMALLINT},
+      </if>
+      <if test="record.validityTime != null">
+        validity_time = #{record.validityTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.businessId != null">
+        business_id = #{record.businessId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.flowid != null">
+        flowid = #{record.flowid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.face != null">
+        face = #{record.face,jdbcType=INTEGER},
+      </if>
+      <if test="record.amount != null">
+        amount = #{record.amount,jdbcType=INTEGER},
+      </if>
+      <if test="record.merchant != null">
+        merchant = #{record.merchant,jdbcType=VARCHAR},
+      </if>
+      <if test="record.balance != null">
+        balance = #{record.balance,jdbcType=INTEGER},
+      </if>
+      <if test="record.rise != null">
+        rise = #{record.rise,jdbcType=INTEGER},
+      </if>
+      <if test="record.riseAfter != null">
+        rise_after = #{record.riseAfter,jdbcType=INTEGER},
+      </if>
+      <if test="record.oilPrice != null">
+        oil_price = #{record.oilPrice,jdbcType=INTEGER},
+      </if>
+      <if test="record.transactionTime != null">
+        transaction_time = #{record.transactionTime,jdbcType=DATE},
+      </if>
+      <if test="record.createdAt != null">
+        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update de_oil_card_use
+    set id = #{record.id,jdbcType=INTEGER},
+      card_no = #{record.cardNo,jdbcType=VARCHAR},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=SMALLINT},
+      validity_time = #{record.validityTime,jdbcType=TIMESTAMP},
+      business_id = #{record.businessId,jdbcType=VARCHAR},
+      flowid = #{record.flowid,jdbcType=VARCHAR},
+      face = #{record.face,jdbcType=INTEGER},
+      amount = #{record.amount,jdbcType=INTEGER},
+      merchant = #{record.merchant,jdbcType=VARCHAR},
+      balance = #{record.balance,jdbcType=INTEGER},
+      rise = #{record.rise,jdbcType=INTEGER},
+      rise_after = #{record.riseAfter,jdbcType=INTEGER},
+      oil_price = #{record.oilPrice,jdbcType=INTEGER},
+      transaction_time = #{record.transactionTime,jdbcType=DATE},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.petroun.devourerhizine.model.entity.OilCardUse">
+    update de_oil_card_use
+    <set>
+      <if test="cardNo != null">
+        card_no = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="validityTime != null">
+        validity_time = #{validityTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="businessId != null">
+        business_id = #{businessId,jdbcType=VARCHAR},
+      </if>
+      <if test="flowid != null">
+        flowid = #{flowid,jdbcType=VARCHAR},
+      </if>
+      <if test="face != null">
+        face = #{face,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="merchant != null">
+        merchant = #{merchant,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null">
+        balance = #{balance,jdbcType=INTEGER},
+      </if>
+      <if test="rise != null">
+        rise = #{rise,jdbcType=INTEGER},
+      </if>
+      <if test="riseAfter != null">
+        rise_after = #{riseAfter,jdbcType=INTEGER},
+      </if>
+      <if test="oilPrice != null">
+        oil_price = #{oilPrice,jdbcType=INTEGER},
+      </if>
+      <if test="transactionTime != null">
+        transaction_time = #{transactionTime,jdbcType=DATE},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.petroun.devourerhizine.model.entity.OilCardUse">
+    update de_oil_card_use
+    set card_no = #{cardNo,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      status = #{status,jdbcType=SMALLINT},
+      validity_time = #{validityTime,jdbcType=TIMESTAMP},
+      business_id = #{businessId,jdbcType=VARCHAR},
+      flowid = #{flowid,jdbcType=VARCHAR},
+      face = #{face,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=INTEGER},
+      merchant = #{merchant,jdbcType=VARCHAR},
+      balance = #{balance,jdbcType=INTEGER},
+      rise = #{rise,jdbcType=INTEGER},
+      rise_after = #{riseAfter,jdbcType=INTEGER},
+      oil_price = #{oilPrice,jdbcType=INTEGER},
+      transaction_time = #{transactionTime,jdbcType=DATE},
+      created_at = #{createdAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
