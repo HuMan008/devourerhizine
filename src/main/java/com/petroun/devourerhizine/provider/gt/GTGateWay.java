@@ -20,11 +20,13 @@ import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.HashMap;
 
+@Component
 public class GTGateWay {
 
     private final static Logger logger = LoggerFactory.getLogger(GTGateWay.class);
@@ -57,6 +59,8 @@ public class GTGateWay {
 
             Response response = HttpUtils.okHttpPost(gtConfig.getUrl(),ex);
             System.out.println(response.body().string());
+            String resTxt = response.body().string();
+            responseEntity = XmlUtils.parseBean(resTxt,responseEntity.getClass());
             String token = "";
             return token;
         }catch (Exception ex){
@@ -98,6 +102,8 @@ public class GTGateWay {
 
                 Response response = HttpUtils.okHttpPost(gtConfig.getUrl(),ex);
                 System.out.println(response.body().string());
+                String resTxt = response.body().string();
+                responseEntity = XmlUtils.parseBean(resTxt,responseEntity.getClass());
                 invokeThirdLogWithBLOBs.setResponse(response.body().string());
                 String QRCode = "";
                 int QRCodeSed = 100;
@@ -207,6 +213,9 @@ public class GTGateWay {
                             String[] stationResultDetail = stationResult.split("~");
                             updateOilCardUser.setStationName(stationResultDetail[2]);
                             if(cardService.updateOilCardUse(updateOilCardUser)){
+                                cardService.unbundling(updateOilCardUser.getId());
+                                //todo 成功通知
+
                                 return updateOilCardUser;
                             }
                         }

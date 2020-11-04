@@ -1,8 +1,11 @@
 package com.petroun.devourerhizine.service;
 
 import com.petroun.devourerhizine.model.View.ViewCardAndUse;
+import com.petroun.devourerhizine.model.entity.OilCardInfo;
 import com.petroun.devourerhizine.model.entity.OilCardUse;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 public interface CardService {
     /**
@@ -24,4 +27,17 @@ public interface CardService {
     OilCardUse queryById(String id);
 
     boolean updateOilCardUse(OilCardUse use);
+
+    /**
+     * 解除卡绑定
+     * @param useId
+     * @return
+     */
+    boolean unbundling(String useId);
+
+    List<OilCardUse> queryCardUseByStatus(Byte status);
+
+    boolean updateOilCardUseStatusAndunbundling(String useId, Byte status);
+
+    List<OilCardInfo> getCardByStatus(Byte status);
 }

@@ -395,6 +395,66 @@ public class OilCardInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andBindTimeIsNull() {
+            addCriterion("bind_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBindTimeIsNotNull() {
+            addCriterion("bind_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBindTimeEqualTo(Date value) {
+            addCriterion("bind_time =", value, "bindTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBindTimeNotEqualTo(Date value) {
+            addCriterion("bind_time <>", value, "bindTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBindTimeGreaterThan(Date value) {
+            addCriterion("bind_time >", value, "bindTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBindTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("bind_time >=", value, "bindTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBindTimeLessThan(Date value) {
+            addCriterion("bind_time <", value, "bindTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBindTimeLessThanOrEqualTo(Date value) {
+            addCriterion("bind_time <=", value, "bindTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBindTimeIn(List<Date> values) {
+            addCriterion("bind_time in", values, "bindTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBindTimeNotIn(List<Date> values) {
+            addCriterion("bind_time not in", values, "bindTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBindTimeBetween(Date value1, Date value2) {
+            addCriterion("bind_time between", value1, value2, "bindTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBindTimeNotBetween(Date value1, Date value2) {
+            addCriterion("bind_time not between", value1, value2, "bindTime");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatedAtIsNull() {
             addCriterion("created_at is null");
             return (Criteria) this;

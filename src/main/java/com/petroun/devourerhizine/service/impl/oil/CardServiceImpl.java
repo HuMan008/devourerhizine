@@ -70,6 +70,7 @@ public class CardServiceImpl implements CardService {
             Date now = new Date();
             updateCard.setBindId(id);
             updateCard.setUpdatedAt(now);
+            updateCard.setBindTime(now);
             int i = oilCardInfoMapper.updateByExample(updateCard,updateExample);
             if(i > 0){
                 card.setStatus(EnumCardStatus.Useing.getCode());
@@ -126,5 +127,55 @@ public class CardServiceImpl implements CardService {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 解除卡绑定
+     * @param useId
+     * @return
+     */
+    @Override
+    public boolean unbundling(String useId){
+        OilCardUse use = oilCardUseMapper.selectByPrimaryKey(useId);
+        if(use.getStatus() != EnumTranStatus.Trading.getCode()) {
+            OilCardInfo card = oilCardInfoMapper.selectByPrimaryKey(use.getCardNo());
+            card.setBindTime(null);
+            card.setBindId(null);
+            card.setStatus(EnumCardStatus.Enable.getCode());
+            if(!card.getBindId().equals(useId)){
+                return false;
+            }
+            if(oilCardInfoMapper.updateByPrimaryKey(card)> 0){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public List<OilCardUse> queryCardUseByStatus(Byte status){
+        OilCardUseExample example = new OilCardUseExample();
+        example.createCriteria().andStatusEqualTo(status);
+        return oilCardUseMapper.selectByExample(example);
+    }
+
+    @Override
+    public boolean updateOilCardUseStatusAndunbundling(String useId, Byte status){
+        if(EnumTranStatus.success.getCode() == status || EnumTranStatus.fail.getCode() == status ){
+            OilCardUse use = new OilCardUse();
+            use.setId(useId);
+            use.setStatus(status);
+            oilCardUseMapper.updateByPrimaryKeySelective(use);
+            unbundling(useId);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<OilCardInfo> getCardByStatus(Byte status){
+        OilCardInfoExample example = new OilCardInfoExample();
+        example.createCriteria().andStatusEqualTo(EnumCardStatus.Useing.getCode());
+        return oilCardInfoMapper.selectByExample(example);
     }
 }

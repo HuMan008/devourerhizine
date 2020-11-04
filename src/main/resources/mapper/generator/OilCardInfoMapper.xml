@@ -6,6 +6,7 @@
     <result column="card_pwd" jdbcType="VARCHAR" property="cardPwd" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="bind_id" jdbcType="VARCHAR" property="bindId" />
+    <result column="bind_time" jdbcType="TIMESTAMP" property="bindTime" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    card_no, card_pwd, status, bind_id, created_at, updated_at
+    card_no, card_pwd, status, bind_id, bind_time, created_at, updated_at
   </sql>
   <select id="selectByExample" parameterType="com.petroun.devourerhizine.model.entity.OilCardInfoExample" resultMap="BaseResultMap">
     select
@@ -110,11 +111,11 @@
   </delete>
   <insert id="insert" parameterType="com.petroun.devourerhizine.model.entity.OilCardInfo">
     insert into de_oil_card_info (card_no, card_pwd, status, 
-      bind_id, created_at, updated_at
-      )
+      bind_id, bind_time, created_at, 
+      updated_at)
     values (#{cardNo,jdbcType=VARCHAR}, #{cardPwd,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
-      #{bindId,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
-      )
+      #{bindId,jdbcType=VARCHAR}, #{bindTime,jdbcType=TIMESTAMP}, #{createdAt,jdbcType=TIMESTAMP}, 
+      #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.petroun.devourerhizine.model.entity.OilCardInfo">
     insert into de_oil_card_info
@@ -130,6 +131,9 @@
       </if>
       <if test="bindId != null">
         bind_id,
+      </if>
+      <if test="bindTime != null">
+        bind_time,
       </if>
       <if test="createdAt != null">
         created_at,
@@ -150,6 +154,9 @@
       </if>
       <if test="bindId != null">
         #{bindId,jdbcType=VARCHAR},
+      </if>
+      <if test="bindTime != null">
+        #{bindTime,jdbcType=TIMESTAMP},
       </if>
       <if test="createdAt != null">
         #{createdAt,jdbcType=TIMESTAMP},
@@ -180,6 +187,9 @@
       <if test="record.bindId != null">
         bind_id = #{record.bindId,jdbcType=VARCHAR},
       </if>
+      <if test="record.bindTime != null">
+        bind_time = #{record.bindTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="record.createdAt != null">
         created_at = #{record.createdAt,jdbcType=TIMESTAMP},
       </if>
@@ -197,6 +207,7 @@
       card_pwd = #{record.cardPwd,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=TINYINT},
       bind_id = #{record.bindId,jdbcType=VARCHAR},
+      bind_time = #{record.bindTime,jdbcType=TIMESTAMP},
       created_at = #{record.createdAt,jdbcType=TIMESTAMP},
       updated_at = #{record.updatedAt,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
@@ -215,6 +226,9 @@
       <if test="bindId != null">
         bind_id = #{bindId,jdbcType=VARCHAR},
       </if>
+      <if test="bindTime != null">
+        bind_time = #{bindTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="createdAt != null">
         created_at = #{createdAt,jdbcType=TIMESTAMP},
       </if>
@@ -229,6 +243,7 @@
     set card_pwd = #{cardPwd,jdbcType=VARCHAR},
       status = #{status,jdbcType=TINYINT},
       bind_id = #{bindId,jdbcType=VARCHAR},
+      bind_time = #{bindTime,jdbcType=TIMESTAMP},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
       updated_at = #{updatedAt,jdbcType=TIMESTAMP}
     where card_no = #{cardNo,jdbcType=VARCHAR}

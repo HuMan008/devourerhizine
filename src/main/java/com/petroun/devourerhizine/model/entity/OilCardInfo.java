@@ -11,6 +11,8 @@ public class OilCardInfo {
 
     private String bindId;
 
+    private Date bindTime;
+
     private Date createdAt;
 
     private Date updatedAt;
@@ -47,6 +49,14 @@ public class OilCardInfo {
         this.bindId = bindId == null ? null : bindId.trim();
     }
 
+    public Date getBindTime() {
+        return bindTime;
+    }
+
+    public void setBindTime(Date bindTime) {
+        this.bindTime = bindTime;
+    }
+
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -73,6 +83,7 @@ public class OilCardInfo {
         sb.append(", cardPwd=").append(cardPwd);
         sb.append(", status=").append(status);
         sb.append(", bindId=").append(bindId);
+        sb.append(", bindTime=").append(bindTime);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append("]");
