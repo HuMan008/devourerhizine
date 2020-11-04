@@ -7,7 +7,9 @@ public class OilCardInfo {
 
     private String cardPwd;
 
-    private Short status;
+    private Byte status;
+
+    private String bindId;
 
     private Date createdAt;
 
@@ -29,12 +31,20 @@ public class OilCardInfo {
         this.cardPwd = cardPwd == null ? null : cardPwd.trim();
     }
 
-    public Short getStatus() {
+    public Byte getStatus() {
         return status;
     }
 
-    public void setStatus(Short status) {
+    public void setStatus(Byte status) {
         this.status = status;
+    }
+
+    public String getBindId() {
+        return bindId;
+    }
+
+    public void setBindId(String bindId) {
+        this.bindId = bindId == null ? null : bindId.trim();
     }
 
     public Date getCreatedAt() {
@@ -62,6 +72,7 @@ public class OilCardInfo {
         sb.append(", cardNo=").append(cardNo);
         sb.append(", cardPwd=").append(cardPwd);
         sb.append(", status=").append(status);
+        sb.append(", bindId=").append(bindId);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append("]");

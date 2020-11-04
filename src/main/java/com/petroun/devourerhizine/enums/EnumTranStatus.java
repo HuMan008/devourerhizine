@@ -7,11 +7,10 @@ import lombok.ToString;
 @Getter
 @ToString
 @AllArgsConstructor
-public enum EnumGtOil {
-    UseToken((byte)1,"用户TOKEN"),
-    QRcode((byte)2,"二维码"),
-    QueryTrans((byte)3,"交易查询"),
-    QueryStation((byte)4,"站点查询"),
+public enum EnumTranStatus {
+    Trading((byte)0,"交易中"),
+    fail((byte)1,"失败"),
+    success((byte)2,"成功"),
     ;
 
 

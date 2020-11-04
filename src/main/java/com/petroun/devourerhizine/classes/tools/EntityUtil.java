@@ -13,4 +13,6 @@ public class EntityUtil {
         invokeThirdLog.setType(type);
         return invokeThirdLog;
     }
+
+
 }

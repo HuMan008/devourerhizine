@@ -3,17 +3,23 @@ package com.petroun.devourerhizine.model.entity;
 import java.util.Date;
 
 public class OilCardUse {
-    private Integer id;
+    private String id;
 
     private String cardNo;
 
     private String mobile;
 
-    private Short status;
+    private Byte status;
 
     private Date validityTime;
 
     private String businessId;
+
+    private String businessName;
+
+    private String station;
+
+    private String stationName;
 
     private String flowid;
 
@@ -25,9 +31,9 @@ public class OilCardUse {
 
     private Integer balance;
 
-    private Integer rise;
+    private String rise;
 
-    private Integer riseAfter;
+    private String riseAfter;
 
     private Integer oilPrice;
 
@@ -35,12 +41,12 @@ public class OilCardUse {
 
     private Date createdAt;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
     }
 
     public String getCardNo() {
@@ -59,11 +65,11 @@ public class OilCardUse {
         this.mobile = mobile == null ? null : mobile.trim();
     }
 
-    public Short getStatus() {
+    public Byte getStatus() {
         return status;
     }
 
-    public void setStatus(Short status) {
+    public void setStatus(Byte status) {
         this.status = status;
     }
 
@@ -81,6 +87,30 @@ public class OilCardUse {
 
     public void setBusinessId(String businessId) {
         this.businessId = businessId == null ? null : businessId.trim();
+    }
+
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public void setBusinessName(String businessName) {
+        this.businessName = businessName == null ? null : businessName.trim();
+    }
+
+    public String getStation() {
+        return station;
+    }
+
+    public void setStation(String station) {
+        this.station = station == null ? null : station.trim();
+    }
+
+    public String getStationName() {
+        return stationName;
+    }
+
+    public void setStationName(String stationName) {
+        this.stationName = stationName == null ? null : stationName.trim();
     }
 
     public String getFlowid() {
@@ -123,20 +153,20 @@ public class OilCardUse {
         this.balance = balance;
     }
 
-    public Integer getRise() {
+    public String getRise() {
         return rise;
     }
 
-    public void setRise(Integer rise) {
-        this.rise = rise;
+    public void setRise(String rise) {
+        this.rise = rise == null ? null : rise.trim();
     }
 
-    public Integer getRiseAfter() {
+    public String getRiseAfter() {
         return riseAfter;
     }
 
-    public void setRiseAfter(Integer riseAfter) {
-        this.riseAfter = riseAfter;
+    public void setRiseAfter(String riseAfter) {
+        this.riseAfter = riseAfter == null ? null : riseAfter.trim();
     }
 
     public Integer getOilPrice() {
@@ -175,6 +205,9 @@ public class OilCardUse {
         sb.append(", status=").append(status);
         sb.append(", validityTime=").append(validityTime);
         sb.append(", businessId=").append(businessId);
+        sb.append(", businessName=").append(businessName);
+        sb.append(", station=").append(station);
+        sb.append(", stationName=").append(stationName);
         sb.append(", flowid=").append(flowid);
         sb.append(", face=").append(face);
         sb.append(", amount=").append(amount);

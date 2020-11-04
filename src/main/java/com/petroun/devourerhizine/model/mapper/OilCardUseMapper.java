@@ -14,7 +14,7 @@ public interface OilCardUseMapper {
 
     int deleteByExample(OilCardUseExample example);
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(String id);
 
     int insert(OilCardUse record);
 
@@ -22,7 +22,7 @@ public interface OilCardUseMapper {
 
     List<OilCardUse> selectByExample(OilCardUseExample example);
 
-    OilCardUse selectByPrimaryKey(Integer id);
+    OilCardUse selectByPrimaryKey(String id);
 
     int updateByExampleSelective(@Param("record") OilCardUse record, @Param("example") OilCardUseExample example);
 

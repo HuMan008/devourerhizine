@@ -46,8 +46,9 @@
         <table tableName="de_cnpc_order_invoke_log" domainObjectName="CnpcOrderInvokeLog"
                mapperName="CnpcOrderInvokeLogMapper"></table>
         <table tableName="de_option" domainObjectName="Option" mapperName="OptionMapper"></table>-->
-        <table tableName="de_invoke_third_log" domainObjectName="InvokeThirdLog" mapperName="InvokeThirdLogMapper"></table>
+        <!--<table tableName="de_invoke_third_log" domainObjectName="InvokeThirdLog" mapperName="InvokeThirdLogMapper"></table>
         <table tableName="de_oil_card_info" domainObjectName="OilCardInfo" mapperName="OilCardInfoMapper"></table>
+        -->
         <table tableName="de_oil_card_use" domainObjectName="OilCardUse" mapperName="OilCardUseMapper"></table>
     </context>
 </generatorConfiguration>
