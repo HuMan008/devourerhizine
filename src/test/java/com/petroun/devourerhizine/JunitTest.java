@@ -8,13 +8,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mysql.cj.x.protobuf.Mysqlx;
-import com.petroun.devourerhizine.model.OptionKeys;
+import com.petroun.devourerhizine.classes.BitMask;
 import com.petroun.devourerhizine.model.entity.CnpcOrder;
 import com.petroun.devourerhizine.provider.petroun.Rhizine;
 import com.petroun.devourerhizine.web.message.request.sinopec.Promo;
-import okhttp3.OkHttpClient;
-import org.json.JSONArray;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -59,8 +56,8 @@ public class JunitTest {
 
 
     @Test
-   public void test2(){
-       Rhizine.configure("aaa","a","b");
+    public void test2(){
+        Rhizine.configure("aaa","a","b");
 //       Rhizine.billClient();
         BillClient billClient =  new BillClient();;
 
@@ -70,9 +67,7 @@ public class JunitTest {
                 "\"id\": 1585725896467000133,\n" + "        \"uid\": 1577264207545000135,\n" + "        \"flowid\": \"68724065161969664\",\n" + "        \"nodrib\": 0,\n" + "        \"face\": -10000,\n" + "        \"amount\": -8500,\n" + "        \"amounthen\": 0,\n" + "        \"drib\": -1500,\n" + "        \"dribthen\": 8500,\n" + "        \"title\": \"中石油昆仑卡充值\",\n" + "        \"stitle\": null,\n" + "        \"extra\": \"\",\n" + "        \"operator\": 0,\n" + "        \"ccode\": \"3309\",\n" + "        \"state\": 8192,\n" + "        \"gradle\": null,\n" + "        \"createdAt\": \"2020-04-01 15:24:56\",\n" + "        \"user\": {\n" + "            \"id\": 1577264207545000135,\n" + "            \"mobile\": \"13436161008\",\n" + "            \"nick\": \"未命名\",\n" + "            \"passset\": null,\n" + "            \"avatar\": \"http://bole.dbbank.xyz/images/guest2.png\"\n" + "        },\n" + "        \"business\": {\n" + "            \"id\": 40000,\n" + "            \"cate\": 4,\n" + "            \"title\": \"中石油个人卡充值\"\n" + "        },\n" + "        \"point\": {\n" + "            \"type\": 1,\n" + "            \"name\": \"油滴App\",\n" + "            \"address\": \"油滴App\",\n" + "            \"tel\": \"023-62899460\",\n" + "            \"lng\": null,\n" + "            \"lat\": null\n" + "        },\n" + "        \"promos\": [],\n" + "        \"price\": null\n" + "    },\n" + "    \"profile\": {\n" + "        \"execTimeMillis\": 65\n" + "    }\n" + "}";
         BillFlow billFlow = new BillFlow();
         try {
-            BillObject billObject =
-                    new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false).readValue(x,
-                            BillObject.class);
+            BillObject billObject = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false).readValue(x, BillObject.class);
             billFlow.setBillObject(billObject);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -80,5 +75,18 @@ public class JunitTest {
             io.printStackTrace();
         }
 
+    }
+
+    @Test
+    public void t03() {
+        System.out.println(BitMask.isSeted(0, 0));
+    }
+
+    @Test
+    public void t01() {
+        for (int i = 0; i < 10; i++) {
+            System.out.println(i + "-->" + (i & 0x01) + "\t" + (i & 0x02));
+        }
+        System.out.println(0x00);
     }
 }

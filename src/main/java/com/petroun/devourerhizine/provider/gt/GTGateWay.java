@@ -1,6 +1,8 @@
 package com.petroun.devourerhizine.provider.gt;
 
 import cn.gotoil.bill.tools.date.DateUtils;
+import com.petroun.devourerhizine.classes.rabbitmq.MQDefiner;
+import com.petroun.devourerhizine.classes.rabbitmq.MQPublisher;
 import com.petroun.devourerhizine.classes.tools.EntityUtil;
 import com.petroun.devourerhizine.classes.tools.HttpUtils;
 import com.petroun.devourerhizine.classes.tools.XmlUtils;
@@ -16,7 +18,8 @@ import com.petroun.devourerhizine.model.entity.OilCardInfo;
 import com.petroun.devourerhizine.model.entity.OilCardUse;
 import com.petroun.devourerhizine.model.mapper.InvokeThirdLogMapper;
 import com.petroun.devourerhizine.service.CardService;
-import okhttp3.*;
+import com.rabbitmq.client.Connection;
+import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +42,8 @@ public class GTGateWay {
 
     @Autowired
     CardService cardService;
+    @Autowired
+    Connection connection;
 
     public String getUserToken(String flowid,String cardNo,String pwd,String copartnerId,String copartnerPwd){
         RequestEntity requestEntity = new RequestEntity();
@@ -215,7 +220,8 @@ public class GTGateWay {
                             if(cardService.updateOilCardUse(updateOilCardUser)){
                                 cardService.unbundling(updateOilCardUser.getId());
                                 //todo 成功通知
-
+                                MQPublisher.publish(connection, MQDefiner.EX_GOTOIL, MQDefiner.RK_QR_BIND, "ID",
+                                        MQPublisher.DelayInterval.IMMEDIATELY);
                                 return updateOilCardUser;
                             }
                         }

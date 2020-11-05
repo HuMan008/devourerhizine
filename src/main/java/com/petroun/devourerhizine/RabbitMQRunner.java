@@ -59,6 +59,9 @@ public class RabbitMQRunner implements CommandLineRunner {
         cnpcThrough();
         cnpcInquire();
         cnpcRegain();
+
+        //
+        gotoilQR();
     }
 
     /**
@@ -95,6 +98,14 @@ public class RabbitMQRunner implements CommandLineRunner {
         Channel channel = MQDefiner.RegainChannel(applyConnection(), 8);
         CnpcRegainConsumer regainer = new CnpcRegainConsumer(channel);
         channel.basicConsume(MQDefiner.Q_REGAIN, false, regainer);
+    }
+
+
+    private void gotoilQR() throws Exception {
+        logger.info("============start gotoil qr  worker============");
+        Channel channel = MQDefiner.gotoilQRCode(applyConnection(), 8);
+        GotoilQRConsumer gotoilQr = new GotoilQRConsumer(channel);
+        channel.basicConsume(MQDefiner.Q_GOTOIL_QR, false, gotoilQr);
     }
 
 
@@ -215,5 +226,40 @@ public class RabbitMQRunner implements CommandLineRunner {
         }
     }
 
+
+    private class GotoilQRConsumer extends SuppressRabbitConsumer {
+        public GotoilQRConsumer(Channel channel) {
+            super(channel);
+        }
+
+        @Override
+        public void startWork() {
+            try {
+                gotoilQR();
+            } catch (Exception ex) {
+                logger.error("{}", ex);
+            }
+        }
+
+        @Override
+        public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
+                                   byte[] body) throws IOException {
+            try {
+                logger.info("----->{}", new String(body));
+                // TODO
+
+                //                Long id = ObjectHelper.getObjectMapper().readValue(body, .class);
+                //                logger.info("Handle CNPC Regain Task:{}", id);
+                //                cnpcRechargeService.regain(id);
+                //                getChannel().basicAck(envelope.getDeliveryTag(), false);
+                getChannel().basicReject(envelope.getDeliveryTag(), false);
+            } catch (InvalidFormatException ex) {
+                logger.info("{}", ex);
+                getChannel().basicAck(envelope.getDeliveryTag(), false);
+            } catch (Exception ex) {
+                logger.error("{}", ex);
+            }
+        }
+    }
 
 }

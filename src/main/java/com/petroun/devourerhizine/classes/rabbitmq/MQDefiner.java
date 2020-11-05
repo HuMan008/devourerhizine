@@ -31,6 +31,7 @@ public class MQDefiner {
     private static Logger logger = LoggerFactory.getLogger(MQDefiner.class);
 
     public static final String EX_CNPC = "cnpc";
+    public static final String EX_GOTOIL = "gotoil";
 
     public static final String RK_THROUGH_BIND = "#.through.#";
     public static final String RK_THROUGH = "through";
@@ -43,6 +44,11 @@ public class MQDefiner {
     public static final String RK_REGAIN_BIND = "#.regain.#";
     public static final String RK_REGAIN = "regain";
     public static final String Q_REGAIN = "CNPC_REGAIN";
+
+
+    public static final String RK_QR_BIND = "#.gotoil.#";
+    public static final String RK_QR = "gotoil";
+    public static final String Q_GOTOIL_QR = "GOTOIL_QR";
 
 
     public static final String EX_REFUEL_CODE = "refuelcode";
@@ -84,6 +90,11 @@ public class MQDefiner {
      */
     public static Channel InquireChannel(Connection connection, int prefetchSize) {
         return natureBuildChannel(connection, prefetchSize, EX_CNPC, Q_INQUIRE, RK_INQUIRE_BIND);
+    }
+
+    public static Channel gotoilQRCode(Connection connection, int prefetchSize) {
+        return natureBuildChannel(connection, prefetchSize, EX_GOTOIL, Q_GOTOIL_QR, RK_QR_BIND);
+
     }
 
 
