@@ -7,7 +7,7 @@ import com.petroun.devourerhizine.enums.EnumTranStatus;
 import com.petroun.devourerhizine.model.entity.OilCardInfo;
 import com.petroun.devourerhizine.model.entity.OilCardUse;
 import com.petroun.devourerhizine.provider.gt.GTGateWay;
-import com.petroun.devourerhizine.service.CardService;
+import com.petroun.devourerhizine.service.Oil.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -30,11 +30,11 @@ public class OilTask {
      */
     @Scheduled(initialDelay = 60000, fixedDelay = 1000 * 60 * 10)
     public void checkBindCards(){
-        List<OilCardInfo> cards = cardService.getCardByStatus(EnumCardStatus.Useing.getCode());
+        /*List<OilCardInfo> cards = cardService.getCardByStatus(EnumCardStatus.Useing.getCode());
         for(OilCardInfo card : cards){
             OilCardUse use = cardService.queryById(card.getBindId());
-            cardService.unbundling(use.getId());
-        }
+            cardService.unbundlingNotInTrading(use.getId());
+        }*/
     }
 
     /**
@@ -42,7 +42,7 @@ public class OilTask {
      */
     @Scheduled(initialDelay = 60000, fixedDelay = 1000 * 60 * 2)
     public void checkCardUse(){
-        List<OilCardUse> list = cardService.queryCardUseByStatus(EnumTranStatus.Trading.getCode());
+        /*List<OilCardUse> list = cardService.queryCardUseByStatus(EnumTranStatus.Trading.getCode());
         if(list != null){
             Date now = new Date();
             for(OilCardUse cardUse : list){
@@ -52,7 +52,7 @@ public class OilTask {
                     update.setId(cardUse.getId());
                     update.setStatus(EnumTranStatus.fail.getCode());
                     cardService.updateOilCardUse(update);
-                    cardService.unbundling(cardUse.getId());
+                    cardService.unbundlingNotInTrading(cardUse.getId());
                 }else{
 
                     OilCardUse query = gtGateWay.queryCardUserByRemote(cardUse.getId(), gtConfig.getCopartnerId(), gtConfig.getCopartnerPassword());
@@ -65,6 +65,6 @@ public class OilTask {
                 }
 
             }
-        }
+        }*/
     }
 }

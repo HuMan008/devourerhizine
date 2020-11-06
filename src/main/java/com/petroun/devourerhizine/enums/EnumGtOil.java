@@ -12,6 +12,8 @@ public enum EnumGtOil {
     QRcode((byte)2,"二维码"),
     QueryTrans((byte)3,"交易查询"),
     QueryStation((byte)4,"站点查询"),
+    QueryMobile((byte)5,"手机号是否注册"),
+    RegisterMobile((byte)6,"手机号注册"),
     ;
 
 

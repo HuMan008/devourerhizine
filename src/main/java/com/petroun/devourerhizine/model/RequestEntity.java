@@ -32,6 +32,9 @@ public class RequestEntity {
     @XmlElement(name = "md5")
     private String md5;
 
+    @XmlElement(name = "seq")
+    private String seq;
+
     @XmlElement(name = "md5-2")
     private String md52;
 

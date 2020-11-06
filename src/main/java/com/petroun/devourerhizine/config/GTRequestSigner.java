@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by think on 2017/11/28.
@@ -28,20 +29,28 @@ public class GTRequestSigner {
     }
 
     private static void signMD52(RequestEntity request, String copartnerPassword) {
-        /*HashMap parameters = request.getParameters();
+        HashMap<String,String> parameters = request.getParameter();
         String payload;
         if(parameters != null && parameters.size() >= 1) {
-            StringBuilder stringBuilder = new StringBuilder();
-            request.getEntity().getSeq().forEach((key) -> {
-                stringBuilder.append((String)parameters.get(key));
-            });
-            stringBuilder.append(copartnerPassword);
-            payload = stringBuilder.toString();
+            StringBuilder values = new StringBuilder();
+            StringBuilder seq = new StringBuilder();
+            for(Map.Entry entry : parameters.entrySet()){
+                if(seq.length() == 0){
+                    seq.append(entry.getValue());
+                }else{
+                    seq.append(";");
+                    seq.append(entry.getValue());
+                }
+                values.append(parameters.get(entry.getKey()));
+            }
+            values.append(copartnerPassword);
+            payload = values.toString();
+            request.setSeq(seq.toString());
         } else {
             payload = copartnerPassword;
-        }*/
+        }
 
-        request.setMd52(Hash.md5(copartnerPassword));
+        request.setMd52(Hash.md5(payload));
     }
 
     private static String stringfly(String value) {

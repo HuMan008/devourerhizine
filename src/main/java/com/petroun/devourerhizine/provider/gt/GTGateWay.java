@@ -14,10 +14,11 @@ import com.petroun.devourerhizine.model.RequestEntity;
 import com.petroun.devourerhizine.model.ResponseEntity;
 import com.petroun.devourerhizine.model.View.ViewCardAndUse;
 import com.petroun.devourerhizine.model.entity.InvokeThirdLogWithBLOBs;
-import com.petroun.devourerhizine.model.entity.OilCardInfo;
 import com.petroun.devourerhizine.model.entity.OilCardUse;
+import com.petroun.devourerhizine.model.entity.OilMobileCardInfo;
 import com.petroun.devourerhizine.model.mapper.InvokeThirdLogMapper;
-import com.petroun.devourerhizine.service.CardService;
+import com.petroun.devourerhizine.service.Oil.CardService;
+import com.petroun.devourerhizine.service.Oil.MobileCardService;
 import com.rabbitmq.client.Connection;
 import okhttp3.Response;
 import org.slf4j.Logger;
@@ -42,8 +43,12 @@ public class GTGateWay {
 
     @Autowired
     CardService cardService;
+
+    /*@Autowired
+    Connection connection;*/
+
     @Autowired
-    Connection connection;
+    MobileCardService mobileCardService;
 
     public String getUserToken(String flowid,String cardNo,String pwd,String copartnerId,String copartnerPwd){
         RequestEntity requestEntity = new RequestEntity();
@@ -77,18 +82,22 @@ public class GTGateWay {
         return null;
     }
 
-    public String getQRCode(String mobile,int sed,String copartnerId,String copartnerPwd){
-        ViewCardAndUse cardAndUser = cardService.getOilCard(mobile);
-        OilCardInfo oilCardInfo = cardAndUser.getOilCardInfo();
+    public String getQRCode(String mobile,int amount,int sed,String copartnerId,String copartnerPwd){
+        ViewCardAndUse cardAndUser = cardService.getOilCard(mobile,amount);
+        OilMobileCardInfo mobileCard = null;
         OilCardUse oilCardUse = cardAndUser.getOilCardUse();
-        String token = getUserToken(oilCardUse.getId(),oilCardInfo.getCardNo(),oilCardInfo.getCardPwd(),copartnerId,copartnerPwd);
+        String token = getUserToken(oilCardUse.getId(),"mobileCard.getCardNo()",(mobileCard.getMobile()+mobileCard.getSalt()),copartnerId,copartnerPwd);
         if(!StringUtils.isEmpty(token)){
+            //判断是否需要充值
+
+
+
             RequestEntity requestEntity = new RequestEntity();
             requestEntity.setRequestId("GetQRcodeOrBarcode");
             requestEntity.setMoney("0");
             requestEntity.setCopartnerId(copartnerId);
             //requestEntity.setPassword(oilCardInfo.getCardPwd());
-            requestEntity.setCard(oilCardInfo.getCardNo());
+            //requestEntity.setCard(mobileCard.getCardNo());
             GTRequestSigner.signedRequest(requestEntity,copartnerPwd);
 
             InvokeThirdLogWithBLOBs invokeThirdLogWithBLOBs = EntityUtil.createInvokeThirdLog(oilCardUse.getId(), EnumGtOil.QRcode.getCode(),requestEntity.getRequestId());
@@ -218,10 +227,10 @@ public class GTGateWay {
                             String[] stationResultDetail = stationResult.split("~");
                             updateOilCardUser.setStationName(stationResultDetail[2]);
                             if(cardService.updateOilCardUse(updateOilCardUser)){
-                                cardService.unbundling(updateOilCardUser.getId());
+                                cardService.unbundlingNotInTrading(updateOilCardUser.getId());
                                 //todo 成功通知
-                                MQPublisher.publish(connection, MQDefiner.EX_GOTOIL, MQDefiner.RK_QR_BIND, "ID",
-                                        MQPublisher.DelayInterval.IMMEDIATELY);
+                               /* MQPublisher.publish(connection, MQDefiner.EX_GOTOIL, MQDefiner.RK_QR_BIND, "ID",
+                                        MQPublisher.DelayInterval.IMMEDIATELY);*/
                                 return updateOilCardUser;
                             }
                         }
@@ -236,6 +245,41 @@ public class GTGateWay {
             invokeThirdLogMapper.insert(invokeThirdLogWithBLOBs);
         }
 
+        return null;
+    }
+
+    public OilMobileCardInfo phoneRegisterQuery(String copartnerId,String copartnerPwd){
+        OilMobileCardInfo mbcard =  mobileCardService.getNewMobileCard();
+        RequestEntity requestEntity = new RequestEntity();
+        requestEntity.setRequestId("UserPhoneIsRegisterQuery");
+        requestEntity.setRequestFlow("");
+        requestEntity.setMoney("0");
+        requestEntity.setCopartnerId(copartnerId);
+        requestEntity.setPassword("");
+        requestEntity.setCard("");
+        HashMap<String, String> parameter = new HashMap<>();
+        parameter.put("BuExtend1",mbcard.getMobile());
+        requestEntity.setParameter(parameter);
+        GTRequestSigner.signedRequest(requestEntity,copartnerPwd);
+
+        InvokeThirdLogWithBLOBs invokeThirdLogWithBLOBs = EntityUtil.createInvokeThirdLog(mbcard.getMobile(), EnumGtOil.QueryMobile.getCode(),requestEntity.getRequestId());
+        try{
+            ResponseEntity responseEntity = null;
+
+            String ex = XmlUtils.toStr(requestEntity,false,true);
+            logger.debug("请求request-->{}", ex);
+
+            Response response = HttpUtils.okHttpPost(gtConfig.getUrl(),ex);
+            System.out.println(response.body().string());
+            if (response != null && response.isSuccessful()) {
+                String resTxt = response.body().string();
+            }
+        }catch (Exception ex){
+            logger.error("{}", ex);
+            invokeThirdLogWithBLOBs.setResponse(ex.toString());
+        }finally {
+            invokeThirdLogMapper.insert(invokeThirdLogWithBLOBs);
+        }
         return null;
     }
 }

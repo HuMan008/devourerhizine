@@ -1,4 +1,4 @@
-package com.petroun.devourerhizine.service;
+package com.petroun.devourerhizine.service.Oil;
 
 import com.petroun.devourerhizine.model.View.ViewCardAndUse;
 import com.petroun.devourerhizine.model.entity.OilCardInfo;
@@ -13,7 +13,7 @@ public interface CardService {
      * @return
      */
     @Transactional
-    ViewCardAndUse getOilCard(String mobile);
+    ViewCardAndUse getOilCard(String mobile,int amount);
 
     /**
      * 更新创建时间，有效时间
@@ -33,7 +33,7 @@ public interface CardService {
      * @param useId
      * @return
      */
-    boolean unbundling(String useId);
+    boolean unbundlingNotInTrading(String useId);
 
     List<OilCardUse> queryCardUseByStatus(Byte status);
 

@@ -26,9 +26,9 @@ bill:
   allowAuthDebuger: "YES"
 
 gtconfig:
-  url: "http://203.203.28.106:80/GtTripleGate/NoKeyInServlet"
+  url: "http://202.98.60.231:8080/GtTripleGate/NoKeyInServlet"
   copartnerId: 60020021
-  copartnerPassword: 123456
+  copartnerPassword: 361438
 
 logging:
   path: logs

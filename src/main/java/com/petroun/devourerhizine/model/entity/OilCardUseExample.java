@@ -362,6 +362,66 @@ public class OilCardUseExample {
             return (Criteria) this;
         }
 
+        public Criteria andQrcodeAmountIsNull() {
+            addCriterion("qrcode_amount is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeAmountIsNotNull() {
+            addCriterion("qrcode_amount is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeAmountEqualTo(Integer value) {
+            addCriterion("qrcode_amount =", value, "qrcodeAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeAmountNotEqualTo(Integer value) {
+            addCriterion("qrcode_amount <>", value, "qrcodeAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeAmountGreaterThan(Integer value) {
+            addCriterion("qrcode_amount >", value, "qrcodeAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeAmountGreaterThanOrEqualTo(Integer value) {
+            addCriterion("qrcode_amount >=", value, "qrcodeAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeAmountLessThan(Integer value) {
+            addCriterion("qrcode_amount <", value, "qrcodeAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeAmountLessThanOrEqualTo(Integer value) {
+            addCriterion("qrcode_amount <=", value, "qrcodeAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeAmountIn(List<Integer> values) {
+            addCriterion("qrcode_amount in", values, "qrcodeAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeAmountNotIn(List<Integer> values) {
+            addCriterion("qrcode_amount not in", values, "qrcodeAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeAmountBetween(Integer value1, Integer value2) {
+            addCriterion("qrcode_amount between", value1, value2, "qrcodeAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeAmountNotBetween(Integer value1, Integer value2) {
+            addCriterion("qrcode_amount not between", value1, value2, "qrcodeAmount");
+            return (Criteria) this;
+        }
+
         public Criteria andStatusIsNull() {
             addCriterion("status is null");
             return (Criteria) this;
@@ -419,6 +479,76 @@ public class OilCardUseExample {
 
         public Criteria andStatusNotBetween(Byte value1, Byte value2) {
             addCriterion("status not between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendUrlIsNull() {
+            addCriterion("send_url is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendUrlIsNotNull() {
+            addCriterion("send_url is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendUrlEqualTo(String value) {
+            addCriterion("send_url =", value, "sendUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendUrlNotEqualTo(String value) {
+            addCriterion("send_url <>", value, "sendUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendUrlGreaterThan(String value) {
+            addCriterion("send_url >", value, "sendUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendUrlGreaterThanOrEqualTo(String value) {
+            addCriterion("send_url >=", value, "sendUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendUrlLessThan(String value) {
+            addCriterion("send_url <", value, "sendUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendUrlLessThanOrEqualTo(String value) {
+            addCriterion("send_url <=", value, "sendUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendUrlLike(String value) {
+            addCriterion("send_url like", value, "sendUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendUrlNotLike(String value) {
+            addCriterion("send_url not like", value, "sendUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendUrlIn(List<String> values) {
+            addCriterion("send_url in", values, "sendUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendUrlNotIn(List<String> values) {
+            addCriterion("send_url not in", values, "sendUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendUrlBetween(String value1, String value2) {
+            addCriterion("send_url between", value1, value2, "sendUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendUrlNotBetween(String value1, String value2) {
+            addCriterion("send_url not between", value1, value2, "sendUrl");
             return (Criteria) this;
         }
 
