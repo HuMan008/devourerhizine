@@ -49,6 +49,7 @@ public class GTRequestSigner {
             payload = values.toString();
             request.setSeq(seq.toString());
         } else {
+            request.setSeq("");
             payload = copartnerPassword;
         }
 

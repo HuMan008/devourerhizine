@@ -18,5 +18,22 @@ public interface MobileCardService {
 
 
     @Transactional
-    boolean insertMobileCardDetails(List<OilMobileCardDetail> details);
+    boolean insertOrUpdateMobileCardDetails(List<OilMobileCardDetail> details);
+
+    /**
+     * 充值后更新卡记录
+     * @param cardNo
+     * @param amount
+     * @return
+     */
+    boolean recharge(String cardNo, int amount);
+
+    /**
+     * 根据卡号获取卡信息
+     * @param cardNo
+     * @return
+     */
+    OilMobileCardInfo getMobileCardInfoByCardNo(String cardNo);
+
+    long queryCardsInfo(List<Byte> status);
 }

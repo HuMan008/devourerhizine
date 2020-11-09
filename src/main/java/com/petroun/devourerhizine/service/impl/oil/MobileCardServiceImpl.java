@@ -2,10 +2,7 @@ package com.petroun.devourerhizine.service.impl.oil;
 
 import com.petroun.devourerhizine.config.GTConfig;
 import com.petroun.devourerhizine.enums.EnumCardStatus;
-import com.petroun.devourerhizine.model.entity.OilMobileCardDetail;
-import com.petroun.devourerhizine.model.entity.OilMobileCardDetailExample;
-import com.petroun.devourerhizine.model.entity.OilMobileCardInfo;
-import com.petroun.devourerhizine.model.entity.OilMobileCardInfoExample;
+import com.petroun.devourerhizine.model.entity.*;
 import com.petroun.devourerhizine.model.mapper.OilMobileCardDetailMapper;
 import com.petroun.devourerhizine.model.mapper.OilMobileCardInfoMapper;
 import com.petroun.devourerhizine.service.Oil.MobileCardService;
@@ -42,10 +39,12 @@ public class MobileCardServiceImpl implements MobileCardService {
         if(mbCards ==null || mbCards.size() == 0){
             mbCard.setMobile(gtConfig.getHeadNumber()+"00000001");
         }else{
-            mbCard.setMobile(String.valueOf(Integer.valueOf(mbCard.getMobile()) + 1));
+            OilMobileCardInfo queryCard = mbCards.get(0);
+            mbCard.setMobile(String.valueOf(Long.valueOf(queryCard.getMobile()) + 1));
         }
         mbCard.setSalt(RandomStringUtils.random(8, false, true));
         mbCard.setCreatedAt(new Date());
+        mbCard.setBalance(0);
         mbCard.setStatus(EnumCardStatus.Enable.getCode());
         return mbCard;
     }
@@ -80,7 +79,7 @@ public class MobileCardServiceImpl implements MobileCardService {
 
     @Override
     @Transactional
-    public boolean insertMobileCardDetails(List<OilMobileCardDetail> details){
+    public boolean insertOrUpdateMobileCardDetails(List<OilMobileCardDetail> details){
         if(details != null && details.size() > 0){
             deleteCardDetailByMobile(details.get(0).getMobile());
             for(OilMobileCardDetail detail : details){
@@ -90,6 +89,7 @@ public class MobileCardServiceImpl implements MobileCardService {
                     }
                 }
             }
+            return true;
         }
 
         return false;
@@ -109,5 +109,59 @@ public class MobileCardServiceImpl implements MobileCardService {
         card.setBalance(balance);
         card.setUpdatedAt(new Date());
         return mobileCardInfoMapper.updateByPrimaryKeySelective(card) > 0 ? true :false;
+    }
+
+    /**
+     * 充值后更新卡记录
+     * @param cardNo
+     * @param amount
+     * @return
+     */
+    @Override
+    public boolean recharge(String cardNo, int amount){
+        OilMobileCardInfoExample example = new OilMobileCardInfoExample();
+        example.createCriteria().andCardNoEqualTo(cardNo);
+        OilMobileCardInfo update = new OilMobileCardInfo();
+        update.setBalance(amount);
+        update.setUpdatedAt(new Date());
+        int i = mobileCardInfoMapper.updateByExampleSelective(update,example);
+
+        OilMobileCardDetail detail = new OilMobileCardDetail();
+        detail.setCardNo(cardNo);
+        detail.setCardBalance(amount);
+        detail.setUpdatedAt(new Date());
+
+        i = i + oilMobileCardDetailMapper.updateByPrimaryKeySelective(detail);
+        if(i == 2){
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * 根据卡号获取卡信息
+     * @param cardNo
+     * @return
+     */
+    @Override
+    public OilMobileCardInfo getMobileCardInfoByCardNo(String cardNo){
+        OilMobileCardInfoExample example = new OilMobileCardInfoExample();
+        example.createCriteria().andCardNoEqualTo(cardNo);
+        List<OilMobileCardInfo> cs = mobileCardInfoMapper.selectByExample(example);
+        if(cs != null && cs.size() > 0){
+            return cs.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public long queryCardsInfo(List<Byte> status){
+        OilMobileCardInfoExample example = new OilMobileCardInfoExample();
+        example.createCriteria().andStatusIn(status);
+        Long count = mobileCardInfoMapper.countByExample(example);
+        if(count == null){
+            count = 0L;
+        }
+        return count;
     }
 }

@@ -3,6 +3,7 @@ package com.petroun.devourerhizine.classes.tools;
 import com.petroun.devourerhizine.model.MyParameter;
 import com.petroun.devourerhizine.model.ReqParameters;
 import com.petroun.devourerhizine.model.entity.InvokeThirdLogWithBLOBs;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.*;
 
@@ -39,4 +40,16 @@ public class EntityUtil {
         }
 
     }
+
+    public static synchronized String getId(int count){
+        String currentDateTime = DateUtils.simpleDateTimeWithMilliSecondNoSymbolFormatter().format(new Date());
+        String id = currentDateTime.concat(RandomStringUtils.random(count, false, true));
+        return id;
+    }
+
+    public static String getGTPwd(String pwd){
+        String hex= Integer.toHexString(pwd.length());
+        return hex+pwd;
+    }
+
 }

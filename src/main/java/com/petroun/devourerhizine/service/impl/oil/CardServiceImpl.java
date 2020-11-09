@@ -2,6 +2,7 @@ package com.petroun.devourerhizine.service.impl.oil;
 
 import cn.gotoil.bill.exception.BillException;
 import com.petroun.devourerhizine.classes.tools.DateUtils;
+import com.petroun.devourerhizine.classes.tools.EntityUtil;
 import com.petroun.devourerhizine.enums.EnumCardStatus;
 import com.petroun.devourerhizine.enums.EnumTranStatus;
 import com.petroun.devourerhizine.model.View.ViewCardAndUse;
@@ -51,18 +52,13 @@ public class CardServiceImpl implements CardService {
     private OilCardUse bindCard(OilMobileCardInfo bind_mobileCard,OilCardUse use,String mobile,int amonut){
         if(bind_mobileCard != null){
             OilMobileCardInfoExample updateExample = new OilMobileCardInfoExample();
-            if(use == null) {//新绑卡
-                updateExample.createCriteria().andCardNoEqualTo(bind_mobileCard.getCardNo()).andStatusEqualTo(EnumCardStatus.Enable.getCode());
-            }else{//重新绑卡
-                updateExample.createCriteria().andCardNoEqualTo(bind_mobileCard.getCardNo()).andStatusEqualTo(EnumCardStatus.Useing.getCode())
-                .andBindIdEqualTo(use.getId());
-            }
+
+            updateExample.createCriteria().andCardNoEqualTo(bind_mobileCard.getCardNo()).andStatusEqualTo(EnumCardStatus.Enable.getCode());
 
             OilMobileCardInfo updateCard = new OilMobileCardInfo();
             String id = use == null ? null : use.getId();
             if(StringUtils.isEmpty(id)){
-                String currentDateTime = DateUtils.simpleDateTimeWithMilliSecondNoSymbolFormatter().format(new Date());
-                id = currentDateTime.concat(RandomStringUtils.random(4, false, true));
+                id = EntityUtil.getId(4);
             }
 
             updateCard.setStatus(EnumCardStatus.Useing.getCode());

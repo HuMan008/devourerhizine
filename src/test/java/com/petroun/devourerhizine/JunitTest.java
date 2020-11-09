@@ -9,14 +9,21 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.petroun.devourerhizine.classes.BitMask;
+import com.petroun.devourerhizine.classes.tools.EntityUtil;
+import com.petroun.devourerhizine.classes.tools.XmlUtils;
+import com.petroun.devourerhizine.model.ReqParameters;
+import com.petroun.devourerhizine.model.RequestEntity;
+import com.petroun.devourerhizine.model.ResponseEntity;
 import com.petroun.devourerhizine.model.entity.CnpcOrder;
 import com.petroun.devourerhizine.provider.petroun.Rhizine;
 import com.petroun.devourerhizine.web.message.request.sinopec.Promo;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 /**
  * 单元测试
@@ -88,5 +95,73 @@ public class JunitTest {
             System.out.println(i + "-->" + (i & 0x01) + "\t" + (i & 0x02));
         }
         System.out.println(0x00);
+    }
+
+    @Test
+    public void t4(){
+        RequestEntity requestEntity = new RequestEntity();
+        requestEntity.setRequestId("UserPhoneIsRegisterQuery");
+        requestEntity.setRequestFlow("");
+        requestEntity.setMoney("0");
+        requestEntity.setCopartnerId("11");
+        requestEntity.setPassword("");
+        requestEntity.setCard("");
+        requestEntity.setExtend("");
+        requestEntity.setExtend2("");
+        //TreeMap<String, String> parameter = new TreeMap<>();
+        ///parameter.put("BuExtend1","12344555554");
+        ///requestEntity.setParameter(parameter);
+        ReqParameters reqParameters = new ReqParameters();
+        reqParameters.add("xixix1111","xixixiaaa");
+        reqParameters.add("xixix22222","xixixibbbb");
+        reqParameters.add("xixix3333","xixixicccc");
+        requestEntity.setReqParameters(reqParameters);
+
+
+        String ex = XmlUtils.toStr(requestEntity,false,true);
+        System.out.println(ex);
+        //
+        // GTRequestSigner.signedRequest(requestEntity,"1212");
+    }
+
+    @Test
+    public void t5(){
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<response>\n" +
+                "<response-id>UserBindCardQuery</response-id>\n" +
+                "<request-flow></request-flow>\n" +
+                "<response-flow></response-flow>\n" +
+                "<copartner-id>60020021</copartner-id>\n" +
+                "<card></card>\n" +
+                "<money>0</money>\n" +
+                "<balance>0</balance>\n" +
+                "<taxbal>0</taxbal>\n" +
+                "<parameters>\n" +
+                "<parameter name=\"BusiExtend\" value=\"980620006271377~24~2020110600053690~6000~1~0~0~00003009~1~1~0~~~0~0~1~0~23~1~0~~0~2020-11-06 15:10:11~~0~0|980420006288380~22~2020110600053691~6000~1~0~0~00003007~1~1~0~~~0~0~1~0~23~1~0~~0~2020-11-06 15:10:11~~0~0|980210236292877~20~2020110600053689~6000~1~0~0~00003003~1~1~0~~~0~0~1~0~23~1~0~~0~2020-11-06 15:10:10~~0~0\"></parameter>\n" +
+                "</parameters>\n" +
+                "<code>0</code>\n" +
+                "<description>查询成功</description>\n" +
+                "<mac></mac>\n" +
+                "<md5>c5e60cc992e21d3b955e88ac8c4d62cf</md5>\n" +
+                "<time>2020.11.06 15:28:33</time>\n" +
+                "<extend><![CDATA[]]></extend>\n" +
+                "<extend2><![CDATA[]]></extend2>\n" +
+                "<seq>BusiExtend</seq>\n" +
+                "<md5-2>a7f76ed5d57fad97898e56958e535941</md5-2>\n" +
+                "</response>";
+        ResponseEntity e = XmlUtils.parseBean(xml, ResponseEntity.class);
+        System.out.println(e);
+        String busiExtend = EntityUtil.ReqParametersByKey(e.getReqParameters(),"BusiExtend");
+        System.out.println(busiExtend);
+        List<String[]> result = EntityUtil.formatResult(busiExtend);
+        System.out.println(result);
+
+    }
+
+    @Test
+    public void t6(){
+        long l1 = 15;
+        BigDecimal b1 = new BigDecimal(l1);
+        System.out.println(b1.divide(new BigDecimal(2)).longValue());
     }
 }

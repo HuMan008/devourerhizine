@@ -15,6 +15,8 @@ public enum EnumGtOil {
     QueryMobile((byte)5,"手机号是否注册"),
     RegisterMobile((byte)6,"手机号注册"),
     UserBindCardQuery((byte)7,"用户绑定卡查询"),
+    Recharge((byte)8,"充值"),
+    SetPayPwd((byte)9,"修改支付密码"),
     ;
 
 
