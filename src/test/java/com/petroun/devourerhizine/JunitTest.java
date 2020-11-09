@@ -160,8 +160,7 @@ public class JunitTest {
 
     @Test
     public void t6(){
-        long l1 = 15;
-        BigDecimal b1 = new BigDecimal(l1);
-        System.out.println(b1.divide(new BigDecimal(2)).longValue());
+        String s1 = "10100000020";
+        System.out.println(s1.substring(s1.length()-6,s1.length()));
     }
 }

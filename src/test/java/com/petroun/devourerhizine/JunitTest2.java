@@ -2,6 +2,7 @@ package com.petroun.devourerhizine;
 
 import com.petroun.devourerhizine.classes.tools.EntityUtil;
 import com.petroun.devourerhizine.config.GTConfig;
+import com.petroun.devourerhizine.enums.EnumCardStatus;
 import com.petroun.devourerhizine.model.entity.OilMobileCardInfo;
 import com.petroun.devourerhizine.provider.gt.GTGateWay;
 import com.petroun.devourerhizine.service.Oil.MobileCardService;
@@ -10,6 +11,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -38,7 +42,10 @@ public class JunitTest2 {
         //gtGateWay.recharge("980210236296627",1000,gtConfig.getCopartnerId(),gtConfig.getCopartnerPassword());
         //gtGateWay.phoneRegister(gtConfig.getCopartnerId(),gtConfig.getCopartnerPassword());
         //gtGateWay.getUserToken("D5D50D2D9F472F68", "D5D50D2D9F472F6806354899",gtConfig.getCopartnerId(),gtConfig.getCopartnerPassword());
-        gtGateWay.getUserToken("10100000018", EntityUtil.getGTPwd("123456"),gtConfig.getCopartnerId(),gtConfig.getCopartnerPassword());
-        //gtGateWay.setPayPwd("10100000018",EntityUtil.getGTPwd("123456"),gtConfig.getCopartnerId(),gtConfig.getCopartnerPassword());
+        //System.out.println(gtGateWay.getUserToken("10100000020", "06398031",gtConfig.getCopartnerId(),gtConfig.getCopartnerPassword()));
+        //gtGateWay.setPayPwd("10100000020","398031",gtConfig.getCopartnerId(),gtConfig.getCopartnerPassword());
+        System.out.println(gtGateWay.getQRCode("10100000020","www.baidu.com",15000,60*10,gtConfig.getCopartnerId(),gtConfig.getCopartnerPassword()));
     }
+
+
 }

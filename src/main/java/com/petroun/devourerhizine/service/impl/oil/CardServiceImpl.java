@@ -4,6 +4,7 @@ import cn.gotoil.bill.exception.BillException;
 import com.petroun.devourerhizine.classes.tools.DateUtils;
 import com.petroun.devourerhizine.classes.tools.EntityUtil;
 import com.petroun.devourerhizine.enums.EnumCardStatus;
+import com.petroun.devourerhizine.enums.EnumOilSendStatus;
 import com.petroun.devourerhizine.enums.EnumTranStatus;
 import com.petroun.devourerhizine.model.View.ViewCardAndUse;
 import com.petroun.devourerhizine.model.entity.*;
@@ -49,12 +50,10 @@ public class CardServiceImpl implements CardService {
     }
 
 
-    private OilCardUse bindCard(OilMobileCardInfo bind_mobileCard,OilCardUse use,String mobile,int amonut){
+    private OilCardUse bindCard(String sendUrl,OilMobileCardInfo bind_mobileCard,OilCardUse use,String mobile,int amonut){
         if(bind_mobileCard != null){
             OilMobileCardInfoExample updateExample = new OilMobileCardInfoExample();
-
             updateExample.createCriteria().andCardNoEqualTo(bind_mobileCard.getCardNo()).andStatusEqualTo(EnumCardStatus.Enable.getCode());
-
             OilMobileCardInfo updateCard = new OilMobileCardInfo();
             String id = use == null ? null : use.getId();
             if(StringUtils.isEmpty(id)){
@@ -66,13 +65,14 @@ public class CardServiceImpl implements CardService {
             updateCard.setBindId(id);
             updateCard.setUpdatedAt(now);
             updateCard.setBindTime(now);
-            int i = mobileCardMapper.updateByExample(updateCard,updateExample);
+            int i = mobileCardMapper.updateByExampleSelective(updateCard,updateExample);
             if(i > 0){
                 //重新绑定的卡
                 if(use != null){
                     OilCardUse updateUse = new OilCardUse();
                     updateUse.setId(id);
                     updateUse.setQrcodeAmount(amonut);
+                    updateUse.setMobile(bind_mobileCard.getMobile());
                     updateUse.setCardNo(bind_mobileCard.getCardNo());
                     if(oilCardUseMapper.updateByPrimaryKeySelective(updateUse) > 0) {
                         return oilCardUseMapper.selectByPrimaryKey(id);
@@ -84,6 +84,9 @@ public class CardServiceImpl implements CardService {
                     OilCardUse insertUse = new OilCardUse();
 
                     insertUse.setId(id);
+                    insertUse.setSendUrl(sendUrl);
+                    insertUse.setSendCount(0);
+                    insertUse.setSendStatus(EnumOilSendStatus.Sending.getCode());
                     insertUse.setQrcodeAmount(amonut);
                     insertUse.setCardNo(bind_mobileCard.getCardNo());
                     insertUse.setMobile(mobile);
@@ -108,7 +111,7 @@ public class CardServiceImpl implements CardService {
      */
     @Override
     @Transactional
-    public ViewCardAndUse getOilCard(String mobile,int amount){
+    public ViewCardAndUse getOilCard(String sendUrl,String mobile,int amount){
         ViewCardAndUse viewCardAndUse = new ViewCardAndUse();
 
         //交易中直接返回
@@ -125,12 +128,15 @@ public class CardServiceImpl implements CardService {
             if(Old_MobileCard.getBalance() != amount){
                 //金额不一致换个金额最接近或相等
                 OilMobileCardInfo new_mobileCard = getAmonutLess(amount);
+                if(new_mobileCard == null){
+                    throw new BillException(9999,"没有可用的卡");
+                }
                 //解绑
                 unbundlingAll(use.getId());
                 //重新绑定
                 use.setAmount(amount);
-                bindCard(new_mobileCard,use,mobile,amount);
-
+                bindCard(sendUrl,new_mobileCard,use,mobile,amount);
+                viewCardAndUse.setOilMobileCardInfo(new_mobileCard);
             }else{
                 viewCardAndUse.setOilMobileCardInfo(Old_MobileCard);
             }
@@ -140,8 +146,11 @@ public class CardServiceImpl implements CardService {
 
         //不存在，或者不在使用中，绑卡
         OilMobileCardInfo mobileCard = getAmonutLess(amount);
+        if(mobileCard == null){
+            throw new BillException(9999,"没有可用的卡");
+        }
         if(mobileCard != null){
-            OilCardUse new_ues = bindCard(mobileCard,null,mobile,amount);
+            OilCardUse new_ues = bindCard(sendUrl,mobileCard,null,mobile,amount);
             if(new_ues == null){
                 throw new BillException(9999,"绑定油卡失败");
             }
@@ -162,10 +171,17 @@ public class CardServiceImpl implements CardService {
      * @return
      */
     @Override
-    public boolean updateCardUse(OilCardUse oilCardUse,String time,int sed){
+    public boolean updateCardUse(OilCardUse oilCardUse,String time,int sed,String strBRCode){
+        OilCardUse old = oilCardUseMapper.selectByPrimaryKey(oilCardUse.getId());
+
+
         OilCardUse update = new OilCardUse();
         update.setId(oilCardUse.getId());
-        update.setCreatedAt(DateUtils.strToDate(time));
+        if(old == null || old.getCreatedAt() == null){
+            update.setCreatedAt(DateUtils.strToDate(time));
+        }
+
+        update.setQrcode(strBRCode);
         update.setValidityTime(DateUtils.DateAddSed(time,sed));
         if(oilCardUseMapper.updateByPrimaryKeySelective(update) > 0){
             return true;
@@ -193,12 +209,12 @@ public class CardServiceImpl implements CardService {
      */
     private boolean unbundlingAll(String useId){
         OilMobileCardInfo card = getMobileCardByUseId(useId);
-        card.setBindTime(null);
-        card.setBindId(null);
-        card.setStatus(EnumCardStatus.Enable.getCode());
         if(!card.getBindId().equals(useId)){
             return false;
         }
+        card.setBindTime(null);
+        card.setBindId(null);
+        card.setStatus(EnumCardStatus.Enable.getCode());
         if(mobileCardMapper.updateByPrimaryKey(card)> 0){
             return true;
         }

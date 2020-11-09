@@ -1,5 +1,6 @@
 package com.petroun.devourerhizine.service.Oil;
 
+import com.petroun.devourerhizine.model.entity.OilCardUse;
 import com.petroun.devourerhizine.model.entity.OilMobileCardDetail;
 import com.petroun.devourerhizine.model.entity.OilMobileCardInfo;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,4 +37,6 @@ public interface MobileCardService {
     OilMobileCardInfo getMobileCardInfoByCardNo(String cardNo);
 
     long queryCardsInfo(List<Byte> status);
+
+    OilCardUse getByid(String id);
 }

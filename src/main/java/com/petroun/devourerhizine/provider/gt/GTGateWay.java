@@ -20,6 +20,7 @@ import com.petroun.devourerhizine.model.entity.OilMobileCardDetail;
 import com.petroun.devourerhizine.model.entity.OilMobileCardInfo;
 import com.petroun.devourerhizine.model.mapper.InvokeThirdLogMapper;
 import com.petroun.devourerhizine.service.Oil.CardService;
+import com.petroun.devourerhizine.service.Oil.GotoilService;
 import com.petroun.devourerhizine.service.Oil.MobileCardService;
 import okhttp3.Response;
 import org.slf4j.Logger;
@@ -52,6 +53,9 @@ public class GTGateWay {
     @Autowired
     MobileCardService mobileCardService;
 
+    @Autowired
+    GotoilService gotoilService;
+
 
 
     public String getUserToken(String cardNo,String pwd,String copartnerId,String copartnerPwd){
@@ -67,20 +71,36 @@ public class GTGateWay {
         requestEntity.setReqParameters(reqParameters);*/
         GTRequestSigner.signedRequest(requestEntity,copartnerPwd);
 
-        InvokeThirdLogWithBLOBs invokeThirdLogWithBLOBs = EntityUtil.createInvokeThirdLog("", EnumGtOil.UseToken.getCode(),requestEntity.getRequestId());
+        InvokeThirdLogWithBLOBs invokeThirdLogWithBLOBs = EntityUtil.createInvokeThirdLog(cardNo, EnumGtOil.UseToken.getCode(),requestEntity.getRequestId());
 
         try{
             ResponseEntity responseEntity = null;
 
             String ex = XmlUtils.toStr(requestEntity,false,true);
+            invokeThirdLogWithBLOBs.setRequest(ex);
             logger.debug("请求request-->{}", ex);
 
             Response response = HttpUtils.okHttpPost(gtConfig.getUrl(),ex);
-            System.out.println(response.body().string());
-            String resTxt = response.body().string();
-            responseEntity = XmlUtils.parseBean(resTxt,responseEntity.getClass());
-            String token = "";
-            return token;
+            String token = null;
+            if (response != null && response.isSuccessful()) {
+                String resTxt = response.body().string();
+                logger.debug("应答response-->{}", resTxt);
+                invokeThirdLogWithBLOBs.setResponse(resTxt);
+
+                responseEntity = XmlUtils.parseBean(resTxt, ResponseEntity.class);
+                if ("0".equals(responseEntity.getCode())) {
+                    String strExtend4 = EntityUtil.ReqParametersByKey(responseEntity.getReqParameters(),"strExtend4");
+                    if(StringUtils.isEmpty(strExtend4)){
+                        return null;
+                    }
+                    String[] codeAndSed = strExtend4.split("\\|");
+                    token = codeAndSed[0];
+                    return token;
+                }
+            }else{
+                String resTxt =response == null ?"应答为空": response.body().string();
+                invokeThirdLogWithBLOBs.setResponse(resTxt);
+            }
         }catch (Exception ex){
             logger.error("{}", ex);
             invokeThirdLogWithBLOBs.setResponse(ex.toString());
@@ -91,13 +111,13 @@ public class GTGateWay {
     }
 
     public String getQRCode(String mobile,String sendUrl,int amount,int sed,String copartnerId,String copartnerPwd){
-        ViewCardAndUse cardAndUser = cardService.getOilCard(mobile,amount);
+        ViewCardAndUse cardAndUser = cardService.getOilCard(sendUrl,mobile,amount);
         OilMobileCardInfo mobileCard = cardAndUser.getOilMobileCardInfo();
         OilCardUse oilCardUse = cardAndUser.getOilCardUse();
-        String token = getUserToken(mobileCard.getCardNo(),(mobileCard.getMobile()+mobileCard.getSalt()),copartnerId,copartnerPwd);
+        String token = getUserToken(mobileCard.getMobile(),("06"+mobileCard.getSalt()),copartnerId,copartnerPwd);
         if(!StringUtils.isEmpty(token)){
             //判断是否需要充值
-            if(amount < mobileCard.getBalance()){
+            if(mobileCard.getBalance().compareTo(amount) <0){
                 if(!recharge(mobileCard.getCardNo(),amount,copartnerId,copartnerPwd)){
                     throw new BillException(9999,"充值失败");
                 }
@@ -105,19 +125,23 @@ public class GTGateWay {
 
 
             RequestEntity requestEntity = new RequestEntity();
-            requestEntity.setRequestId("GetQRcodeOrBarcode");
+            requestEntity.setRequestId("GetAPPQRcodeOrBarcode");
             requestEntity.setMoney("0");
             requestEntity.setCopartnerId(copartnerId);
-            //requestEntity.setPassword(oilCardInfo.getCardPwd());
-            //requestEntity.setCard(mobileCard.getCardNo());
+            requestEntity.setRequestFlow("");
+            requestEntity.setPassword("");
+            requestEntity.setCard(mobileCard.getMobile());
+
+            ReqParameters reqParameters = new ReqParameters();
+            reqParameters.add("strTransCert",token);
+            reqParameters.add("strExtend1",mobileCard.getCardNo());
+            reqParameters.add("strExtend2",String.valueOf(sed));
+            requestEntity.setReqParameters(reqParameters);
+
             GTRequestSigner.signedRequest(requestEntity,copartnerPwd);
 
             InvokeThirdLogWithBLOBs invokeThirdLogWithBLOBs = EntityUtil.createInvokeThirdLog(oilCardUse.getId(), EnumGtOil.QRcode.getCode(),requestEntity.getRequestId());
-            ReqParameters reqParameters = new ReqParameters();
 
-            reqParameters.add("strTransCert",token);
-            reqParameters.add("strExtend2",String.valueOf(sed));
-            requestEntity.setReqParameters(reqParameters);
 
             try{
                 ResponseEntity responseEntity = null;
@@ -127,27 +151,26 @@ public class GTGateWay {
                 invokeThirdLogWithBLOBs.setRequest(ex);
 
                 Response response = HttpUtils.okHttpPost(gtConfig.getUrl(),ex);
-                System.out.println(response.body().string());
                 if (response != null && response.isSuccessful()) {
                     String resTxt = response.body().string();
                     logger.debug("应答response-->{}", resTxt);
+                    invokeThirdLogWithBLOBs.setResponse(resTxt);
                     responseEntity = XmlUtils.parseBean(resTxt, ResponseEntity.class);
                     if ("0".equals(responseEntity.getCode())) {
-                        String QRCode = "";
-                        int QRCodeSed = 100;
-                        String time = "";
-                        cardService.updateCardUse(oilCardUse,time,QRCodeSed);
-                    }else{
-
+                        String strBRCode = EntityUtil.ReqParametersByKey(responseEntity.getReqParameters(),"strQRCode");
+                        String nQRValidSeconds = EntityUtil.ReqParametersByKey(responseEntity.getReqParameters(),"nQRValidSeconds");
+                        String time = responseEntity.getTime();
+                        if(StringUtils.isEmpty(strBRCode)){
+                            return null;
+                        }
+                        String QRCode = strBRCode;
+                        int QRCodeSed = Integer.valueOf(nQRValidSeconds);
+                        cardService.updateCardUse(oilCardUse,time,QRCodeSed,strBRCode);
                     }
                 }else{
                     String resTxt =response == null ?"应答为空": response.body().string();
                     invokeThirdLogWithBLOBs.setResponse(resTxt);
                 }
-
-
-                // 获取失败
-
                 return null;
             }catch (Exception ex){
                 logger.error("{}", ex);
@@ -156,6 +179,7 @@ public class GTGateWay {
                 invokeThirdLogMapper.insert(invokeThirdLogWithBLOBs);
             }
         }else{
+            throw new BillException(9999,"token获取失败");
             //TOKEN获取失败
         }
         return null;
@@ -252,9 +276,7 @@ public class GTGateWay {
                             if(cardService.updateOilCardUse(updateOilCardUser)){
                                 cardService.unbundlingNotInTrading(updateOilCardUser.getId());
                                 //todo 成功通知
-
-                               /* MQPublisher.publish(connection, MQDefiner.EX_GOTOIL, MQDefiner.RK_GOTOIL_BIND, "ID",
-                                        MQPublisher.DelayInterval.IMMEDIATELY);*/
+                                gotoilService.appendGotoilQueue(updateOilCardUser.getId(),0);
                                 return updateOilCardUser;
                             }
                         }
@@ -319,8 +341,7 @@ public class GTGateWay {
         requestEntity.setRequestFlow("");
         requestEntity.setMoney("0");
         requestEntity.setCopartnerId(copartnerId);
-        String pwd = mbcard.getMobile()+mbcard.getSalt();
-        requestEntity.setPassword(EntityUtil.getGTPwd(pwd)+pwd);
+        requestEntity.setPassword(EntityUtil.getGTPassword(mbcard.getMobile()));
         requestEntity.setCard(mbcard.getMobile());
         requestEntity.setExtend("");
         requestEntity.setExtend2("");
@@ -345,7 +366,7 @@ public class GTGateWay {
                     String userid = EntityUtil.ReqParametersByKey(responseEntity.getReqParameters(),"strExtend1");
                     mbcard.setUserId(userid);
                     List<OilMobileCardDetail> insertDetails = userBindCardQuery(mbcard,copartnerId,copartnerPwd);
-                    if(setPayPwd(mbcard.getMobile(),EntityUtil.getGTPwd(mbcard.getSalt()+mbcard.getMobile()),copartnerId,copartnerPwd)) {
+                    if(setPayPwd(mbcard.getMobile(),mbcard.getSalt(),copartnerId,copartnerPwd)) {
                         mbcard.setStatus(EnumCardStatus.Enable.getCode());
                         mobileCardService.insertMobileCard(mbcard);
                         mobileCardService.insertOrUpdateMobileCardDetails(insertDetails);
@@ -504,7 +525,7 @@ public class GTGateWay {
         requestEntity.setExtend2("");
 
         ReqParameters reqParameters = new ReqParameters();
-        reqParameters.add("strNewPwd",EntityUtil.getGTPwd(pwd));
+        reqParameters.add("strNewPwd",pwd);
         requestEntity.setReqParameters(reqParameters);
         GTRequestSigner.signedRequest(requestEntity,copartnerPwd);
         InvokeThirdLogWithBLOBs invokeThirdLogWithBLOBs = EntityUtil.createInvokeThirdLog(mobile, EnumGtOil.SetPayPwd.getCode(),requestEntity.getRequestId());

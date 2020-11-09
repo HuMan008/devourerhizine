@@ -42,7 +42,7 @@ public class MobileCardServiceImpl implements MobileCardService {
             OilMobileCardInfo queryCard = mbCards.get(0);
             mbCard.setMobile(String.valueOf(Long.valueOf(queryCard.getMobile()) + 1));
         }
-        mbCard.setSalt(RandomStringUtils.random(8, false, true));
+        mbCard.setSalt(RandomStringUtils.random(6, false, true));
         mbCard.setCreatedAt(new Date());
         mbCard.setBalance(0);
         mbCard.setStatus(EnumCardStatus.Enable.getCode());
@@ -55,7 +55,7 @@ public class MobileCardServiceImpl implements MobileCardService {
         if(mbcard == null){
             OilMobileCardInfo mbCard = new OilMobileCardInfo();
             mbCard.setMobile(mobile);
-            mbCard.setSalt(RandomStringUtils.random(8, false, true));
+            mbCard.setSalt(RandomStringUtils.random(6, false, true));
             mbCard.setCreatedAt(new Date());
             mbCard.setStatus(EnumCardStatus.Enable.getCode());
             return mbCard;
@@ -163,5 +163,11 @@ public class MobileCardServiceImpl implements MobileCardService {
             count = 0L;
         }
         return count;
+    }
+
+    @Override
+    public OilCardUse getByid(String id){
+
+        return null;
     }
 }

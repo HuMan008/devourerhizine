@@ -44,15 +44,18 @@ public class OilTask {
         long count = mobileCardService.queryCardsInfo(list);
 
         ArrayList<Byte> use = new ArrayList<>();
-        list.add(EnumCardStatus.Enable.getCode());
+        use.add(EnumCardStatus.Enable.getCode());
         //目前可用
         long usecount = mobileCardService.queryCardsInfo(use);
 
         //总卡数一半
         BigDecimal b1 = new BigDecimal(count);
         long b2 = b1.divide(new BigDecimal(2)).longValue();
+        if(b2 == 0){
+            b2 = 1;
+        }
 
-        if(b2 > usecount){
+        if(b2 >= usecount){
             for(long i = 0 ;  i < b2 ;i++ ){
                 gtGateWay.phoneRegister(gtConfig.getCopartnerId(),gtConfig.getCopartnerPassword());
             }
@@ -64,11 +67,11 @@ public class OilTask {
      */
     @Scheduled(initialDelay = 60000, fixedDelay = 1000 * 60 * 10)
     public void checkBindCards(){
-        /*List<OilCardInfo> cards = cardService.getCardByStatus(EnumCardStatus.Useing.getCode());
+        List<OilCardInfo> cards = cardService.getCardByStatus(EnumCardStatus.Useing.getCode());
         for(OilCardInfo card : cards){
             OilCardUse use = cardService.queryById(card.getBindId());
             cardService.unbundlingNotInTrading(use.getId());
-        }*/
+        }
     }
 
     /**

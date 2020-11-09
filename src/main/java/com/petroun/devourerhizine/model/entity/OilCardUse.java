@@ -9,11 +9,15 @@ public class OilCardUse {
 
     private String mobile;
 
+    private String qrcode;
+
     private Integer qrcodeAmount;
 
     private Byte status;
 
     private String sendUrl;
+
+    private Integer sendCount;
 
     private Byte sendStatus;
 
@@ -71,6 +75,14 @@ public class OilCardUse {
         this.mobile = mobile == null ? null : mobile.trim();
     }
 
+    public String getQrcode() {
+        return qrcode;
+    }
+
+    public void setQrcode(String qrcode) {
+        this.qrcode = qrcode == null ? null : qrcode.trim();
+    }
+
     public Integer getQrcodeAmount() {
         return qrcodeAmount;
     }
@@ -93,6 +105,14 @@ public class OilCardUse {
 
     public void setSendUrl(String sendUrl) {
         this.sendUrl = sendUrl == null ? null : sendUrl.trim();
+    }
+
+    public Integer getSendCount() {
+        return sendCount;
+    }
+
+    public void setSendCount(Integer sendCount) {
+        this.sendCount = sendCount;
     }
 
     public Byte getSendStatus() {
@@ -232,9 +252,11 @@ public class OilCardUse {
         sb.append(", id=").append(id);
         sb.append(", cardNo=").append(cardNo);
         sb.append(", mobile=").append(mobile);
+        sb.append(", qrcode=").append(qrcode);
         sb.append(", qrcodeAmount=").append(qrcodeAmount);
         sb.append(", status=").append(status);
         sb.append(", sendUrl=").append(sendUrl);
+        sb.append(", sendCount=").append(sendCount);
         sb.append(", sendStatus=").append(sendStatus);
         sb.append(", validityTime=").append(validityTime);
         sb.append(", businessId=").append(businessId);

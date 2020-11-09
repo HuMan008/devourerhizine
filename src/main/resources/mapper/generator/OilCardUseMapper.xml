@@ -5,9 +5,11 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="card_no" jdbcType="VARCHAR" property="cardNo" />
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="qrcode" jdbcType="VARCHAR" property="qrcode" />
     <result column="qrcode_amount" jdbcType="INTEGER" property="qrcodeAmount" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="send_url" jdbcType="VARCHAR" property="sendUrl" />
+    <result column="send_count" jdbcType="INTEGER" property="sendCount" />
     <result column="send_status" jdbcType="TINYINT" property="sendStatus" />
     <result column="validity_time" jdbcType="TIMESTAMP" property="validityTime" />
     <result column="business_id" jdbcType="VARCHAR" property="businessId" />
@@ -84,9 +86,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, card_no, mobile, qrcode_amount, status, send_url, send_status, validity_time, 
-    business_id, business_name, station, station_name, flowid, face, amount, merchant, 
-    balance, rise, rise_after, oil_price, transaction_time, created_at
+    id, card_no, mobile, qrcode, qrcode_amount, status, send_url, send_count, send_status, 
+    validity_time, business_id, business_name, station, station_name, flowid, face, amount, 
+    merchant, balance, rise, rise_after, oil_price, transaction_time, created_at
   </sql>
   <select id="selectByExample" parameterType="com.petroun.devourerhizine.model.entity.OilCardUseExample" resultMap="BaseResultMap">
     select
@@ -128,21 +130,23 @@
   </delete>
   <insert id="insert" parameterType="com.petroun.devourerhizine.model.entity.OilCardUse">
     insert into de_oil_card_use (id, card_no, mobile, 
-      qrcode_amount, status, send_url, 
-      send_status, validity_time, business_id, 
-      business_name, station, station_name, 
-      flowid, face, amount, 
-      merchant, balance, rise, 
-      rise_after, oil_price, transaction_time, 
-      created_at)
+      qrcode, qrcode_amount, status, 
+      send_url, send_count, send_status, 
+      validity_time, business_id, business_name, 
+      station, station_name, flowid, 
+      face, amount, merchant, 
+      balance, rise, rise_after, 
+      oil_price, transaction_time, created_at
+      )
     values (#{id,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
-      #{qrcodeAmount,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, #{sendUrl,jdbcType=VARCHAR}, 
-      #{sendStatus,jdbcType=TINYINT}, #{validityTime,jdbcType=TIMESTAMP}, #{businessId,jdbcType=VARCHAR}, 
-      #{businessName,jdbcType=VARCHAR}, #{station,jdbcType=VARCHAR}, #{stationName,jdbcType=VARCHAR}, 
-      #{flowid,jdbcType=VARCHAR}, #{face,jdbcType=INTEGER}, #{amount,jdbcType=INTEGER}, 
-      #{merchant,jdbcType=VARCHAR}, #{balance,jdbcType=INTEGER}, #{rise,jdbcType=VARCHAR}, 
-      #{riseAfter,jdbcType=VARCHAR}, #{oilPrice,jdbcType=INTEGER}, #{transactionTime,jdbcType=DATE}, 
-      #{createdAt,jdbcType=TIMESTAMP})
+      #{qrcode,jdbcType=VARCHAR}, #{qrcodeAmount,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
+      #{sendUrl,jdbcType=VARCHAR}, #{sendCount,jdbcType=INTEGER}, #{sendStatus,jdbcType=TINYINT}, 
+      #{validityTime,jdbcType=TIMESTAMP}, #{businessId,jdbcType=VARCHAR}, #{businessName,jdbcType=VARCHAR}, 
+      #{station,jdbcType=VARCHAR}, #{stationName,jdbcType=VARCHAR}, #{flowid,jdbcType=VARCHAR}, 
+      #{face,jdbcType=INTEGER}, #{amount,jdbcType=INTEGER}, #{merchant,jdbcType=VARCHAR}, 
+      #{balance,jdbcType=INTEGER}, #{rise,jdbcType=VARCHAR}, #{riseAfter,jdbcType=VARCHAR}, 
+      #{oilPrice,jdbcType=INTEGER}, #{transactionTime,jdbcType=DATE}, #{createdAt,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.petroun.devourerhizine.model.entity.OilCardUse">
     insert into de_oil_card_use
@@ -156,6 +160,9 @@
       <if test="mobile != null">
         mobile,
       </if>
+      <if test="qrcode != null">
+        qrcode,
+      </if>
       <if test="qrcodeAmount != null">
         qrcode_amount,
       </if>
@@ -164,6 +171,9 @@
       </if>
       <if test="sendUrl != null">
         send_url,
+      </if>
+      <if test="sendCount != null">
+        send_count,
       </if>
       <if test="sendStatus != null">
         send_status,
@@ -224,6 +234,9 @@
       <if test="mobile != null">
         #{mobile,jdbcType=VARCHAR},
       </if>
+      <if test="qrcode != null">
+        #{qrcode,jdbcType=VARCHAR},
+      </if>
       <if test="qrcodeAmount != null">
         #{qrcodeAmount,jdbcType=INTEGER},
       </if>
@@ -232,6 +245,9 @@
       </if>
       <if test="sendUrl != null">
         #{sendUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sendCount != null">
+        #{sendCount,jdbcType=INTEGER},
       </if>
       <if test="sendStatus != null">
         #{sendStatus,jdbcType=TINYINT},
@@ -301,6 +317,9 @@
       <if test="record.mobile != null">
         mobile = #{record.mobile,jdbcType=VARCHAR},
       </if>
+      <if test="record.qrcode != null">
+        qrcode = #{record.qrcode,jdbcType=VARCHAR},
+      </if>
       <if test="record.qrcodeAmount != null">
         qrcode_amount = #{record.qrcodeAmount,jdbcType=INTEGER},
       </if>
@@ -309,6 +328,9 @@
       </if>
       <if test="record.sendUrl != null">
         send_url = #{record.sendUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sendCount != null">
+        send_count = #{record.sendCount,jdbcType=INTEGER},
       </if>
       <if test="record.sendStatus != null">
         send_status = #{record.sendStatus,jdbcType=TINYINT},
@@ -368,9 +390,11 @@
     set id = #{record.id,jdbcType=VARCHAR},
       card_no = #{record.cardNo,jdbcType=VARCHAR},
       mobile = #{record.mobile,jdbcType=VARCHAR},
+      qrcode = #{record.qrcode,jdbcType=VARCHAR},
       qrcode_amount = #{record.qrcodeAmount,jdbcType=INTEGER},
       status = #{record.status,jdbcType=TINYINT},
       send_url = #{record.sendUrl,jdbcType=VARCHAR},
+      send_count = #{record.sendCount,jdbcType=INTEGER},
       send_status = #{record.sendStatus,jdbcType=TINYINT},
       validity_time = #{record.validityTime,jdbcType=TIMESTAMP},
       business_id = #{record.businessId,jdbcType=VARCHAR},
@@ -400,6 +424,9 @@
       <if test="mobile != null">
         mobile = #{mobile,jdbcType=VARCHAR},
       </if>
+      <if test="qrcode != null">
+        qrcode = #{qrcode,jdbcType=VARCHAR},
+      </if>
       <if test="qrcodeAmount != null">
         qrcode_amount = #{qrcodeAmount,jdbcType=INTEGER},
       </if>
@@ -408,6 +435,9 @@
       </if>
       <if test="sendUrl != null">
         send_url = #{sendUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sendCount != null">
+        send_count = #{sendCount,jdbcType=INTEGER},
       </if>
       <if test="sendStatus != null">
         send_status = #{sendStatus,jdbcType=TINYINT},
@@ -464,9 +494,11 @@
     update de_oil_card_use
     set card_no = #{cardNo,jdbcType=VARCHAR},
       mobile = #{mobile,jdbcType=VARCHAR},
+      qrcode = #{qrcode,jdbcType=VARCHAR},
       qrcode_amount = #{qrcodeAmount,jdbcType=INTEGER},
       status = #{status,jdbcType=TINYINT},
       send_url = #{sendUrl,jdbcType=VARCHAR},
+      send_count = #{sendCount,jdbcType=INTEGER},
       send_status = #{sendStatus,jdbcType=TINYINT},
       validity_time = #{validityTime,jdbcType=TIMESTAMP},
       business_id = #{businessId,jdbcType=VARCHAR},

@@ -15,11 +15,17 @@ import cn.gotoil.bill.tools.ObjectHelper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.petroun.devourerhizine.classes.rabbitmq.MQDefiner;
 import com.petroun.devourerhizine.classes.rabbitmq.SuppressRabbitConsumer;
+import com.petroun.devourerhizine.classes.tools.HttpUtils;
 import com.petroun.devourerhizine.model.OptionKeys;
+import com.petroun.devourerhizine.model.entity.OilCardUse;
 import com.petroun.devourerhizine.provider.petroun.Rhizine;
+import com.petroun.devourerhizine.service.Oil.CardService;
+import com.petroun.devourerhizine.service.Oil.GotoilService;
+import com.petroun.devourerhizine.service.Oil.MobileCardService;
 import com.petroun.devourerhizine.service.OptionService;
 import com.petroun.devourerhizine.service.cnpc.CnpcRechargeService;
 import com.rabbitmq.client.*;
+import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +50,15 @@ public class RabbitMQRunner implements CommandLineRunner {
 
     @Autowired
     private OptionService optionService;
+
+    @Autowired
+    private GotoilService gotoilService;
+
+    @Autowired
+    private MobileCardService mobileCardService;
+
+    @Autowired
+    private CardService cardService;
 
 
     @Override
@@ -245,12 +260,18 @@ public class RabbitMQRunner implements CommandLineRunner {
                                    byte[] body) throws IOException {
             try {
                 logger.info("----->{}", new String(body));
-                // TODO
+                // TODO  oil
+                String useId = new String(body);
+                OilCardUse use = cardService.queryById(useId);
+                //use.getSendUrl();
+                //count
+                Response response = HttpUtils.okHttpPost(useId,"");
+                String result = response.body().toString();
+                if(result.equals("ok")){
 
-                //                Long id = ObjectHelper.getObjectMapper().readValue(body, .class);
-                //                logger.info("Handle CNPC Regain Task:{}", id);
-                //                cnpcRechargeService.regain(id);
-                //                getChannel().basicAck(envelope.getDeliveryTag(), false);
+                }else{
+                    gotoilService.appendGotoilQueue("id",1);
+                }
                 getChannel().basicReject(envelope.getDeliveryTag(), false);
             } catch (InvalidFormatException ex) {
                 logger.info("{}", ex);

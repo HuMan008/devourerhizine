@@ -362,6 +362,76 @@ public class OilCardUseExample {
             return (Criteria) this;
         }
 
+        public Criteria andQrcodeIsNull() {
+            addCriterion("qrcode is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeIsNotNull() {
+            addCriterion("qrcode is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeEqualTo(String value) {
+            addCriterion("qrcode =", value, "qrcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeNotEqualTo(String value) {
+            addCriterion("qrcode <>", value, "qrcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeGreaterThan(String value) {
+            addCriterion("qrcode >", value, "qrcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeGreaterThanOrEqualTo(String value) {
+            addCriterion("qrcode >=", value, "qrcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeLessThan(String value) {
+            addCriterion("qrcode <", value, "qrcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeLessThanOrEqualTo(String value) {
+            addCriterion("qrcode <=", value, "qrcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeLike(String value) {
+            addCriterion("qrcode like", value, "qrcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeNotLike(String value) {
+            addCriterion("qrcode not like", value, "qrcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeIn(List<String> values) {
+            addCriterion("qrcode in", values, "qrcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeNotIn(List<String> values) {
+            addCriterion("qrcode not in", values, "qrcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeBetween(String value1, String value2) {
+            addCriterion("qrcode between", value1, value2, "qrcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQrcodeNotBetween(String value1, String value2) {
+            addCriterion("qrcode not between", value1, value2, "qrcode");
+            return (Criteria) this;
+        }
+
         public Criteria andQrcodeAmountIsNull() {
             addCriterion("qrcode_amount is null");
             return (Criteria) this;
@@ -549,6 +619,66 @@ public class OilCardUseExample {
 
         public Criteria andSendUrlNotBetween(String value1, String value2) {
             addCriterion("send_url not between", value1, value2, "sendUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendCountIsNull() {
+            addCriterion("send_count is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendCountIsNotNull() {
+            addCriterion("send_count is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendCountEqualTo(Integer value) {
+            addCriterion("send_count =", value, "sendCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendCountNotEqualTo(Integer value) {
+            addCriterion("send_count <>", value, "sendCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendCountGreaterThan(Integer value) {
+            addCriterion("send_count >", value, "sendCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendCountGreaterThanOrEqualTo(Integer value) {
+            addCriterion("send_count >=", value, "sendCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendCountLessThan(Integer value) {
+            addCriterion("send_count <", value, "sendCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendCountLessThanOrEqualTo(Integer value) {
+            addCriterion("send_count <=", value, "sendCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendCountIn(List<Integer> values) {
+            addCriterion("send_count in", values, "sendCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendCountNotIn(List<Integer> values) {
+            addCriterion("send_count not in", values, "sendCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendCountBetween(Integer value1, Integer value2) {
+            addCriterion("send_count between", value1, value2, "sendCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendCountNotBetween(Integer value1, Integer value2) {
+            addCriterion("send_count not between", value1, value2, "sendCount");
             return (Criteria) this;
         }
 

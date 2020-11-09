@@ -47,9 +47,9 @@ public class EntityUtil {
         return id;
     }
 
-    public static String getGTPwd(String pwd){
-        String hex= Integer.toHexString(pwd.length());
-        return hex+pwd;
+    public static String getGTPassword(String pwd){
+        String p = pwd.substring(pwd.length()-6,pwd.length());
+        return "06"+p;
     }
 
 }

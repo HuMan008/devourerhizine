@@ -13,7 +13,7 @@ public interface CardService {
      * @return
      */
     @Transactional
-    ViewCardAndUse getOilCard(String mobile,int amount);
+    ViewCardAndUse getOilCard(String sendUrl,String mobile,int amount);
 
     /**
      * 更新创建时间，有效时间
@@ -22,7 +22,7 @@ public interface CardService {
      * @param sed
      * @return
      */
-    boolean updateCardUse(OilCardUse oilCardUse, String time, int sed);
+    boolean updateCardUse(OilCardUse oilCardUse, String time, int sed,String strBRCode);
 
     OilCardUse queryById(String id);
 
