@@ -25,7 +25,7 @@ import java.util.Map;
  *
  */
 
-@SuppressWarnings("unused")
+//@SuppressWarnings("unused")
 public class MQDefiner {
 
     private static Logger logger = LoggerFactory.getLogger(MQDefiner.class);
@@ -46,9 +46,9 @@ public class MQDefiner {
     public static final String Q_REGAIN = "CNPC_REGAIN";
 
 
-    public static final String RK_QR_BIND = "#.gotoil.#";
-    public static final String RK_QR = "gotoil";
-    public static final String Q_GOTOIL_QR = "GOTOIL_QR";
+    public static final String RK_GOTOIL_BIND = "#.gotoil.#";
+    public static final String RK_GOTOIL = "gotoil";
+    public static final String Q_REFUEL = "GOTOIL_REFUEL";
 
 
     public static final String EX_REFUEL_CODE = "refuelcode";
@@ -92,10 +92,10 @@ public class MQDefiner {
         return natureBuildChannel(connection, prefetchSize, EX_CNPC, Q_INQUIRE, RK_INQUIRE_BIND);
     }
 
-    public static Channel gotoilQRCode(Connection connection, int prefetchSize) {
-        return natureBuildChannel(connection, prefetchSize, EX_GOTOIL, Q_GOTOIL_QR, RK_QR_BIND);
-
-    }
+    //    public static Channel gotoilQRRefuel(Connection connection, int prefetchSize) {
+    //        return natureBuildChannel(connection, prefetchSize, EX_GOTOIL, Q_REFUEL, RK_GOTOIL_BIND);
+    //
+    //    }
 
 
     /**
@@ -114,15 +114,18 @@ public class MQDefiner {
      * @return
      * @throws IOException
      */
-    public static Channel RefuelCodeNotificationChannel(Connection connection, int prefetchSize) {
-        Channel channel = natureBuildChannel(connection, prefetchSize, EX_REFUEL_CODE, Q_NOTIFICATION_MERCHANT, RK_NOTIFICATION_MERCHANT_BIND);
-        try {
-            channel.queueDeclare(Q_NOTIFICATION_MERCHANT_FLITER, true,false,false,null);
-            channel.queueBind(Q_NOTIFICATION_MERCHANT_FLITER, EX_REFUEL_CODE, RK_NOTIFICATION_MERCHANT_FLITER_BIND);
-        }catch (Exception ex) {
-            logger.error("{}", ex);
-        }
-        return channel;
+    public static Channel gotoilChannel(Connection connection, int prefetchSize) {
+        //        Channel channel = natureBuildChannel(connection, prefetchSize, EX_REFUEL_CODE,
+        // Q_NOTIFICATION_MERCHANT, RK_NOTIFICATION_MERCHANT_BIND);
+        //        try {
+        //            channel.queueDeclare(Q_NOTIFICATION_MERCHANT_FLITER, true,false,false,null);
+        //            channel.queueBind(Q_NOTIFICATION_MERCHANT_FLITER, EX_REFUEL_CODE,
+        // RK_NOTIFICATION_MERCHANT_FLITER_BIND);
+        //        }catch (Exception ex) {
+        //            logger.error("{}", ex);
+        //        }
+        //        return channel;
+        return natureBuildChannel(connection, prefetchSize, EX_GOTOIL, Q_REFUEL, RK_GOTOIL_BIND);
     }
 
 

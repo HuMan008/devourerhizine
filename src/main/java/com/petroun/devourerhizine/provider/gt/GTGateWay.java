@@ -76,24 +76,11 @@ public class GTGateWay {
             logger.debug("请求request-->{}", ex);
 
             Response response = HttpUtils.okHttpPost(gtConfig.getUrl(),ex);
-            //成功
-            if (response != null && response.isSuccessful()) {
-                String resTxt = response.body().string();
-                System.out.println(resTxt);
-                logger.debug("应答response-->{}",resTxt);
-                responseEntity = XmlUtils.parseBean(resTxt,ResponseEntity.class);
-                if("0".equals(responseEntity.getCode())){
-                    responseEntity = XmlUtils.parseBean(resTxt,responseEntity.getClass());
-                    String token = "";
-                    return token;
-                }else{
-                    invokeThirdLogWithBLOBs.setResponse(resTxt);
-                }
-            }else{
-                String resTxt =response == null ?"应答为空": response.body().string();
-                //System.out.println(resTxt);
-                invokeThirdLogWithBLOBs.setResponse(resTxt);
-            }
+            System.out.println(response.body().string());
+            String resTxt = response.body().string();
+            responseEntity = XmlUtils.parseBean(resTxt,responseEntity.getClass());
+            String token = "";
+            return token;
         }catch (Exception ex){
             logger.error("{}", ex);
             invokeThirdLogWithBLOBs.setResponse(ex.toString());
@@ -266,6 +253,8 @@ public class GTGateWay {
                                 cardService.unbundlingNotInTrading(updateOilCardUser.getId());
                                 //todo 成功通知
 
+                               /* MQPublisher.publish(connection, MQDefiner.EX_GOTOIL, MQDefiner.RK_GOTOIL_BIND, "ID",
+                                        MQPublisher.DelayInterval.IMMEDIATELY);*/
                                 return updateOilCardUser;
                             }
                         }

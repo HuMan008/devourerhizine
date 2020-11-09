@@ -60,8 +60,7 @@ public class RabbitMQRunner implements CommandLineRunner {
         cnpcInquire();
         cnpcRegain();
 
-        //
-        gotoilQR();
+        gotoil();
     }
 
     /**
@@ -101,11 +100,11 @@ public class RabbitMQRunner implements CommandLineRunner {
     }
 
 
-    private void gotoilQR() throws Exception {
-        logger.info("============start gotoil qr  worker============");
-        Channel channel = MQDefiner.gotoilQRCode(applyConnection(), 8);
-        GotoilQRConsumer gotoilQr = new GotoilQRConsumer(channel);
-        channel.basicConsume(MQDefiner.Q_GOTOIL_QR, false, gotoilQr);
+    private void gotoil() throws Exception {
+        logger.info("============start gotoil_qr_refuel  worker============");
+        Channel channel = MQDefiner.gotoilChannel(applyConnection(), 8);
+        GotoilConsumer gotoilQr = new GotoilConsumer(channel);
+        channel.basicConsume(MQDefiner.Q_REFUEL, false, gotoilQr);
     }
 
 
@@ -227,15 +226,15 @@ public class RabbitMQRunner implements CommandLineRunner {
     }
 
 
-    private class GotoilQRConsumer extends SuppressRabbitConsumer {
-        public GotoilQRConsumer(Channel channel) {
+    private class GotoilConsumer extends SuppressRabbitConsumer {
+        public GotoilConsumer(Channel channel) {
             super(channel);
         }
 
         @Override
         public void startWork() {
             try {
-                gotoilQR();
+                gotoil();
             } catch (Exception ex) {
                 logger.error("{}", ex);
             }

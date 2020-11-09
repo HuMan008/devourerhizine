@@ -90,8 +90,8 @@ public class MQPublisher {
      * @param routingKey
      * @param obj
      */
-    public static void refuelCode(Connection connection, String routingKey, Object obj) {
-        refuelCode(connection, routingKey, obj, DelayInterval.IMMEDIATELY);
+    public static void gotoil(Connection connection, String routingKey, Object obj) {
+        gotoil(connection, routingKey, obj, DelayInterval.IMMEDIATELY);
     }
 
     /**
@@ -100,8 +100,8 @@ public class MQPublisher {
      * @param obj
      * @param delay
      */
-    public static void refuelCode(Connection connection, String routingKey, Object obj, DelayInterval delay) {
-        publish(connection, MQDefiner.EX_REFUEL_CODE, routingKey, obj, delay);
+    public static void gotoil(Connection connection, String routingKey, Object obj, DelayInterval delay) {
+        publish(connection, MQDefiner.EX_GOTOIL, routingKey, obj, delay);
     }
 
 
