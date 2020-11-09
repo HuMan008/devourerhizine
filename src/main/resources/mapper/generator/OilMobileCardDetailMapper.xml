@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petroun.devourerhizine.model.mapper.OilMobileCardDetailMapper">
+  <resultMap id="BaseResultMap" type="com.petroun.devourerhizine.model.entity.OilMobileCardDetail">
+    <id column="card_no" jdbcType="VARCHAR" property="cardNo" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="card_type" jdbcType="TINYINT" property="cardType" />
+    <result column="user_uid" jdbcType="VARCHAR" property="userUid" />
+    <result column="oil_number" jdbcType="VARCHAR" property="oilNumber" />
+    <result column="card_status" jdbcType="TINYINT" property="cardStatus" />
+    <result column="card_balance" jdbcType="INTEGER" property="cardBalance" />
+    <result column="pay_balance" jdbcType="INTEGER" property="payBalance" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    card_no, mobile, card_type, user_uid, oil_number, card_status, card_balance, pay_balance, 
+    created_at, updated_at
+  </sql>
+  <select id="selectByExample" parameterType="com.petroun.devourerhizine.model.entity.OilMobileCardDetailExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from de_oil_mobile_card_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from de_oil_mobile_card_detail
+    where card_no = #{cardNo,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from de_oil_mobile_card_detail
+    where card_no = #{cardNo,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.petroun.devourerhizine.model.entity.OilMobileCardDetailExample">
+    delete from de_oil_mobile_card_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.petroun.devourerhizine.model.entity.OilMobileCardDetail">
+    insert into de_oil_mobile_card_detail (card_no, mobile, card_type, 
+      user_uid, oil_number, card_status, 
+      card_balance, pay_balance, created_at, 
+      updated_at)
+    values (#{cardNo,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{cardType,jdbcType=TINYINT}, 
+      #{userUid,jdbcType=VARCHAR}, #{oilNumber,jdbcType=VARCHAR}, #{cardStatus,jdbcType=TINYINT}, 
+      #{cardBalance,jdbcType=INTEGER}, #{payBalance,jdbcType=INTEGER}, #{createdAt,jdbcType=TIMESTAMP}, 
+      #{updatedAt,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.petroun.devourerhizine.model.entity.OilMobileCardDetail">
+    insert into de_oil_mobile_card_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cardNo != null">
+        card_no,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="cardType != null">
+        card_type,
+      </if>
+      <if test="userUid != null">
+        user_uid,
+      </if>
+      <if test="oilNumber != null">
+        oil_number,
+      </if>
+      <if test="cardStatus != null">
+        card_status,
+      </if>
+      <if test="cardBalance != null">
+        card_balance,
+      </if>
+      <if test="payBalance != null">
+        pay_balance,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cardNo != null">
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null">
+        #{cardType,jdbcType=TINYINT},
+      </if>
+      <if test="userUid != null">
+        #{userUid,jdbcType=VARCHAR},
+      </if>
+      <if test="oilNumber != null">
+        #{oilNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cardStatus != null">
+        #{cardStatus,jdbcType=TINYINT},
+      </if>
+      <if test="cardBalance != null">
+        #{cardBalance,jdbcType=INTEGER},
+      </if>
+      <if test="payBalance != null">
+        #{payBalance,jdbcType=INTEGER},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.petroun.devourerhizine.model.entity.OilMobileCardDetailExample" resultType="java.lang.Long">
+    select count(*) from de_oil_mobile_card_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update de_oil_mobile_card_detail
+    <set>
+      <if test="record.cardNo != null">
+        card_no = #{record.cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null">
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardType != null">
+        card_type = #{record.cardType,jdbcType=TINYINT},
+      </if>
+      <if test="record.userUid != null">
+        user_uid = #{record.userUid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.oilNumber != null">
+        oil_number = #{record.oilNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardStatus != null">
+        card_status = #{record.cardStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.cardBalance != null">
+        card_balance = #{record.cardBalance,jdbcType=INTEGER},
+      </if>
+      <if test="record.payBalance != null">
+        pay_balance = #{record.payBalance,jdbcType=INTEGER},
+      </if>
+      <if test="record.createdAt != null">
+        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedAt != null">
+        updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update de_oil_mobile_card_detail
+    set card_no = #{record.cardNo,jdbcType=VARCHAR},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      card_type = #{record.cardType,jdbcType=TINYINT},
+      user_uid = #{record.userUid,jdbcType=VARCHAR},
+      oil_number = #{record.oilNumber,jdbcType=VARCHAR},
+      card_status = #{record.cardStatus,jdbcType=TINYINT},
+      card_balance = #{record.cardBalance,jdbcType=INTEGER},
+      pay_balance = #{record.payBalance,jdbcType=INTEGER},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.petroun.devourerhizine.model.entity.OilMobileCardDetail">
+    update de_oil_mobile_card_detail
+    <set>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null">
+        card_type = #{cardType,jdbcType=TINYINT},
+      </if>
+      <if test="userUid != null">
+        user_uid = #{userUid,jdbcType=VARCHAR},
+      </if>
+      <if test="oilNumber != null">
+        oil_number = #{oilNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cardStatus != null">
+        card_status = #{cardStatus,jdbcType=TINYINT},
+      </if>
+      <if test="cardBalance != null">
+        card_balance = #{cardBalance,jdbcType=INTEGER},
+      </if>
+      <if test="payBalance != null">
+        pay_balance = #{payBalance,jdbcType=INTEGER},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where card_no = #{cardNo,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.petroun.devourerhizine.model.entity.OilMobileCardDetail">
+    update de_oil_mobile_card_detail
+    set mobile = #{mobile,jdbcType=VARCHAR},
+      card_type = #{cardType,jdbcType=TINYINT},
+      user_uid = #{userUid,jdbcType=VARCHAR},
+      oil_number = #{oilNumber,jdbcType=VARCHAR},
+      card_status = #{cardStatus,jdbcType=TINYINT},
+      card_balance = #{cardBalance,jdbcType=INTEGER},
+      pay_balance = #{payBalance,jdbcType=INTEGER},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where card_no = #{cardNo,jdbcType=VARCHAR}
+  </update>
+</mapper>

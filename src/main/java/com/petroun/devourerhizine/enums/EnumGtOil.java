@@ -14,6 +14,7 @@ public enum EnumGtOil {
     QueryStation((byte)4,"站点查询"),
     QueryMobile((byte)5,"手机号是否注册"),
     RegisterMobile((byte)6,"手机号注册"),
+    UserBindCardQuery((byte)7,"用户绑定卡查询"),
     ;
 
 

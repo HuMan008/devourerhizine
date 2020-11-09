@@ -10,4 +10,5 @@ public class GTConfig {
     private String url;
     private String copartnerId;
     private String copartnerPassword;
+    private String headNumber;
 }

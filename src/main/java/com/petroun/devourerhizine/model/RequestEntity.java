@@ -2,7 +2,7 @@ package com.petroun.devourerhizine.model;
 
 import lombok.Data;
 
-import java.util.HashMap;
+import java.util.TreeMap;
 import javax.xml.bind.annotation.*;
 @Data
 @XmlRootElement(name = "request")
@@ -29,6 +29,12 @@ public class RequestEntity {
     @XmlElement(name = "time")
     private String time;
 
+    @XmlElement(name = "mac")
+    private String mac;
+
+    @XmlElement(name = "parameters")
+    private ReqParameters reqParameters;
+
     @XmlElement(name = "md5")
     private String md5;
 
@@ -38,6 +44,11 @@ public class RequestEntity {
     @XmlElement(name = "md5-2")
     private String md52;
 
-    @XmlElement(name = "parameters")
-    private HashMap<String, String> parameter;
+    @XmlElement(name = "extend")
+    private String extend;
+
+    @XmlElement(name = "extend2")
+    private String extend2;
+
+
 }

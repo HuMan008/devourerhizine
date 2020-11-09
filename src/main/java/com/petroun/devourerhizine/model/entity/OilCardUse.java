@@ -15,6 +15,8 @@ public class OilCardUse {
 
     private String sendUrl;
 
+    private Byte sendStatus;
+
     private Date validityTime;
 
     private String businessId;
@@ -91,6 +93,14 @@ public class OilCardUse {
 
     public void setSendUrl(String sendUrl) {
         this.sendUrl = sendUrl == null ? null : sendUrl.trim();
+    }
+
+    public Byte getSendStatus() {
+        return sendStatus;
+    }
+
+    public void setSendStatus(Byte sendStatus) {
+        this.sendStatus = sendStatus;
     }
 
     public Date getValidityTime() {
@@ -225,6 +235,7 @@ public class OilCardUse {
         sb.append(", qrcodeAmount=").append(qrcodeAmount);
         sb.append(", status=").append(status);
         sb.append(", sendUrl=").append(sendUrl);
+        sb.append(", sendStatus=").append(sendStatus);
         sb.append(", validityTime=").append(validityTime);
         sb.append(", businessId=").append(businessId);
         sb.append(", businessName=").append(businessName);

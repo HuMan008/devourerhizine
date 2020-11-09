@@ -552,6 +552,66 @@ public class OilCardUseExample {
             return (Criteria) this;
         }
 
+        public Criteria andSendStatusIsNull() {
+            addCriterion("send_status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendStatusIsNotNull() {
+            addCriterion("send_status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendStatusEqualTo(Byte value) {
+            addCriterion("send_status =", value, "sendStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendStatusNotEqualTo(Byte value) {
+            addCriterion("send_status <>", value, "sendStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendStatusGreaterThan(Byte value) {
+            addCriterion("send_status >", value, "sendStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendStatusGreaterThanOrEqualTo(Byte value) {
+            addCriterion("send_status >=", value, "sendStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendStatusLessThan(Byte value) {
+            addCriterion("send_status <", value, "sendStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendStatusLessThanOrEqualTo(Byte value) {
+            addCriterion("send_status <=", value, "sendStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendStatusIn(List<Byte> values) {
+            addCriterion("send_status in", values, "sendStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendStatusNotIn(List<Byte> values) {
+            addCriterion("send_status not in", values, "sendStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendStatusBetween(Byte value1, Byte value2) {
+            addCriterion("send_status between", value1, value2, "sendStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendStatusNotBetween(Byte value1, Byte value2) {
+            addCriterion("send_status not between", value1, value2, "sendStatus");
+            return (Criteria) this;
+        }
+
         public Criteria andValidityTimeIsNull() {
             addCriterion("validity_time is null");
             return (Criteria) this;
