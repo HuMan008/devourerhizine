@@ -28,7 +28,8 @@ bill:
 gtconfig:
   url: "http://202.98.60.231:8080/GtTripleGate/NoKeyInServlet"
   copartnerId: 60020021
-  copartnerPassword: 361438
+  copartnerPassword: 123456
+  headNumber: 101
 
 logging:
   path: logs

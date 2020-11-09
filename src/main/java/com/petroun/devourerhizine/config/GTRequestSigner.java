@@ -1,14 +1,14 @@
 package com.petroun.devourerhizine.config;
 
 import cn.gotoil.bill.tools.encoder.Hash;
+import com.petroun.devourerhizine.model.MyParameter;
+import com.petroun.devourerhizine.model.ReqParameters;
 import com.petroun.devourerhizine.model.RequestEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by think on 2017/11/28.
@@ -29,19 +29,21 @@ public class GTRequestSigner {
     }
 
     private static void signMD52(RequestEntity request, String copartnerPassword) {
-        HashMap<String,String> parameters = request.getParameter();
+        ReqParameters parameters = request.getReqParameters();
         String payload;
-        if(parameters != null && parameters.size() >= 1) {
+        if(parameters != null && parameters.getParameter() != null && parameters.getParameter().size()>0) {
             StringBuilder values = new StringBuilder();
             StringBuilder seq = new StringBuilder();
-            for(Map.Entry entry : parameters.entrySet()){
+
+            List<MyParameter> ps = parameters.getParameter();
+            for(MyParameter p : ps){
                 if(seq.length() == 0){
-                    seq.append(entry.getValue());
+                    seq.append(p.getName());
                 }else{
                     seq.append(";");
-                    seq.append(entry.getValue());
+                    seq.append(p.getName());
                 }
-                values.append(parameters.get(entry.getKey()));
+                values.append(p.getValue());
             }
             values.append(copartnerPassword);
             payload = values.toString();

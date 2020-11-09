@@ -11,6 +11,7 @@ public enum EnumCardStatus {
     Enable((byte)0,"启用"),
     Disable((byte)1,"禁用"),
     Useing((byte)2,"使用中"),
+    Fail((byte)3,"注册失败"),
     ;
 
 
