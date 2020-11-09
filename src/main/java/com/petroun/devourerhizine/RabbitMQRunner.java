@@ -104,7 +104,7 @@ public class RabbitMQRunner implements CommandLineRunner {
         logger.info("============start gotoil_qr_refuel  worker============");
         Channel channel = MQDefiner.gotoilChannel(applyConnection(), 8);
         GotoilConsumer gotoilQr = new GotoilConsumer(channel);
-        channel.basicConsume(MQDefiner.Q_GOTOIL, false, gotoilQr);
+        channel.basicConsume(MQDefiner.Q_REFUEL, false, gotoilQr);
     }
 
 

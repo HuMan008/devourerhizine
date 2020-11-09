@@ -48,7 +48,7 @@ public class MQDefiner {
 
     public static final String RK_GOTOIL_BIND = "#.gotoil.#";
     public static final String RK_GOTOIL = "gotoil";
-    public static final String Q_GOTOIL = "GOTOIL";
+    public static final String Q_REFUEL = "GOTOIL_REFUEL";
 
 
     public static final String EX_REFUEL_CODE = "refuelcode";
@@ -93,7 +93,7 @@ public class MQDefiner {
     }
 
     //    public static Channel gotoilQRRefuel(Connection connection, int prefetchSize) {
-    //        return natureBuildChannel(connection, prefetchSize, EX_GOTOIL, Q_GOTOIL, RK_GOTOIL_BIND);
+    //        return natureBuildChannel(connection, prefetchSize, EX_GOTOIL, Q_REFUEL, RK_GOTOIL_BIND);
     //
     //    }
 
@@ -125,7 +125,7 @@ public class MQDefiner {
         //            logger.error("{}", ex);
         //        }
         //        return channel;
-        return natureBuildChannel(connection, prefetchSize, EX_GOTOIL, Q_GOTOIL, RK_GOTOIL_BIND);
+        return natureBuildChannel(connection, prefetchSize, EX_GOTOIL, Q_REFUEL, RK_GOTOIL_BIND);
     }
 
 

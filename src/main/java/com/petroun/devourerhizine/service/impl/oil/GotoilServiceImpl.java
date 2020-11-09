@@ -25,10 +25,12 @@ public class GotoilServiceImpl implements com.petroun.devourerhizine.service.Oil
     public boolean appendGotoilQueue(String id, int redo) {
 
         MQPublisher.DelayInterval delayInterval = MQPublisher.DelayInterval.IMMEDIATELY;
-        if (redo >= 1 && redo <= 5) {
+        if (redo == 0) {
+            delayInterval = MQPublisher.DelayInterval.IMMEDIATELY;
+        } else if (redo >= 1 && redo <= 5) {
             delayInterval = MQPublisher.DelayInterval.M1;
             ;
-        } else {
+        } else if (redo > 5) {
             delayInterval = MQPublisher.DelayInterval.M5;
         }
         return publishToGotoilExchange(MQDefiner.RK_GOTOIL, id, delayInterval);
@@ -46,7 +48,7 @@ public class GotoilServiceImpl implements com.petroun.devourerhizine.service.Oil
             if (connection == null || !connection.isOpen()) {
                 connection = connectionFactory.newConnection();
             }
-            MQPublisher.cnpc(connection, routeKey, value, delayInterval);
+            MQPublisher.gotoil(connection, routeKey, value, delayInterval);
             result = true;
         } catch (Exception ex) {
             log.error("{}", ex);
