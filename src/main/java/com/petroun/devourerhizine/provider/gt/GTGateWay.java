@@ -1,8 +1,6 @@
 package com.petroun.devourerhizine.provider.gt;
 
 import cn.gotoil.bill.tools.date.DateUtils;
-import com.petroun.devourerhizine.classes.rabbitmq.MQDefiner;
-import com.petroun.devourerhizine.classes.rabbitmq.MQPublisher;
 import com.petroun.devourerhizine.classes.tools.EntityUtil;
 import com.petroun.devourerhizine.classes.tools.HttpUtils;
 import com.petroun.devourerhizine.classes.tools.XmlUtils;
@@ -21,7 +19,6 @@ import com.petroun.devourerhizine.model.entity.OilMobileCardInfo;
 import com.petroun.devourerhizine.model.mapper.InvokeThirdLogMapper;
 import com.petroun.devourerhizine.service.Oil.CardService;
 import com.petroun.devourerhizine.service.Oil.MobileCardService;
-import com.rabbitmq.client.Connection;
 import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -233,7 +230,7 @@ public class GTGateWay {
                             if(cardService.updateOilCardUse(updateOilCardUser)){
                                 cardService.unbundlingNotInTrading(updateOilCardUser.getId());
                                 //todo 成功通知
-                               /* MQPublisher.publish(connection, MQDefiner.EX_GOTOIL, MQDefiner.RK_QR_BIND, "ID",
+                               /* MQPublisher.publish(connection, MQDefiner.EX_GOTOIL, MQDefiner.RK_GOTOIL_BIND, "ID",
                                         MQPublisher.DelayInterval.IMMEDIATELY);*/
                                 return updateOilCardUser;
                             }
