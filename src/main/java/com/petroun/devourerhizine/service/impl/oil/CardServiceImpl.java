@@ -249,22 +249,21 @@ public class CardServiceImpl implements CardService {
         OilCardUse use = oilCardUseMapper.selectByPrimaryKey(useId);
         if(use != null && use.getStatus() != EnumTranStatus.Trading.getCode()) {
             OilMobileCardInfo card = getMobileCardByUseId(useId);
-            card.setBindTime(null);
-            card.setBindId(null);
-            card.setStatus(EnumCardStatus.Enable.getCode());
             if(!card.getBindId().equals(useId)){
                 return false;
             }
-
+            card.setStatus(EnumCardStatus.Enable.getCode());
+            card.setBindTime(null);
+            card.setBindId(null);
             OilMobileCardInfoExample example = new OilMobileCardInfoExample();
             example.createCriteria().andMobileEqualTo(use.getCardMobile()).andStatusEqualTo(EnumCardStatus.Useing.getCode());
-            //成功更新余额
-            if(use.getStatus() == EnumTranStatus.success.getCode()) {
-                OilMobileCardInfo mobileCard = getMobileCardByUseId(useId);
-                List<OilMobileCardDetail> details = gtGateWay.userBindCardQuery(mobileCard,gtConfig.getCopartnerId(),gtConfig.getCopartnerPassword());
-                mobileCardService.insertOrUpdateMobileCardDetails(details);
-            }
-            if(mobileCardMapper.updateByExampleSelective(card,example)> 0){
+
+            if(mobileCardMapper.updateByExample(card,example)> 0){
+                if(use.getStatus() == EnumTranStatus.success.getCode()) {
+                    OilMobileCardInfo mobileCard = getMobileCardByUseId(useId);
+                    List<OilMobileCardDetail> details = gtGateWay.userBindCardQuery(mobileCard,gtConfig.getCopartnerId(),gtConfig.getCopartnerPassword());
+                    mobileCardService.insertOrUpdateMobileCardDetails(details);
+                }
                 return true;
             }
         }
