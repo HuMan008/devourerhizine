@@ -1,4 +1,4 @@
-package com.petroun.devourerhizine.config;
+package com.petroun.devourerhizine.provider.gt;
 
 import cn.gotoil.bill.tools.encoder.Hash;
 import com.petroun.devourerhizine.model.MyParameter;

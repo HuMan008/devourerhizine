@@ -1,6 +1,6 @@
 package com.petroun.devourerhizine.service.impl.oil;
 
-import com.petroun.devourerhizine.config.GTConfig;
+import com.petroun.devourerhizine.provider.gt.GTConfig;
 import com.petroun.devourerhizine.enums.EnumCardStatus;
 import com.petroun.devourerhizine.model.entity.*;
 import com.petroun.devourerhizine.model.mapper.OilMobileCardDetailMapper;

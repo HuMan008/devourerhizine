@@ -5,8 +5,6 @@ import cn.gotoil.bill.tools.date.DateUtils;
 import com.petroun.devourerhizine.classes.tools.EntityUtil;
 import com.petroun.devourerhizine.classes.tools.HttpUtils;
 import com.petroun.devourerhizine.classes.tools.XmlUtils;
-import com.petroun.devourerhizine.config.GTConfig;
-import com.petroun.devourerhizine.config.GTRequestSigner;
 import com.petroun.devourerhizine.enums.EnumCardStatus;
 import com.petroun.devourerhizine.enums.EnumGtOil;
 import com.petroun.devourerhizine.enums.EnumTranStatus;

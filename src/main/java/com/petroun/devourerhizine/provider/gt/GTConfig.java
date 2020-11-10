@@ -1,4 +1,4 @@
-package com.petroun.devourerhizine.config;
+package com.petroun.devourerhizine.provider.gt;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

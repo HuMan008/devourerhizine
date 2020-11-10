@@ -1,7 +1,7 @@
 package com.petroun.devourerhizine.task;
 
 import com.petroun.devourerhizine.classes.tools.DateUtils;
-import com.petroun.devourerhizine.config.GTConfig;
+import com.petroun.devourerhizine.provider.gt.GTConfig;
 import com.petroun.devourerhizine.enums.EnumCardStatus;
 import com.petroun.devourerhizine.enums.EnumTranStatus;
 import com.petroun.devourerhizine.model.entity.OilCardUse;
@@ -11,7 +11,6 @@ import com.petroun.devourerhizine.service.Oil.CardService;
 import com.petroun.devourerhizine.service.Oil.MobileCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.*;
