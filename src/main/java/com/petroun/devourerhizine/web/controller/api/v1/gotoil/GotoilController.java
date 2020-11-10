@@ -1,5 +1,6 @@
 package com.petroun.devourerhizine.web.controller.api.v1.gotoil;
 
+import cn.gotoil.bill.exception.BillException;
 import cn.gotoil.bill.web.annotation.Authentication;
 import cn.gotoil.bill.web.interceptor.authentication.AuthenticationType;
 import cn.gotoil.bill.web.message.BillApiResponse;
@@ -11,6 +12,7 @@ import com.petroun.devourerhizine.web.controller.api.v1.Controller;
 import com.petroun.devourerhizine.web.message.reqeust.gotoil.QRRefuelRequest;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,7 +49,9 @@ public class GotoilController extends Controller {
     public Object QRCodeAction(@Valid @RequestBody QRRefuelRequest request) {
         String qrcode = gtGateWay.getQRCode(request.getMobile(),request.getNotifyUrl()
         ,request.getFee(),request.getOutTime(),gtConfig.getCopartnerId(),gtConfig.getCopartnerPassword());
-
+        if(StringUtils.isEmpty(qrcode)){
+            throw new BillException(9999,"获取二维码失败");
+        }
         return new BillApiResponse(qrcode);
     }
 

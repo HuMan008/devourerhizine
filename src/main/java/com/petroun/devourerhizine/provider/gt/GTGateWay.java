@@ -184,7 +184,7 @@ public class GTGateWay {
     public OilCardUse queryCardUserByRemote(String id,String copartnerId,String copartnerPwd){
         OilCardUse oilCardUse = cardService.queryById(id);
         RequestEntity requestEntity = new RequestEntity();
-        requestEntity.setRequestId("UserHistoryQueryFYALL");
+        requestEntity.setRequestId("UserHistoryQueryFYYPXF");
         requestEntity.setMoney("0");
         requestEntity.setCopartnerId(copartnerId);
         requestEntity.setRequestFlow("");
