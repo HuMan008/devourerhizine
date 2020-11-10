@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Slf4j
-public class GotoilServiceImpl implements com.petroun.devourerhizine.service.Oil.GotoilService {
+public class GotoilServiceImpl implements com.petroun.devourerhizine.service.oil.GotoilService {
     @Autowired
     private Connection connection;
 

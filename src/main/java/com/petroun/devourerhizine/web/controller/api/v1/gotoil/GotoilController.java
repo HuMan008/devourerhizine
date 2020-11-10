@@ -7,7 +7,7 @@ import cn.gotoil.bill.web.message.BillApiResponse;
 import com.petroun.devourerhizine.classes.tools.DateUtils;
 import com.petroun.devourerhizine.provider.gt.GTConfig;
 import com.petroun.devourerhizine.provider.gt.GTGateWay;
-import com.petroun.devourerhizine.service.Oil.GotoilService;
+import com.petroun.devourerhizine.service.oil.GotoilService;
 import com.petroun.devourerhizine.web.controller.api.v1.Controller;
 import com.petroun.devourerhizine.web.message.reqeust.gotoil.QRRefuelRequest;
 import org.springframework.beans.factory.annotation.Autowired;

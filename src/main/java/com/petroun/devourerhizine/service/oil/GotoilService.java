@@ -1,4 +1,4 @@
-package com.petroun.devourerhizine.service.Oil;
+package com.petroun.devourerhizine.service.oil;
 
 /**
  * @author think <syj247@qq.com>、

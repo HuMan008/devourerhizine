@@ -7,8 +7,8 @@ import com.petroun.devourerhizine.enums.EnumTranStatus;
 import com.petroun.devourerhizine.model.entity.OilCardUse;
 import com.petroun.devourerhizine.model.entity.OilMobileCardInfo;
 import com.petroun.devourerhizine.provider.gt.GTGateWay;
-import com.petroun.devourerhizine.service.Oil.CardService;
-import com.petroun.devourerhizine.service.Oil.MobileCardService;
+import com.petroun.devourerhizine.service.oil.CardService;
+import com.petroun.devourerhizine.service.oil.MobileCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 

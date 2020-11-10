@@ -3,7 +3,7 @@ package com.petroun.devourerhizine.task;
 import com.petroun.devourerhizine.provider.gt.GTConfig;
 import com.petroun.devourerhizine.enums.EnumCardStatus;
 import com.petroun.devourerhizine.provider.gt.GTGateWay;
-import com.petroun.devourerhizine.service.Oil.MobileCardService;
+import com.petroun.devourerhizine.service.oil.MobileCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

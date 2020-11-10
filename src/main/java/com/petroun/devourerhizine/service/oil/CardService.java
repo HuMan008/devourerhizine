@@ -1,4 +1,4 @@
-package com.petroun.devourerhizine.service.Oil;
+package com.petroun.devourerhizine.service.oil;
 
 import com.petroun.devourerhizine.model.View.ViewCardAndUse;
 import com.petroun.devourerhizine.model.entity.OilCardUse;

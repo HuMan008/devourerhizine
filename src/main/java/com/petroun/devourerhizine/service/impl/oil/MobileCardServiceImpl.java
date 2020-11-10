@@ -5,7 +5,7 @@ import com.petroun.devourerhizine.enums.EnumCardStatus;
 import com.petroun.devourerhizine.model.entity.*;
 import com.petroun.devourerhizine.model.mapper.OilMobileCardDetailMapper;
 import com.petroun.devourerhizine.model.mapper.OilMobileCardInfoMapper;
-import com.petroun.devourerhizine.service.Oil.MobileCardService;
+import com.petroun.devourerhizine.service.oil.MobileCardService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
