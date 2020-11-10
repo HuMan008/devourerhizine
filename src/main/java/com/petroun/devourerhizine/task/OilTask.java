@@ -4,8 +4,8 @@ import com.petroun.devourerhizine.classes.tools.DateUtils;
 import com.petroun.devourerhizine.config.GTConfig;
 import com.petroun.devourerhizine.enums.EnumCardStatus;
 import com.petroun.devourerhizine.enums.EnumTranStatus;
-import com.petroun.devourerhizine.model.entity.OilCardInfo;
 import com.petroun.devourerhizine.model.entity.OilCardUse;
+import com.petroun.devourerhizine.model.entity.OilMobileCardInfo;
 import com.petroun.devourerhizine.provider.gt.GTGateWay;
 import com.petroun.devourerhizine.service.Oil.CardService;
 import com.petroun.devourerhizine.service.Oil.MobileCardService;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.*;
 
-@Component
+//@Component
 public class OilTask {
 
     @Autowired
@@ -35,7 +35,7 @@ public class OilTask {
      * 检查是否需要新增卡
      * 当可使用的卡<(总数卡/2)，增加总数的一半
      */
-    //@Scheduled(initialDelay = 60000, fixedDelay = 1000 * 60 * 5)
+    @Scheduled(initialDelay = 60000, fixedDelay = 1000 * 60 * 5)
     public void addCard(){
         ArrayList<Byte> list = new ArrayList<>();
         list.add(EnumCardStatus.Enable.getCode());
@@ -67,9 +67,13 @@ public class OilTask {
      */
     @Scheduled(initialDelay = 60000, fixedDelay = 1000 * 60 * 10)
     public void checkBindCards(){
-        List<OilCardInfo> cards = cardService.getCardByStatus(EnumCardStatus.Useing.getCode());
-        for(OilCardInfo card : cards){
+        ArrayList<Byte> status = new ArrayList<>();
+        status.add(EnumCardStatus.Useing.getCode());
+        List<OilMobileCardInfo> cards = mobileCardService.getMobileCardsByStatus(status);
+
+        for(OilMobileCardInfo card : cards){
             OilCardUse use = cardService.queryById(card.getBindId());
+            //todo 解绑没有记录的卡
             cardService.unbundlingNotInTrading(use.getId());
         }
     }
@@ -77,7 +81,7 @@ public class OilTask {
     /**
      * 查询交易状态
      */
-    @Scheduled(initialDelay = 60000, fixedDelay = 1000 * 60 * 2)
+    @Scheduled(initialDelay = 60000, fixedDelay = 1000 * 30)
     public void checkCardUse(){
         List<OilCardUse> list = cardService.queryCardUseByStatus(EnumTranStatus.Trading.getCode());
         if(list != null){
@@ -93,11 +97,15 @@ public class OilTask {
                 }else{
 
                     OilCardUse query = gtGateWay.queryCardUserByRemote(cardUse.getId(), gtConfig.getCopartnerId(), gtConfig.getCopartnerPassword());
-                    //超时
-                    if(query.getStatus() != EnumTranStatus.success.getCode()
-                            && now.compareTo(DateUtils.DateAddSed(cardUse.getValidityTime(),60*2)) > 0){
-                        cardService.updateOilCardUseStatusAndunbundling(cardUse.getId(),EnumTranStatus.fail.getCode());
-
+                    if(query != null){
+                        if(query.getStatus() != EnumTranStatus.success.getCode()
+                                && now.compareTo(DateUtils.DateAddSed(cardUse.getValidityTime(),60)) > 0){
+                            cardService.updateOilCardUseStatusAndunbundling(cardUse.getId(),EnumTranStatus.fail.getCode());
+                        }
+                    }else{
+                        if(query.getStatus() != EnumTranStatus.success.getCode() && now.compareTo(DateUtils.DateAddSed(cardUse.getValidityTime(),60 * 2)) > 0){
+                            cardService.updateOilCardUseStatusAndunbundling(cardUse.getId(),EnumTranStatus.fail.getCode());
+                        }
                     }
                 }
 

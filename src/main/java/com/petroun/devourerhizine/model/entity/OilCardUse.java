@@ -7,6 +7,8 @@ public class OilCardUse {
 
     private String cardNo;
 
+    private String cardMobile;
+
     private String mobile;
 
     private String qrcode;
@@ -65,6 +67,14 @@ public class OilCardUse {
 
     public void setCardNo(String cardNo) {
         this.cardNo = cardNo == null ? null : cardNo.trim();
+    }
+
+    public String getCardMobile() {
+        return cardMobile;
+    }
+
+    public void setCardMobile(String cardMobile) {
+        this.cardMobile = cardMobile == null ? null : cardMobile.trim();
     }
 
     public String getMobile() {
@@ -251,6 +261,7 @@ public class OilCardUse {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", cardNo=").append(cardNo);
+        sb.append(", cardMobile=").append(cardMobile);
         sb.append(", mobile=").append(mobile);
         sb.append(", qrcode=").append(qrcode);
         sb.append(", qrcodeAmount=").append(qrcodeAmount);

@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.petroun.devourerhizine.model.entity.OilCardUse">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="card_no" jdbcType="VARCHAR" property="cardNo" />
+    <result column="card_mobile" jdbcType="VARCHAR" property="cardMobile" />
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
     <result column="qrcode" jdbcType="VARCHAR" property="qrcode" />
     <result column="qrcode_amount" jdbcType="INTEGER" property="qrcodeAmount" />
@@ -86,9 +87,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, card_no, mobile, qrcode, qrcode_amount, status, send_url, send_count, send_status, 
-    validity_time, business_id, business_name, station, station_name, flowid, face, amount, 
-    merchant, balance, rise, rise_after, oil_price, transaction_time, created_at
+    id, card_no, card_mobile, mobile, qrcode, qrcode_amount, status, send_url, send_count, 
+    send_status, validity_time, business_id, business_name, station, station_name, flowid, 
+    face, amount, merchant, balance, rise, rise_after, oil_price, transaction_time, created_at
   </sql>
   <select id="selectByExample" parameterType="com.petroun.devourerhizine.model.entity.OilCardUseExample" resultMap="BaseResultMap">
     select
@@ -129,24 +130,24 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.petroun.devourerhizine.model.entity.OilCardUse">
-    insert into de_oil_card_use (id, card_no, mobile, 
-      qrcode, qrcode_amount, status, 
-      send_url, send_count, send_status, 
-      validity_time, business_id, business_name, 
-      station, station_name, flowid, 
-      face, amount, merchant, 
-      balance, rise, rise_after, 
-      oil_price, transaction_time, created_at
-      )
-    values (#{id,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
-      #{qrcode,jdbcType=VARCHAR}, #{qrcodeAmount,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
-      #{sendUrl,jdbcType=VARCHAR}, #{sendCount,jdbcType=INTEGER}, #{sendStatus,jdbcType=TINYINT}, 
-      #{validityTime,jdbcType=TIMESTAMP}, #{businessId,jdbcType=VARCHAR}, #{businessName,jdbcType=VARCHAR}, 
-      #{station,jdbcType=VARCHAR}, #{stationName,jdbcType=VARCHAR}, #{flowid,jdbcType=VARCHAR}, 
-      #{face,jdbcType=INTEGER}, #{amount,jdbcType=INTEGER}, #{merchant,jdbcType=VARCHAR}, 
-      #{balance,jdbcType=INTEGER}, #{rise,jdbcType=VARCHAR}, #{riseAfter,jdbcType=VARCHAR}, 
-      #{oilPrice,jdbcType=INTEGER}, #{transactionTime,jdbcType=DATE}, #{createdAt,jdbcType=TIMESTAMP}
-      )
+    insert into de_oil_card_use (id, card_no, card_mobile, 
+      mobile, qrcode, qrcode_amount, 
+      status, send_url, send_count, 
+      send_status, validity_time, business_id, 
+      business_name, station, station_name, 
+      flowid, face, amount, 
+      merchant, balance, rise, 
+      rise_after, oil_price, transaction_time, 
+      created_at)
+    values (#{id,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}, #{cardMobile,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{qrcode,jdbcType=VARCHAR}, #{qrcodeAmount,jdbcType=INTEGER}, 
+      #{status,jdbcType=TINYINT}, #{sendUrl,jdbcType=VARCHAR}, #{sendCount,jdbcType=INTEGER}, 
+      #{sendStatus,jdbcType=TINYINT}, #{validityTime,jdbcType=TIMESTAMP}, #{businessId,jdbcType=VARCHAR}, 
+      #{businessName,jdbcType=VARCHAR}, #{station,jdbcType=VARCHAR}, #{stationName,jdbcType=VARCHAR}, 
+      #{flowid,jdbcType=VARCHAR}, #{face,jdbcType=INTEGER}, #{amount,jdbcType=INTEGER}, 
+      #{merchant,jdbcType=VARCHAR}, #{balance,jdbcType=INTEGER}, #{rise,jdbcType=VARCHAR}, 
+      #{riseAfter,jdbcType=VARCHAR}, #{oilPrice,jdbcType=INTEGER}, #{transactionTime,jdbcType=DATE}, 
+      #{createdAt,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.petroun.devourerhizine.model.entity.OilCardUse">
     insert into de_oil_card_use
@@ -156,6 +157,9 @@
       </if>
       <if test="cardNo != null">
         card_no,
+      </if>
+      <if test="cardMobile != null">
+        card_mobile,
       </if>
       <if test="mobile != null">
         mobile,
@@ -230,6 +234,9 @@
       </if>
       <if test="cardNo != null">
         #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cardMobile != null">
+        #{cardMobile,jdbcType=VARCHAR},
       </if>
       <if test="mobile != null">
         #{mobile,jdbcType=VARCHAR},
@@ -314,6 +321,9 @@
       <if test="record.cardNo != null">
         card_no = #{record.cardNo,jdbcType=VARCHAR},
       </if>
+      <if test="record.cardMobile != null">
+        card_mobile = #{record.cardMobile,jdbcType=VARCHAR},
+      </if>
       <if test="record.mobile != null">
         mobile = #{record.mobile,jdbcType=VARCHAR},
       </if>
@@ -389,6 +399,7 @@
     update de_oil_card_use
     set id = #{record.id,jdbcType=VARCHAR},
       card_no = #{record.cardNo,jdbcType=VARCHAR},
+      card_mobile = #{record.cardMobile,jdbcType=VARCHAR},
       mobile = #{record.mobile,jdbcType=VARCHAR},
       qrcode = #{record.qrcode,jdbcType=VARCHAR},
       qrcode_amount = #{record.qrcodeAmount,jdbcType=INTEGER},
@@ -420,6 +431,9 @@
     <set>
       <if test="cardNo != null">
         card_no = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cardMobile != null">
+        card_mobile = #{cardMobile,jdbcType=VARCHAR},
       </if>
       <if test="mobile != null">
         mobile = #{mobile,jdbcType=VARCHAR},
@@ -493,6 +507,7 @@
   <update id="updateByPrimaryKey" parameterType="com.petroun.devourerhizine.model.entity.OilCardUse">
     update de_oil_card_use
     set card_no = #{cardNo,jdbcType=VARCHAR},
+      card_mobile = #{cardMobile,jdbcType=VARCHAR},
       mobile = #{mobile,jdbcType=VARCHAR},
       qrcode = #{qrcode,jdbcType=VARCHAR},
       qrcode_amount = #{qrcodeAmount,jdbcType=INTEGER},

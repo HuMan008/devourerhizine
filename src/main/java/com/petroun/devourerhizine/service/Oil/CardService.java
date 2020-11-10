@@ -1,7 +1,6 @@
 package com.petroun.devourerhizine.service.Oil;
 
 import com.petroun.devourerhizine.model.View.ViewCardAndUse;
-import com.petroun.devourerhizine.model.entity.OilCardInfo;
 import com.petroun.devourerhizine.model.entity.OilCardUse;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,5 +38,5 @@ public interface CardService {
 
     boolean updateOilCardUseStatusAndunbundling(String useId, Byte status);
 
-    List<OilCardInfo> getCardByStatus(Byte status);
+    boolean updateUse(OilCardUse use);
 }

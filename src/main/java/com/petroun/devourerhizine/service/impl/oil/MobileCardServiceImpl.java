@@ -166,8 +166,9 @@ public class MobileCardServiceImpl implements MobileCardService {
     }
 
     @Override
-    public OilCardUse getByid(String id){
-
-        return null;
+    public List<OilMobileCardInfo> getMobileCardsByStatus(List<Byte> status){
+        OilMobileCardInfoExample example = new OilMobileCardInfoExample();
+        example.createCriteria().andStatusIn(status);
+        return mobileCardInfoMapper.selectByExample(example);
     }
 }

@@ -3,6 +3,7 @@ package com.petroun.devourerhizine.service.impl.oil;
 import cn.gotoil.bill.exception.BillException;
 import com.petroun.devourerhizine.classes.tools.DateUtils;
 import com.petroun.devourerhizine.classes.tools.EntityUtil;
+import com.petroun.devourerhizine.config.GTConfig;
 import com.petroun.devourerhizine.enums.EnumCardStatus;
 import com.petroun.devourerhizine.enums.EnumOilSendStatus;
 import com.petroun.devourerhizine.enums.EnumTranStatus;
@@ -10,15 +11,18 @@ import com.petroun.devourerhizine.model.View.ViewCardAndUse;
 import com.petroun.devourerhizine.model.entity.*;
 import com.petroun.devourerhizine.model.mapper.OilCardUseMapper;
 import com.petroun.devourerhizine.model.mapper.OilMobileCardInfoMapper;
+import com.petroun.devourerhizine.provider.gt.GTGateWay;
 import com.petroun.devourerhizine.service.Oil.CardService;
-import org.apache.commons.lang3.RandomStringUtils;
+import com.petroun.devourerhizine.service.Oil.MobileCardService;
 import org.apache.commons.lang3.StringUtils;
+import org.checkerframework.checker.units.qual.A;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
-
 import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class CardServiceImpl implements CardService {
@@ -28,6 +32,15 @@ public class CardServiceImpl implements CardService {
 
     @Resource
     OilMobileCardInfoMapper mobileCardMapper;
+
+    @Autowired
+    GTGateWay gtGateWay;
+
+    @Autowired
+    GTConfig gtConfig;
+
+    @Autowired
+    MobileCardService mobileCardService;
 
 
     private OilMobileCardInfo getMobileCardByUseId(String useid){
@@ -72,7 +85,8 @@ public class CardServiceImpl implements CardService {
                     OilCardUse updateUse = new OilCardUse();
                     updateUse.setId(id);
                     updateUse.setQrcodeAmount(amonut);
-                    updateUse.setMobile(bind_mobileCard.getMobile());
+                    updateUse.setMobile(mobile);
+                    updateUse.setCardMobile(bind_mobileCard.getMobile());
                     updateUse.setCardNo(bind_mobileCard.getCardNo());
                     if(oilCardUseMapper.updateByPrimaryKeySelective(updateUse) > 0) {
                         return oilCardUseMapper.selectByPrimaryKey(id);
@@ -89,6 +103,7 @@ public class CardServiceImpl implements CardService {
                     insertUse.setSendStatus(EnumOilSendStatus.Sending.getCode());
                     insertUse.setQrcodeAmount(amonut);
                     insertUse.setCardNo(bind_mobileCard.getCardNo());
+                    insertUse.setCardMobile(bind_mobileCard.getMobile());
                     insertUse.setMobile(mobile);
                     insertUse.setStatus(EnumTranStatus.Trading.getCode());
                     //use.setCreatedAt(now);
@@ -132,7 +147,7 @@ public class CardServiceImpl implements CardService {
                     throw new BillException(9999,"没有可用的卡");
                 }
                 //解绑
-                unbundlingAll(use.getId());
+                unbundlingByUseing(use.getId());
                 //重新绑定
                 use.setAmount(amount);
                 bindCard(sendUrl,new_mobileCard,use,mobile,amount);
@@ -182,7 +197,7 @@ public class CardServiceImpl implements CardService {
         }
 
         update.setQrcode(strBRCode);
-        update.setValidityTime(DateUtils.DateAddSed(time,sed));
+        update.setValidityTime(DateUtils.DateAddSedGTTIME(time,sed));
         if(oilCardUseMapper.updateByPrimaryKeySelective(update) > 0){
             return true;
         }
@@ -203,11 +218,11 @@ public class CardServiceImpl implements CardService {
     }
 
     /**
-     * 解绑
+     * 解绑使用中的卡
      * @param useId
      * @return
      */
-    private boolean unbundlingAll(String useId){
+    private boolean unbundlingByUseing(String useId){
         OilMobileCardInfo card = getMobileCardByUseId(useId);
         if(!card.getBindId().equals(useId)){
             return false;
@@ -215,7 +230,10 @@ public class CardServiceImpl implements CardService {
         card.setBindTime(null);
         card.setBindId(null);
         card.setStatus(EnumCardStatus.Enable.getCode());
-        if(mobileCardMapper.updateByPrimaryKey(card)> 0){
+
+        OilMobileCardInfoExample example = new OilMobileCardInfoExample();
+        example.createCriteria().andMobileEqualTo(card.getMobile()).andStatusEqualTo(EnumCardStatus.Useing.getCode()).andBindIdEqualTo(useId);
+        if(mobileCardMapper.updateByExample(card,example)> 0){
             return true;
         }
         return false;
@@ -229,7 +247,7 @@ public class CardServiceImpl implements CardService {
     @Override
     public boolean unbundlingNotInTrading(String useId){
         OilCardUse use = oilCardUseMapper.selectByPrimaryKey(useId);
-        if(use.getStatus() != EnumTranStatus.Trading.getCode()) {
+        if(use != null && use.getStatus() != EnumTranStatus.Trading.getCode()) {
             OilMobileCardInfo card = getMobileCardByUseId(useId);
             card.setBindTime(null);
             card.setBindId(null);
@@ -237,7 +255,16 @@ public class CardServiceImpl implements CardService {
             if(!card.getBindId().equals(useId)){
                 return false;
             }
-            if(mobileCardMapper.updateByPrimaryKey(card)> 0){
+
+            OilMobileCardInfoExample example = new OilMobileCardInfoExample();
+            example.createCriteria().andMobileEqualTo(use.getCardMobile()).andStatusEqualTo(EnumCardStatus.Useing.getCode());
+            //成功更新余额
+            if(use.getStatus() == EnumTranStatus.success.getCode()) {
+                OilMobileCardInfo mobileCard = getMobileCardByUseId(useId);
+                List<OilMobileCardDetail> details = gtGateWay.userBindCardQuery(mobileCard,gtConfig.getCopartnerId(),gtConfig.getCopartnerPassword());
+                mobileCardService.insertOrUpdateMobileCardDetails(details);
+            }
+            if(mobileCardMapper.updateByExampleSelective(card,example)> 0){
                 return true;
             }
         }
@@ -265,10 +292,13 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public List<OilCardInfo> getCardByStatus(Byte status){
-        /*OilCardInfoExample example = new OilCardInfoExample();
-        example.createCriteria().andStatusEqualTo(EnumCardStatus.Useing.getCode());
-        return oilCardInfoMapper.selectByExample(example);*/
-        return null;
+    public boolean updateUse(OilCardUse use){
+        if(use != null && use.getId() != null){
+            return oilCardUseMapper.updateByPrimaryKeySelective(use) > 0 ? true : false;
+        }
+        return false;
     }
+
+
+
 }

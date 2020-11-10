@@ -26,16 +26,18 @@ public class QRRefuelRequest {
     /**
      * 加油金额 单位分
      */
+    @NotNull(message = "fee can not be null")
     @Min(value = 1, message = "fee min 1") int fee;
     /**
      * 超时时间 秒
      */
-
-    long outTime = 20;
+    @NotNull(message = "outTime can not be null")
+    int outTime = 20;
 
     /**
      * 通知地址
      */
+    @NotNull(message = "notifyUrl can not be null")
     String notifyUrl;
 
 }

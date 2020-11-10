@@ -12,11 +12,15 @@
 package com.petroun.devourerhizine;
 
 import cn.gotoil.bill.tools.ObjectHelper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.petroun.devourerhizine.classes.rabbitmq.MQDefiner;
 import com.petroun.devourerhizine.classes.rabbitmq.SuppressRabbitConsumer;
 import com.petroun.devourerhizine.classes.tools.HttpUtils;
+import com.petroun.devourerhizine.enums.EnumOilSendStatus;
+import com.petroun.devourerhizine.enums.EnumTranStatus;
 import com.petroun.devourerhizine.model.OptionKeys;
+import com.petroun.devourerhizine.model.View.OilTransView;
 import com.petroun.devourerhizine.model.entity.OilCardUse;
 import com.petroun.devourerhizine.provider.petroun.Rhizine;
 import com.petroun.devourerhizine.service.Oil.CardService;
@@ -54,8 +58,6 @@ public class RabbitMQRunner implements CommandLineRunner {
     @Autowired
     private GotoilService gotoilService;
 
-    @Autowired
-    private MobileCardService mobileCardService;
 
     @Autowired
     private CardService cardService;
@@ -260,19 +262,36 @@ public class RabbitMQRunner implements CommandLineRunner {
                                    byte[] body) throws IOException {
             try {
                 logger.info("----->{}", new String(body));
-                // TODO  oil
+                // TODO  send tranoil
                 String useId = new String(body);
                 OilCardUse use = cardService.queryById(useId);
+                if(use.getStatus() == EnumTranStatus.success.getCode()){
+                    OilTransView oilTransView = new OilTransView();
+                    oilTransView.setStationId(use.getStation());
+                    oilTransView.setStationName(use.getStationName());
+                    oilTransView.setId(use.getId());
+                    oilTransView.setFee(String.valueOf(use.getAmount()));
+                    ObjectMapper mapper = new ObjectMapper();
+                    Response response = HttpUtils.okHttpPost(useId,mapper.writeValueAsString(oilTransView));
+                    String result = response.body().toString();
+                    if(result.equals("ok")){
+                        OilCardUse updateUse = new OilCardUse();
+                        updateUse.setId(use.getId());
+                        updateUse.setSendStatus(EnumOilSendStatus.success.getCode());
+                        cardService.updateUse(use);
+                    }else{
+                        int count = use.getSendCount() + 1;
+                        gotoilService.appendGotoilQueue(use.getId(),count);
+                        OilCardUse updateUse = new OilCardUse();
+                        updateUse.setId(use.getId());
+                        updateUse.setSendCount(count);
+                        cardService.updateUse(use);
+                    }
+                    getChannel().basicReject(envelope.getDeliveryTag(), false);
+                }
                 //use.getSendUrl();
                 //count
-                Response response = HttpUtils.okHttpPost(useId,"");
-                String result = response.body().toString();
-                if(result.equals("ok")){
 
-                }else{
-                    gotoilService.appendGotoilQueue("id",1);
-                }
-                getChannel().basicReject(envelope.getDeliveryTag(), false);
             } catch (InvalidFormatException ex) {
                 logger.info("{}", ex);
                 getChannel().basicAck(envelope.getDeliveryTag(), false);

@@ -292,6 +292,76 @@ public class OilCardUseExample {
             return (Criteria) this;
         }
 
+        public Criteria andCardMobileIsNull() {
+            addCriterion("card_mobile is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardMobileIsNotNull() {
+            addCriterion("card_mobile is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardMobileEqualTo(String value) {
+            addCriterion("card_mobile =", value, "cardMobile");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardMobileNotEqualTo(String value) {
+            addCriterion("card_mobile <>", value, "cardMobile");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardMobileGreaterThan(String value) {
+            addCriterion("card_mobile >", value, "cardMobile");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardMobileGreaterThanOrEqualTo(String value) {
+            addCriterion("card_mobile >=", value, "cardMobile");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardMobileLessThan(String value) {
+            addCriterion("card_mobile <", value, "cardMobile");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardMobileLessThanOrEqualTo(String value) {
+            addCriterion("card_mobile <=", value, "cardMobile");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardMobileLike(String value) {
+            addCriterion("card_mobile like", value, "cardMobile");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardMobileNotLike(String value) {
+            addCriterion("card_mobile not like", value, "cardMobile");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardMobileIn(List<String> values) {
+            addCriterion("card_mobile in", values, "cardMobile");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardMobileNotIn(List<String> values) {
+            addCriterion("card_mobile not in", values, "cardMobile");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardMobileBetween(String value1, String value2) {
+            addCriterion("card_mobile between", value1, value2, "cardMobile");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardMobileNotBetween(String value1, String value2) {
+            addCriterion("card_mobile not between", value1, value2, "cardMobile");
+            return (Criteria) this;
+        }
+
         public Criteria andMobileIsNull() {
             addCriterion("mobile is null");
             return (Criteria) this;

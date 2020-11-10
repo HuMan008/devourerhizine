@@ -35,7 +35,7 @@ public class DateUtils {
         return null;
     }
 
-    public static final Date DateAddSed(String date, int sed){
+    public static final Date DateAddSedGTTIME(String date, int sed){
         try {
             Date dt = threadLocalDateTimeNoWithMilliFormatter.get().parse(date);
             Calendar newTime = Calendar.getInstance();
