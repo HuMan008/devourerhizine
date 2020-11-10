@@ -17,6 +17,7 @@ public enum EnumGtOil {
     UserBindCardQuery((byte)7,"用户绑定卡查询"),
     Recharge((byte)8,"充值"),
     SetPayPwd((byte)9,"修改支付密码"),
+    RegisterCard40((byte)10,"申请卡类型为40"),
     ;
 
 

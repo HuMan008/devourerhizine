@@ -84,7 +84,7 @@ public class MobileCardServiceImpl implements MobileCardService {
             deleteCardDetailByMobile(details.get(0).getMobile());
             for(OilMobileCardDetail detail : details){
                 if (oilMobileCardDetailMapper.insert(detail) > 0 ){
-                    if(detail.getCardType() == 20){
+                    if(detail.getCardType() == 40){
                         updateCardInfo(detail.getMobile(),detail.getCardNo(),detail.getCardBalance());
                     }
                 }

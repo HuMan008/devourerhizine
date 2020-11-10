@@ -103,7 +103,7 @@ public class OilTask {
                             cardService.updateOilCardUseStatusAndunbundling(cardUse.getId(),EnumTranStatus.fail.getCode());
                         }
                     }else{
-                        if(query.getStatus() != EnumTranStatus.success.getCode() && now.compareTo(DateUtils.DateAddSed(cardUse.getValidityTime(),60 * 2)) > 0){
+                        if(now.compareTo(DateUtils.DateAddSed(cardUse.getValidityTime(),60 * 2)) > 0){
                             cardService.updateOilCardUseStatusAndunbundling(cardUse.getId(),EnumTranStatus.fail.getCode());
                         }
                     }

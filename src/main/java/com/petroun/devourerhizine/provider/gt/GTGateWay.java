@@ -290,10 +290,10 @@ public class GTGateWay {
         requestEntity.setMoney("0");
         requestEntity.setCopartnerId(copartnerId);
         requestEntity.setPassword("");
-        requestEntity.setCard(stationId);
+        requestEntity.setCard("GtdeFUser001");
         requestEntity.setExtend("");
         ReqParameters StatsionreqParameters = new ReqParameters();
-        StatsionreqParameters.add("BuExtend1",copartnerId);
+        StatsionreqParameters.add("BuExtend1",stationId);
         requestEntity.setReqParameters(StatsionreqParameters);
 
         GTRequestSigner.signedRequest(requestEntity,copartnerPwd);
@@ -363,12 +363,18 @@ public class GTGateWay {
                 responseEntity = XmlUtils.parseBean(resTxt,ResponseEntity.class);
                 if(responseEntity.getCode().equals("0")){
                     String userid = EntityUtil.ReqParametersByKey(responseEntity.getReqParameters(),"strExtend1");
-                    mbcard.setUserId(userid);
-                    List<OilMobileCardDetail> insertDetails = userBindCardQuery(mbcard,copartnerId,copartnerPwd);
+
+                    // List<OilMobileCardDetail> insertDetails = userBindCardQuery(mbcard,copartnerId,copartnerPwd);
                     if(setPayPwd(mbcard.getMobile(),mbcard.getSalt(),copartnerId,copartnerPwd)) {
-                        mbcard.setStatus(EnumCardStatus.Enable.getCode());
-                        mobileCardService.insertMobileCard(mbcard);
-                        mobileCardService.insertOrUpdateMobileCardDetails(insertDetails);
+                        mbcard.setUserId(userid);
+                        if(registerCard40(mbcard.getMobile(), copartnerId, copartnerPwd)){
+                            List<OilMobileCardDetail> insertDetails = userBindCardQuery(mbcard,copartnerId,copartnerPwd);
+                            mbcard.setStatus(EnumCardStatus.Enable.getCode());
+                            mobileCardService.insertMobileCard(mbcard);
+                            mobileCardService.insertOrUpdateMobileCardDetails(insertDetails);
+                        }else{
+                            mobileCardService.insertMobileCard(mbcard);
+                        }
                     }else{
                         mobileCardService.insertMobileCard(mbcard);
                     }
@@ -495,7 +501,7 @@ public class GTGateWay {
             Response response = HttpUtils.okHttpPost(gtConfig.getUrl(),ex);
             if (response != null && response.isSuccessful()) {
                 String resTxt = response.body().string();
-                System.out.println(resTxt);
+                //System.out.println(resTxt);
                 responseEntity = XmlUtils.parseBean(resTxt,ResponseEntity.class);
                 if(responseEntity.getCode().equals("0")){
                     OilMobileCardInfo cardInfo = mobileCardService.getMobileCardInfoByCardNo(cardNo);
@@ -563,6 +569,51 @@ public class GTGateWay {
             invokeThirdLogMapper.insert(invokeThirdLogWithBLOBs);
         }
 
+        return false;
+    }
+
+    public boolean registerCard40(String mobile,String copartnerId,String copartnerPwd){
+        RequestEntity requestEntity = new RequestEntity();
+        requestEntity.setRequestId("CreateOilStock");
+        requestEntity.setRequestFlow("");
+        requestEntity.setMoney("0");
+        requestEntity.setCopartnerId(copartnerId);
+        requestEntity.setPassword("");
+        requestEntity.setCard(mobile);
+        requestEntity.setExtend("");
+        requestEntity.setExtend2("");
+
+        ReqParameters reqParameters = new ReqParameters();
+        reqParameters.add("nFlag","1011");
+        requestEntity.setReqParameters(reqParameters);
+        GTRequestSigner.signedRequest(requestEntity,copartnerPwd);
+        InvokeThirdLogWithBLOBs invokeThirdLogWithBLOBs = EntityUtil.createInvokeThirdLog(mobile, EnumGtOil.RegisterCard40.getCode(),requestEntity.getRequestId());
+        try{
+            ResponseEntity responseEntity = null;
+
+            String ex = XmlUtils.toStr(requestEntity,false,true);
+            invokeThirdLogWithBLOBs.setRequest(ex);
+            logger.debug("请求request-->{}", ex);
+
+            Response response = HttpUtils.okHttpPost(gtConfig.getUrl(),ex);
+            if (response != null && response.isSuccessful()) {
+                String resTxt = response.body().string();
+                //System.out.println(resTxt);
+                invokeThirdLogWithBLOBs.setResponse(resTxt);
+                responseEntity = XmlUtils.parseBean(resTxt,ResponseEntity.class);
+                if(responseEntity.getCode().equals("0")){
+                    return true;
+                }
+            }else{
+                String resTxt = response == null ?"应答为空": response.body().string();
+                invokeThirdLogWithBLOBs.setResponse(resTxt);
+            }
+        }catch (Exception ex){
+            logger.error("{}", ex);
+            invokeThirdLogWithBLOBs.setResponse(ex.toString());
+        }finally {
+            invokeThirdLogMapper.insert(invokeThirdLogWithBLOBs);
+        }
         return false;
     }
 }
