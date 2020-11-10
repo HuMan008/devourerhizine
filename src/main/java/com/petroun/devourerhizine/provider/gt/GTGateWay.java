@@ -501,7 +501,7 @@ public class GTGateWay {
             Response response = HttpUtils.okHttpPost(gtConfig.getUrl(),ex);
             if (response != null && response.isSuccessful()) {
                 String resTxt = response.body().string();
-                //System.out.println(resTxt);
+                invokeThirdLogWithBLOBs.setResponse(resTxt);
                 responseEntity = XmlUtils.parseBean(resTxt,ResponseEntity.class);
                 if(responseEntity.getCode().equals("0")){
                     OilMobileCardInfo cardInfo = mobileCardService.getMobileCardInfoByCardNo(cardNo);
@@ -511,7 +511,7 @@ public class GTGateWay {
                     }
                     return mobileCardService.insertOrUpdateMobileCardDetails(insertDetails);
                 }
-                invokeThirdLogWithBLOBs.setResponse(resTxt);
+
             }else{
                 String resTxt = response == null ?"应答为空": response.body().string();
                 invokeThirdLogWithBLOBs.setResponse(resTxt);
