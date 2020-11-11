@@ -37,5 +37,7 @@ public interface MobileCardService {
 
     long queryCardsInfo(List<Byte> status);
 
+    long queryCardsInfoByBalanceByZero(List<Byte> status);
+
     List<OilMobileCardInfo> getMobileCardsByStatus(List<Byte> status);
 }

@@ -24,4 +24,21 @@ public class HttpUtils {
         }
         return null;
     }
+
+    public static Response okHttpPostByString(String url,String context){
+        RequestBody requestBody = RequestBody.create(context, MediaType.parse("application/json; charset=utf-8"));
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody) //post请求
+                .build();
+        OkHttpClient okHttpClient = new OkHttpClient();
+        Call call = okHttpClient.newCall(request);
+        try {
+            Response response = call.execute();
+            return response;
+        }catch (Exception e){
+            logger.debug("",e);
+        }
+        return null;
+    }
 }

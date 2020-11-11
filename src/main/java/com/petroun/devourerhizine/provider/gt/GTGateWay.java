@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -439,8 +440,13 @@ public class GTGateWay {
                        detail.setUserUid(str[2]);
                        detail.setOilNumber(str[3]);
                        detail.setCardStatus(Byte.valueOf(str[4]));
-                       detail.setCardBalance(Integer.valueOf(str[5]) * 100);
-                       detail.setPayBalance(Integer.valueOf(str[6]) * 100);
+                       BigDecimal b1 = new BigDecimal(str[5]);
+                       b1=b1.multiply(new BigDecimal(100));
+                       detail.setCardBalance(b1.intValue());
+
+                       b1 = new BigDecimal(str[6]);
+                       b1=b1.multiply(new BigDecimal(100));
+                       detail.setPayBalance(b1.intValue());
 
                        insertDetails.add(detail);
                     }

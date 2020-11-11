@@ -264,33 +264,41 @@ public class RabbitMQRunner implements CommandLineRunner {
                 // TODO  send tranoil
                 String useId = ObjectHelper.getObjectMapper().readValue(body, String.class);
                 OilCardUse use = cardService.queryById(useId);
+                if(use.getSendCount() > 5){
+                    OilCardUse updateUse = new OilCardUse();
+                    updateUse.setId(use.getId());
+                    updateUse.setStatus(EnumOilSendStatus.fail.getCode());
+                    cardService.updateUse(use);
+                }
                 if(use.getStatus() == EnumTranStatus.success.getCode()){
                     ViewOilTrans oilTransView = new ViewOilTrans();
                     oilTransView.setStationId(use.getStation());
                     oilTransView.setStationName(use.getStationName());
                     oilTransView.setId(use.getId());
                     oilTransView.setFee(String.valueOf(use.getAmount()));
+                    oilTransView.setMobile(use.getMobile());
                     ObjectMapper mapper = new ObjectMapper();
-                    Response response = HttpUtils.okHttpPost(use.getSendUrl(),mapper.writeValueAsString(oilTransView));
+                    Response response = HttpUtils.okHttpPostByString(use.getSendUrl(),mapper.writeValueAsString(oilTransView));
                     boolean ok = false;
                     if (response != null && response.isSuccessful()) {
                         String result  = response.message();
-                        if(result.equals("ok")){
+                        if("ok".equalsIgnoreCase(result)){
                             OilCardUse updateUse = new OilCardUse();
                             updateUse.setId(use.getId());
                             updateUse.setSendStatus(EnumOilSendStatus.success.getCode());
-                            cardService.updateUse(use);
+                            cardService.updateUse(updateUse);
                             ok = true;
                         }
                     }
                     if(!ok){
                         int count = use.getSendCount() + 1;
                         gotoilService.appendGotoilQueue(use.getId(),count);
+
                         OilCardUse updateUse = new OilCardUse();
                         updateUse.setId(use.getId());
                         updateUse.setSendCount(count);
-                        cardService.updateUse(use);
-                        gotoilService.appendGotoilQueue(useId, count);
+                        cardService.updateUse(updateUse);
+
                     }
                 }
                 //use.getSendUrl();

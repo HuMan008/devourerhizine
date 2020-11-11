@@ -166,6 +166,17 @@ public class MobileCardServiceImpl implements MobileCardService {
     }
 
     @Override
+    public long queryCardsInfoByBalanceByZero(List<Byte> status){
+        OilMobileCardInfoExample example = new OilMobileCardInfoExample();
+        example.createCriteria().andStatusIn(status).andBalanceNotEqualTo(0);
+        Long count = mobileCardInfoMapper.countByExample(example);
+        if(count == null){
+            count = 0L;
+        }
+        return count;
+    }
+
+    @Override
     public List<OilMobileCardInfo> getMobileCardsByStatus(List<Byte> status){
         OilMobileCardInfoExample example = new OilMobileCardInfoExample();
         example.createCriteria().andStatusIn(status);

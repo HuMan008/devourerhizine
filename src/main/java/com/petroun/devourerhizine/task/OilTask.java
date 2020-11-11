@@ -46,7 +46,7 @@ public class OilTask {
         ArrayList<Byte> use = new ArrayList<>();
         use.add(EnumCardStatus.Enable.getCode());
         //目前可用
-        long usecount = mobileCardService.queryCardsInfo(use);
+        long usecount = mobileCardService.queryCardsInfoByBalanceByZero(use);
 
         //总卡数一半
         BigDecimal b1 = new BigDecimal(count);
