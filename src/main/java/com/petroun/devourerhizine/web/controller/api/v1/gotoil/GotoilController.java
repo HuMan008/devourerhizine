@@ -5,15 +5,17 @@ import cn.gotoil.bill.web.annotation.Authentication;
 import cn.gotoil.bill.web.interceptor.authentication.AuthenticationType;
 import cn.gotoil.bill.web.message.BillApiResponse;
 import com.petroun.devourerhizine.classes.tools.DateUtils;
-import com.petroun.devourerhizine.provider.gt.GTConfig;
-import com.petroun.devourerhizine.provider.gt.GTGateWay;
 import com.petroun.devourerhizine.service.oil.GotoilService;
 import com.petroun.devourerhizine.service.oil.OilService;
 import com.petroun.devourerhizine.web.controller.api.v1.Controller;
 import com.petroun.devourerhizine.web.message.reqeust.gotoil.QRRefuelRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -43,8 +45,8 @@ public class GotoilController extends Controller {
      * @return
      */
     @RequestMapping("QRcode")
-    @Authentication(authenticationType = AuthenticationType.None)
-    public Object QRCodeAction(@Valid @RequestBody QRRefuelRequest request) {
+    @Authentication(authenticationType = AuthenticationType.Signature)
+    public Object QRCodeAction(@Valid @RequestBody QRRefuelRequest request, BindingResult bindingResult) {
         String qrcode = oilService.getQRCode(request.getNotifyUrl(),request.getFee(),request.getOutTime(),request.getMobile());
         if(StringUtils.isEmpty(qrcode)){
             throw new BillException(9999,"获取二维码失败");
