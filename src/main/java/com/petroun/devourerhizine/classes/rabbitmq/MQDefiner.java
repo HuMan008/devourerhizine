@@ -47,11 +47,13 @@ public class MQDefiner {
 
 
     public static final String RK_GOTOIL_BIND = "#.gotoil.#";
-    public static final String RK_GOTOIL = "gotoil";
+    public static final String RK_GOTOIL_REFUEL = "gotoil.refuel";
+    public static final String RK_GOTOIL_QUERY = "gotoil.transquey";
     public static final String Q_REFUEL = "GOTOIL_REFUEL";
+    public static final String Q_TRANSQUERY = "GOTOIL_TRANSQUERY";
 
 
-    public static final String EX_REFUEL_CODE = "refuelcode";
+
 
     public static final String RK_NOTIFICATION_MERCHANT_BIND = "#.notimechant.#";
     public static final String RK_NOTIFICATION_MERCHANT = "notimechant";
@@ -114,7 +116,7 @@ public class MQDefiner {
      * @return
      * @throws IOException
      */
-    public static Channel gotoilChannel(Connection connection, int prefetchSize) {
+    public static Channel gotoilRefuelChannel(Connection connection, int prefetchSize) {
         //        Channel channel = natureBuildChannel(connection, prefetchSize, EX_REFUEL_CODE,
         // Q_NOTIFICATION_MERCHANT, RK_NOTIFICATION_MERCHANT_BIND);
         //        try {
@@ -125,9 +127,12 @@ public class MQDefiner {
         //            logger.error("{}", ex);
         //        }
         //        return channel;
-        return natureBuildChannel(connection, prefetchSize, EX_GOTOIL, Q_REFUEL, RK_GOTOIL_BIND);
+        return natureBuildChannel(connection, prefetchSize, EX_GOTOIL, Q_REFUEL, RK_GOTOIL_REFUEL);
     }
 
+    public static Channel gotoilTransQueryChannel(Connection connection, int prefetchSize) {
+        return natureBuildChannel(connection, prefetchSize, EX_GOTOIL, Q_TRANSQUERY, RK_GOTOIL_QUERY);
+    }
 
     /**
      * @param connection

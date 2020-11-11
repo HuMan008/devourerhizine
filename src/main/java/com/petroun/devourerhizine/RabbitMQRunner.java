@@ -23,10 +23,10 @@ import com.petroun.devourerhizine.model.OptionKeys;
 import com.petroun.devourerhizine.model.View.gt.ViewOilTrans;
 import com.petroun.devourerhizine.model.entity.OilCardUse;
 import com.petroun.devourerhizine.provider.petroun.Rhizine;
-import com.petroun.devourerhizine.service.oil.CardService;
-import com.petroun.devourerhizine.service.oil.GotoilService;
 import com.petroun.devourerhizine.service.OptionService;
 import com.petroun.devourerhizine.service.cnpc.CnpcRechargeService;
+import com.petroun.devourerhizine.service.oil.CardService;
+import com.petroun.devourerhizine.service.oil.GotoilService;
 import com.rabbitmq.client.*;
 import okhttp3.Response;
 import org.slf4j.Logger;
@@ -76,7 +76,9 @@ public class RabbitMQRunner implements CommandLineRunner {
         cnpcInquire();
         cnpcRegain();
 
-        gotoil();
+        gotoilRefuel();
+        gotoilTransQuery();
+        ;
     }
 
     /**
@@ -116,11 +118,19 @@ public class RabbitMQRunner implements CommandLineRunner {
     }
 
 
-    private void gotoil() throws Exception {
+    private void gotoilRefuel() throws Exception {
         logger.info("============start gotoil_qr_refuel  worker============");
-        Channel channel = MQDefiner.gotoilChannel(applyConnection(), 8);
-        GotoilConsumer gotoilQr = new GotoilConsumer(channel);
+        Channel channel = MQDefiner.gotoilRefuelChannel(applyConnection(), 8);
+        GotoilRefuleConsumer gotoilQr = new GotoilRefuleConsumer(channel);
         channel.basicConsume(MQDefiner.Q_REFUEL, false, gotoilQr);
+    }
+
+
+    private void gotoilTransQuery() throws Exception {
+        logger.info("============start gotoil_trans_query  worker============");
+        Channel channel = MQDefiner.gotoilTransQueryChannel(applyConnection(), 8);
+        GotoilTransQueryConsumer transQueryConsumer = new GotoilTransQueryConsumer(channel);
+        channel.basicConsume(MQDefiner.Q_TRANSQUERY, false, transQueryConsumer);
     }
 
 
@@ -242,15 +252,18 @@ public class RabbitMQRunner implements CommandLineRunner {
     }
 
 
-    private class GotoilConsumer extends SuppressRabbitConsumer {
-        public GotoilConsumer(Channel channel) {
+    /**
+     * 二维码加油通知
+     */
+    private class GotoilRefuleConsumer extends SuppressRabbitConsumer {
+        public GotoilRefuleConsumer(Channel channel) {
             super(channel);
         }
 
         @Override
         public void startWork() {
             try {
-                gotoil();
+                gotoilRefuel();
             } catch (Exception ex) {
                 logger.error("{}", ex);
             }
@@ -260,10 +273,14 @@ public class RabbitMQRunner implements CommandLineRunner {
         public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
                                    byte[] body) throws IOException {
             try {
-                logger.info("----->{}", new String(body));
-                // TODO  send tranoil
+                logger.info("国通加油通知{}", new String(body));
                 String useId = ObjectHelper.getObjectMapper().readValue(body, String.class);
                 OilCardUse use = cardService.queryById(useId);
+                if (use == null) {
+                    logger.info("收到一条ID不存在的通知 ，确认消费后 ，返回{}", useId);
+                    getChannel().basicAck(envelope.getDeliveryTag(), false);
+                    return;
+                }
                 if(use.getSendCount() > 5){
                     OilCardUse updateUse = new OilCardUse();
                     updateUse.setId(use.getId());
@@ -292,7 +309,7 @@ public class RabbitMQRunner implements CommandLineRunner {
                     }
                     if(!ok){
                         int count = use.getSendCount() + 1;
-                        gotoilService.appendGotoilQueue(use.getId(),count);
+                        gotoilService.appendGotoilRefuelQueue(use.getId(), count);
 
                         OilCardUse updateUse = new OilCardUse();
                         updateUse.setId(use.getId());
@@ -313,4 +330,38 @@ public class RabbitMQRunner implements CommandLineRunner {
         }
     }
 
+
+    /**
+     * 交易查询通知
+     */
+    private class GotoilTransQueryConsumer extends SuppressRabbitConsumer {
+        public GotoilTransQueryConsumer(Channel channel) {
+            super(channel);
+        }
+
+        @Override
+        public void startWork() {
+            try {
+                gotoilTransQuery();
+            } catch (Exception ex) {
+                logger.error("{}", ex);
+            }
+        }
+
+        @Override
+        public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
+                                   byte[] body) throws IOException {
+            try {
+                logger.info("国通交易查询通知{}", new String(body));
+
+
+                getChannel().basicAck(envelope.getDeliveryTag(), false);
+            } catch (InvalidFormatException ex) {
+                logger.info("{}", ex);
+                getChannel().basicAck(envelope.getDeliveryTag(), false);
+            } catch (Exception ex) {
+                logger.error("{}", ex);
+            }
+        }
+    }
 }

@@ -54,10 +54,17 @@ public class GotoilController extends Controller {
         return new BillApiResponse(qrcode);
     }
 
-    @GetMapping("mq")
+    @GetMapping("mq1")
     @Authentication(authenticationType = AuthenticationType.None)
-    public Object asAction(String id, int redo) {
+    public Object as1Action(String id, int redo) {
         System.out.println(DateUtils.simpleDateTimeWithMilliSecondNoSymbolFormatter().format(new Date()) + "\t" + id);
-        return gotoilService.appendGotoilQueue(id, redo);
+        return gotoilService.appendGotoilRefuelQueue(id, redo);
+    }
+
+    @GetMapping("mq2")
+    @Authentication(authenticationType = AuthenticationType.None)
+    public Object as2Action(String id, int redo) {
+        System.out.println(DateUtils.simpleDateTimeWithMilliSecondNoSymbolFormatter().format(new Date()) + "\t" + id);
+        return gotoilService.appendGotoilQueryQueue(id);
     }
 }

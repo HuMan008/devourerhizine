@@ -22,7 +22,7 @@ public class GotoilServiceImpl implements com.petroun.devourerhizine.service.oil
     private ConnectionFactory connectionFactory;
 
     @Override
-    public boolean appendGotoilQueue(String id, int redo) {
+    public boolean appendGotoilRefuelQueue(String id, int redo) {
 
         MQPublisher.DelayInterval delayInterval = MQPublisher.DelayInterval.IMMEDIATELY;
         if (redo == 0) {
@@ -33,7 +33,15 @@ public class GotoilServiceImpl implements com.petroun.devourerhizine.service.oil
         } else if (redo > 5) {
             delayInterval = MQPublisher.DelayInterval.M5;
         }
-        return publishToGotoilExchange(MQDefiner.RK_GOTOIL, id, delayInterval);
+        return publishToGotoilExchange(MQDefiner.RK_GOTOIL_REFUEL, id, delayInterval);
+    }
+
+    @Override
+    public boolean appendGotoilQueryQueue(String id) {
+
+        MQPublisher.DelayInterval delayInterval = MQPublisher.DelayInterval.IMMEDIATELY;
+
+        return publishToGotoilExchange(MQDefiner.RK_GOTOIL_QUERY, id, delayInterval);
     }
 
     /**

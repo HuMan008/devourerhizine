@@ -27,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -274,7 +273,7 @@ public class GTGateWay {
                     if(cardService.updateOilCardUse(updateOilCardUser)) {
                         if (cardService.unbundlingNotInTrading(updateOilCardUser.getId())) {
                             //todo 成功通知
-                            gotoilService.appendGotoilQueue(updateOilCardUser.getId(), 0);
+                            gotoilService.appendGotoilRefuelQueue(updateOilCardUser.getId(), 0);
                             return updateOilCardUser;
                         }
                     }
