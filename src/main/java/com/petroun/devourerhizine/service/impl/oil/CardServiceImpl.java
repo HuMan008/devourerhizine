@@ -68,7 +68,7 @@ public class CardServiceImpl implements CardService {
     }
 
 
-    private OilCardUse bindCard(String sendUrl,OilMobileCardInfo bind_mobileCard,OilCardUse use,String mobile,int amonut){
+    private OilCardUse bindCard(String sendUrl,int sed,OilMobileCardInfo bind_mobileCard,OilCardUse use,String mobile,int amonut){
         if(bind_mobileCard != null){
             OilMobileCardInfoExample updateExample = new OilMobileCardInfoExample();
             updateExample.createCriteria().andCardNoEqualTo(bind_mobileCard.getCardNo()).andStatusEqualTo(EnumCardStatus.Enable.getCode());
@@ -104,6 +104,7 @@ public class CardServiceImpl implements CardService {
 
                     insertUse.setId(id);
                     insertUse.setSendUrl(sendUrl);
+                    insertUse.setValiditySed(sed);
                     insertUse.setSendCount(0);
                     insertUse.setSendStatus(EnumOilSendStatus.Sending.getCode());
                     insertUse.setQrcodeAmount(amonut);
@@ -125,13 +126,13 @@ public class CardServiceImpl implements CardService {
 
     /**
      * 获取油卡并设置为使用中,并锁定
-     * 如果号码存在并在使用中，金额一致则直接返回，不一致重新绑卡
+     * 如果号码存在并在使用中直接返回
      * 如果号码不存在或者不在使用中，则新绑卡
      * @return
      */
     @Override
     @Transactional
-    public ViewCardAndUse getOilCard(String sendUrl,String mobile,int amount){
+    public ViewCardAndUse getOilCard(String sendUrl,int sed,String mobile,int amount){
         ViewCardAndUse viewCardAndUse = new ViewCardAndUse();
 
         //交易中直接返回
@@ -145,7 +146,7 @@ public class CardServiceImpl implements CardService {
             viewCardAndUse.setOilCardUse(use);
             viewCardAndUse.setType("old");
 
-            if(Old_MobileCard.getBalance() != amount){
+            /*if(Old_MobileCard.getBalance() != amount){
                 //金额不一致换个金额最接近或相等
                 OilMobileCardInfo new_mobileCard = getAmonutLess(amount);
                 if(new_mobileCard == null){
@@ -159,8 +160,10 @@ public class CardServiceImpl implements CardService {
                 viewCardAndUse.setOilMobileCardInfo(new_mobileCard);
             }else{
                 viewCardAndUse.setOilMobileCardInfo(Old_MobileCard);
-            }
+            }*/
 
+
+            viewCardAndUse.setOilMobileCardInfo(Old_MobileCard);
             return viewCardAndUse;
         }
 
@@ -170,7 +173,7 @@ public class CardServiceImpl implements CardService {
             throw new BillException(9999,"没有可用的卡");
         }
         if(mobileCard != null){
-            OilCardUse new_ues = bindCard(sendUrl,mobileCard,null,mobile,amount);
+            OilCardUse new_ues = bindCard(sendUrl,sed,mobileCard,null,mobile,amount);
             if(new_ues == null){
                 throw new BillException(9999,"绑定油卡失败");
             }
@@ -197,6 +200,7 @@ public class CardServiceImpl implements CardService {
 
         OilCardUse update = new OilCardUse();
         update.setId(oilCardUse.getId());
+        update.setValiditySed(sed);
         if(old == null || old.getCreatedAt() == null){
             update.setCreatedAt(DateUtils.strToDate(time));
         }

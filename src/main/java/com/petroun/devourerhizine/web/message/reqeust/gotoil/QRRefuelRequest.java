@@ -27,7 +27,7 @@ public class QRRefuelRequest {
      * 加油金额 单位分
      */
     @NotNull(message = "fee can not be null")
-    @Min(value = 1, message = "fee min 1") int fee;
+    @Min(value = 0, message = "fee min 0") int fee;
     /**
      * 超时时间 秒
      */

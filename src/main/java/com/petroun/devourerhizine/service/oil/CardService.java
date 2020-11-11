@@ -12,7 +12,7 @@ public interface CardService {
      * @return
      */
     @Transactional
-    ViewCardAndUse getOilCard(String sendUrl,String mobile,int amount);
+    ViewCardAndUse getOilCard(String sendUrl,int sed,String mobile,int amount);
 
     /**
      * 更新创建时间，有效时间

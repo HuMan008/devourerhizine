@@ -4,6 +4,7 @@ import cn.gotoil.bill.exception.BillException;
 import cn.gotoil.bill.tools.date.DateUtils;
 import com.petroun.devourerhizine.classes.tools.EntityUtil;
 import com.petroun.devourerhizine.classes.tools.HttpUtils;
+import com.petroun.devourerhizine.classes.tools.MathUtils;
 import com.petroun.devourerhizine.classes.tools.XmlUtils;
 import com.petroun.devourerhizine.enums.EnumCardStatus;
 import com.petroun.devourerhizine.enums.EnumGtOil;
@@ -53,7 +54,14 @@ public class GTGateWay {
     GotoilService gotoilService;
 
 
-
+    /**
+     * 获取usertoken
+     * @param cardNo
+     * @param pwd
+     * @param copartnerId
+     * @param copartnerPwd
+     * @return
+     */
     public String getUserToken(String cardNo,String pwd,String copartnerId,String copartnerPwd){
         RequestEntity requestEntity = new RequestEntity();
         requestEntity.setRequestId("UserPayLogonNew");
@@ -104,6 +112,15 @@ public class GTGateWay {
         return null;
     }
 
+    /**
+     * 获取二维码
+     * @param cardAndUser
+     * @param sed
+     * @param token
+     * @param copartnerId
+     * @param copartnerPwd
+     * @return
+     */
     public ViewQRCode getQRCode(ViewCardAndUse cardAndUser,int sed,String token,String copartnerId,String copartnerPwd){
         OilMobileCardInfo mobileCard = cardAndUser.getOilMobileCardInfo();
         OilCardUse oilCardUse = cardAndUser.getOilCardUse();
@@ -171,6 +188,13 @@ public class GTGateWay {
         return null;
     }
 
+    /**
+     * 查询消费记录
+     * @param id
+     * @param copartnerId
+     * @param copartnerPwd
+     * @return
+     */
     public OilCardUse queryCardUserByRemote(String id,String copartnerId,String copartnerPwd){
         OilCardUse oilCardUse = cardService.queryById(id);
         RequestEntity requestEntity = new RequestEntity();
@@ -233,14 +257,15 @@ public class GTGateWay {
                     updateOilCardUser.setTransactionTime(DateUtils.simpleDatetimeFormatter().parse(resultDetail[1]));
                     updateOilCardUser.setBusinessId(resultDetail[2]);
                     updateOilCardUser.setBusinessName(resultDetail[3]);
-                    updateOilCardUser.setFace(Integer.valueOf(resultDetail[4]));
+
+                    updateOilCardUser.setFace(MathUtils.multiply100(resultDetail[4]));
                     updateOilCardUser.setMerchant(resultDetail[5]);
                     updateOilCardUser.setBalance(Integer.valueOf(resultDetail[6]));
                     updateOilCardUser.setFlowid(resultDetail[7]);
                     updateOilCardUser.setRise(resultDetail[8]);
                     updateOilCardUser.setRiseAfter(resultDetail[9]);
                     updateOilCardUser.setAmount(Integer.valueOf(resultDetail[10]));
-                    updateOilCardUser.setOilPrice(Integer.valueOf(resultDetail[11]));
+                    updateOilCardUser.setOilPrice(MathUtils.multiply100(resultDetail[11]));
 
                     String stationName = queryStaionName(updateOilCardUser.getStation(), copartnerId, copartnerPwd);
                     if(!StringUtils.isEmpty(stationName)){
@@ -270,10 +295,16 @@ public class GTGateWay {
         return null;
     }
 
+
+    /**
+     * 站点查询
+     * @param stationId
+     * @param copartnerId
+     * @param copartnerPwd
+     * @return
+     */
     public String queryStaionName(String stationId,String copartnerId,String copartnerPwd){
-        /**
-         * 查询站点
-         */
+
         RequestEntity requestEntity = new RequestEntity();
         requestEntity.setRequestId("StationQueryByID");
         requestEntity.setRequestFlow("");
@@ -323,6 +354,12 @@ public class GTGateWay {
         return null;
     }
 
+    /**
+     * 手机号注册
+     * @param copartnerId
+     * @param copartnerPwd
+     * @return
+     */
     public OilMobileCardInfo phoneRegister(String copartnerId,String copartnerPwd){
         OilMobileCardInfo mbcard =  mobileCardService.getNewMobileCard();
         mbcard.setStatus(EnumCardStatus.Fail.getCode());
@@ -440,13 +477,8 @@ public class GTGateWay {
                        detail.setUserUid(str[2]);
                        detail.setOilNumber(str[3]);
                        detail.setCardStatus(Byte.valueOf(str[4]));
-                       BigDecimal b1 = new BigDecimal(str[5]);
-                       b1=b1.multiply(new BigDecimal(100));
-                       detail.setCardBalance(b1.intValue());
-
-                       b1 = new BigDecimal(str[6]);
-                       b1=b1.multiply(new BigDecimal(100));
-                       detail.setPayBalance(b1.intValue());
+                       detail.setCardBalance(MathUtils.multiply100(str[5]));
+                       detail.setPayBalance(MathUtils.multiply100(str[6]));
 
                        insertDetails.add(detail);
                     }
@@ -491,6 +523,14 @@ public class GTGateWay {
         return responseResult(requestEntity,invokeThirdLogWithBLOBs);
     }
 
+    /**
+     * 设置支付密码
+     * @param mobile
+     * @param pwd
+     * @param copartnerId
+     * @param copartnerPwd
+     * @return
+     */
     public boolean setPayPwd(String mobile,String pwd,String copartnerId,String copartnerPwd){
         RequestEntity requestEntity = new RequestEntity();
         requestEntity.setRequestId("UserResetPayPwdNew");
@@ -511,6 +551,13 @@ public class GTGateWay {
         return responseResult(requestEntity,invokeThirdLogWithBLOBs);
     }
 
+    /**
+     * 申请类型为40的卡
+     * @param mobile
+     * @param copartnerId
+     * @param copartnerPwd
+     * @return
+     */
     public boolean registerCard40(String mobile,String copartnerId,String copartnerPwd){
         RequestEntity requestEntity = new RequestEntity();
         requestEntity.setRequestId("CreateOilStock");

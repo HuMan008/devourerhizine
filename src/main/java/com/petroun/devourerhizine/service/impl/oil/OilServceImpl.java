@@ -39,10 +39,13 @@ public class OilServceImpl implements OilService {
      * @param sed
      * @param mobile
      * @return
+     *
+     * 首次绑卡需要充值
+     * 绑卡之后不能充值
      */
     @Override
     public String getQRCode(String sendUrl, int amount, int sed, String mobile){
-        ViewCardAndUse cardAndUser = cardService.getOilCard(sendUrl,mobile,amount);
+        ViewCardAndUse cardAndUser = cardService.getOilCard(sendUrl,sed,mobile,amount);
         OilMobileCardInfo mobileCard = cardAndUser.getOilMobileCardInfo();
         OilCardUse oilCardUse = cardAndUser.getOilCardUse();
 
@@ -51,27 +54,19 @@ public class OilServceImpl implements OilService {
         String token = gtGateWay.getUserToken(mobileCard.getMobile(),("06"+mobileCard.getSalt()),gtConfig.getCopartnerId(),gtConfig.getCopartnerPwd());
 
         if(!StringUtils.isEmpty(token)){
-
-            //判断实际卡的余额是否大于消费金额
-            Integer cardBalance = 0;
-            for(int i = 0 ; i < 3 ; i++) {
-                cardBalance = queryCardBalace(mobileCard, amount);
+            if("new".equals(cardAndUser.getType())){
+                //判断实际卡的余额是否大于消费金额
+                Integer cardBalance = queryCardBalace(mobileCard, amount);
                 if (cardBalance == null) {
                     throw new BillException(9999, "卡查询失败");
-                } else {
-                    if (cardBalance > amount) {
-                        cardAndUser = cardService.getOilCard(sendUrl,mobile,amount);
-                    }else{
-                        break;
-                    }
                 }
-            }
-            if(cardBalance > amount){
-                throw new BillException(9999, "卡余额有误,请重试");
-            }
-            if(mobileCard.getBalance().compareTo(amount) <0){
-                if(!recharge(mobileCard.getCardNo(),(amount-mobileCard.getBalance()))){
-                    throw new BillException(9999,"充值失败");
+                if(cardBalance.compareTo(amount) > 0){
+                    throw new BillException(9999, "卡余额有误,请重试");
+                }
+                if(cardBalance.compareTo(amount) < 0){
+                    if(!recharge(mobileCard.getCardNo(),(amount-cardBalance))){
+                        throw new BillException(9999,"充值失败");
+                    }
                 }
             }
 
