@@ -812,6 +812,66 @@ public class OilCardUseExample {
             return (Criteria) this;
         }
 
+        public Criteria andValiditySedIsNull() {
+            addCriterion("validity_sed is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValiditySedIsNotNull() {
+            addCriterion("validity_sed is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValiditySedEqualTo(Integer value) {
+            addCriterion("validity_sed =", value, "validitySed");
+            return (Criteria) this;
+        }
+
+        public Criteria andValiditySedNotEqualTo(Integer value) {
+            addCriterion("validity_sed <>", value, "validitySed");
+            return (Criteria) this;
+        }
+
+        public Criteria andValiditySedGreaterThan(Integer value) {
+            addCriterion("validity_sed >", value, "validitySed");
+            return (Criteria) this;
+        }
+
+        public Criteria andValiditySedGreaterThanOrEqualTo(Integer value) {
+            addCriterion("validity_sed >=", value, "validitySed");
+            return (Criteria) this;
+        }
+
+        public Criteria andValiditySedLessThan(Integer value) {
+            addCriterion("validity_sed <", value, "validitySed");
+            return (Criteria) this;
+        }
+
+        public Criteria andValiditySedLessThanOrEqualTo(Integer value) {
+            addCriterion("validity_sed <=", value, "validitySed");
+            return (Criteria) this;
+        }
+
+        public Criteria andValiditySedIn(List<Integer> values) {
+            addCriterion("validity_sed in", values, "validitySed");
+            return (Criteria) this;
+        }
+
+        public Criteria andValiditySedNotIn(List<Integer> values) {
+            addCriterion("validity_sed not in", values, "validitySed");
+            return (Criteria) this;
+        }
+
+        public Criteria andValiditySedBetween(Integer value1, Integer value2) {
+            addCriterion("validity_sed between", value1, value2, "validitySed");
+            return (Criteria) this;
+        }
+
+        public Criteria andValiditySedNotBetween(Integer value1, Integer value2) {
+            addCriterion("validity_sed not between", value1, value2, "validitySed");
+            return (Criteria) this;
+        }
+
         public Criteria andValidityTimeIsNull() {
             addCriterion("validity_time is null");
             return (Criteria) this;

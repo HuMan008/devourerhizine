@@ -11,11 +11,12 @@ import com.petroun.devourerhizine.service.oil.CardService;
 import com.petroun.devourerhizine.service.oil.MobileCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.*;
 
-//@Component
+@Component
 public class OilTask {
 
     @Autowired
@@ -64,7 +65,7 @@ public class OilTask {
     /**
      * 检查绑定中的卡是否需要解绑
      */
-    @Scheduled(initialDelay = 60000, fixedDelay = 1000 * 60 * 10)
+    //@Scheduled(initialDelay = 60000, fixedDelay = 1000 * 60 * 10)
     public void checkBindCards(){
         ArrayList<Byte> status = new ArrayList<>();
         status.add(EnumCardStatus.Useing.getCode());

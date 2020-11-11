@@ -23,6 +23,8 @@ public class OilCardUse {
 
     private Byte sendStatus;
 
+    private Integer validitySed;
+
     private Date validityTime;
 
     private String businessId;
@@ -131,6 +133,14 @@ public class OilCardUse {
 
     public void setSendStatus(Byte sendStatus) {
         this.sendStatus = sendStatus;
+    }
+
+    public Integer getValiditySed() {
+        return validitySed;
+    }
+
+    public void setValiditySed(Integer validitySed) {
+        this.validitySed = validitySed;
     }
 
     public Date getValidityTime() {
@@ -269,6 +279,7 @@ public class OilCardUse {
         sb.append(", sendUrl=").append(sendUrl);
         sb.append(", sendCount=").append(sendCount);
         sb.append(", sendStatus=").append(sendStatus);
+        sb.append(", validitySed=").append(validitySed);
         sb.append(", validityTime=").append(validityTime);
         sb.append(", businessId=").append(businessId);
         sb.append(", businessName=").append(businessName);

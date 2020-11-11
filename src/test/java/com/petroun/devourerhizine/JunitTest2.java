@@ -46,7 +46,7 @@ public class JunitTest2 {
 
     @Test
     public void t3(){
-        gtGateWay.getQRCode("12345678901","www.baidu.com",20000,60,gtConfig.getCopartnerId(), gtConfig.getCopartnerPassword());
+       // gtGateWay.getQRCode("12345678901","www.baidu.com",20000,60,gtConfig.getCopartnerId(), gtConfig.getCopartnerPassword());
 
 
     }

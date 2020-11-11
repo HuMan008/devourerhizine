@@ -1,9 +1,9 @@
-package com.petroun.devourerhizine.model.View;
+package com.petroun.devourerhizine.model.View.gt;
 
 import lombok.Data;
 
 @Data
-public class OilTransView {
+public class ViewOilTrans {
     private String id;
     private String stationId;
     private String stationName;

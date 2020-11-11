@@ -20,7 +20,7 @@ import com.petroun.devourerhizine.classes.tools.HttpUtils;
 import com.petroun.devourerhizine.enums.EnumOilSendStatus;
 import com.petroun.devourerhizine.enums.EnumTranStatus;
 import com.petroun.devourerhizine.model.OptionKeys;
-import com.petroun.devourerhizine.model.View.OilTransView;
+import com.petroun.devourerhizine.model.View.gt.ViewOilTrans;
 import com.petroun.devourerhizine.model.entity.OilCardUse;
 import com.petroun.devourerhizine.provider.petroun.Rhizine;
 import com.petroun.devourerhizine.service.oil.CardService;
@@ -265,7 +265,7 @@ public class RabbitMQRunner implements CommandLineRunner {
                 String useId = new String(body);
                 OilCardUse use = cardService.queryById(useId);
                 if(use.getStatus() == EnumTranStatus.success.getCode()){
-                    OilTransView oilTransView = new OilTransView();
+                    ViewOilTrans oilTransView = new ViewOilTrans();
                     oilTransView.setStationId(use.getStation());
                     oilTransView.setStationName(use.getStationName());
                     oilTransView.setId(use.getId());

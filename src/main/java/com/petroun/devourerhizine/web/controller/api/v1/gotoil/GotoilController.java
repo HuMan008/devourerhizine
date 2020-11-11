@@ -8,6 +8,7 @@ import com.petroun.devourerhizine.classes.tools.DateUtils;
 import com.petroun.devourerhizine.provider.gt.GTConfig;
 import com.petroun.devourerhizine.provider.gt.GTGateWay;
 import com.petroun.devourerhizine.service.oil.GotoilService;
+import com.petroun.devourerhizine.service.oil.OilService;
 import com.petroun.devourerhizine.web.controller.api.v1.Controller;
 import com.petroun.devourerhizine.web.message.reqeust.gotoil.QRRefuelRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +33,9 @@ public class GotoilController extends Controller {
     GotoilService gotoilService;
 
     @Autowired
-    GTGateWay gtGateWay;
+    OilService oilService;
 
-    @Autowired
-    GTConfig gtConfig;
+
     /**
      * 二维码加油
      *
@@ -45,8 +45,7 @@ public class GotoilController extends Controller {
     @RequestMapping("QRcode")
     @Authentication(authenticationType = AuthenticationType.None)
     public Object QRCodeAction(@Valid @RequestBody QRRefuelRequest request) {
-        String qrcode = gtGateWay.getQRCode(request.getMobile(),request.getNotifyUrl()
-        ,request.getFee(),request.getOutTime(),gtConfig.getCopartnerId(),gtConfig.getCopartnerPassword());
+        String qrcode = oilService.getQRCode(request.getNotifyUrl(),request.getFee(),request.getOutTime(),request.getMobile());
         if(StringUtils.isEmpty(qrcode)){
             throw new BillException(9999,"获取二维码失败");
         }

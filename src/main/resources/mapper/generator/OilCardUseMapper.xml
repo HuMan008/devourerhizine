@@ -12,6 +12,7 @@
     <result column="send_url" jdbcType="VARCHAR" property="sendUrl" />
     <result column="send_count" jdbcType="INTEGER" property="sendCount" />
     <result column="send_status" jdbcType="TINYINT" property="sendStatus" />
+    <result column="validity_sed" jdbcType="INTEGER" property="validitySed" />
     <result column="validity_time" jdbcType="TIMESTAMP" property="validityTime" />
     <result column="business_id" jdbcType="VARCHAR" property="businessId" />
     <result column="business_name" jdbcType="VARCHAR" property="businessName" />
@@ -88,8 +89,9 @@
   </sql>
   <sql id="Base_Column_List">
     id, card_no, card_mobile, mobile, qrcode, qrcode_amount, status, send_url, send_count, 
-    send_status, validity_time, business_id, business_name, station, station_name, flowid, 
-    face, amount, merchant, balance, rise, rise_after, oil_price, transaction_time, created_at
+    send_status, validity_sed, validity_time, business_id, business_name, station, station_name, 
+    flowid, face, amount, merchant, balance, rise, rise_after, oil_price, transaction_time, 
+    created_at
   </sql>
   <select id="selectByExample" parameterType="com.petroun.devourerhizine.model.entity.OilCardUseExample" resultMap="BaseResultMap">
     select
@@ -133,21 +135,21 @@
     insert into de_oil_card_use (id, card_no, card_mobile, 
       mobile, qrcode, qrcode_amount, 
       status, send_url, send_count, 
-      send_status, validity_time, business_id, 
-      business_name, station, station_name, 
-      flowid, face, amount, 
-      merchant, balance, rise, 
-      rise_after, oil_price, transaction_time, 
-      created_at)
+      send_status, validity_sed, validity_time, 
+      business_id, business_name, station, 
+      station_name, flowid, face, 
+      amount, merchant, balance, 
+      rise, rise_after, oil_price, 
+      transaction_time, created_at)
     values (#{id,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}, #{cardMobile,jdbcType=VARCHAR}, 
       #{mobile,jdbcType=VARCHAR}, #{qrcode,jdbcType=VARCHAR}, #{qrcodeAmount,jdbcType=INTEGER}, 
       #{status,jdbcType=TINYINT}, #{sendUrl,jdbcType=VARCHAR}, #{sendCount,jdbcType=INTEGER}, 
-      #{sendStatus,jdbcType=TINYINT}, #{validityTime,jdbcType=TIMESTAMP}, #{businessId,jdbcType=VARCHAR}, 
-      #{businessName,jdbcType=VARCHAR}, #{station,jdbcType=VARCHAR}, #{stationName,jdbcType=VARCHAR}, 
-      #{flowid,jdbcType=VARCHAR}, #{face,jdbcType=INTEGER}, #{amount,jdbcType=INTEGER}, 
-      #{merchant,jdbcType=VARCHAR}, #{balance,jdbcType=INTEGER}, #{rise,jdbcType=VARCHAR}, 
-      #{riseAfter,jdbcType=VARCHAR}, #{oilPrice,jdbcType=INTEGER}, #{transactionTime,jdbcType=DATE}, 
-      #{createdAt,jdbcType=TIMESTAMP})
+      #{sendStatus,jdbcType=TINYINT}, #{validitySed,jdbcType=INTEGER}, #{validityTime,jdbcType=TIMESTAMP}, 
+      #{businessId,jdbcType=VARCHAR}, #{businessName,jdbcType=VARCHAR}, #{station,jdbcType=VARCHAR}, 
+      #{stationName,jdbcType=VARCHAR}, #{flowid,jdbcType=VARCHAR}, #{face,jdbcType=INTEGER}, 
+      #{amount,jdbcType=INTEGER}, #{merchant,jdbcType=VARCHAR}, #{balance,jdbcType=INTEGER}, 
+      #{rise,jdbcType=VARCHAR}, #{riseAfter,jdbcType=VARCHAR}, #{oilPrice,jdbcType=INTEGER}, 
+      #{transactionTime,jdbcType=DATE}, #{createdAt,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.petroun.devourerhizine.model.entity.OilCardUse">
     insert into de_oil_card_use
@@ -181,6 +183,9 @@
       </if>
       <if test="sendStatus != null">
         send_status,
+      </if>
+      <if test="validitySed != null">
+        validity_sed,
       </if>
       <if test="validityTime != null">
         validity_time,
@@ -258,6 +263,9 @@
       </if>
       <if test="sendStatus != null">
         #{sendStatus,jdbcType=TINYINT},
+      </if>
+      <if test="validitySed != null">
+        #{validitySed,jdbcType=INTEGER},
       </if>
       <if test="validityTime != null">
         #{validityTime,jdbcType=TIMESTAMP},
@@ -345,6 +353,9 @@
       <if test="record.sendStatus != null">
         send_status = #{record.sendStatus,jdbcType=TINYINT},
       </if>
+      <if test="record.validitySed != null">
+        validity_sed = #{record.validitySed,jdbcType=INTEGER},
+      </if>
       <if test="record.validityTime != null">
         validity_time = #{record.validityTime,jdbcType=TIMESTAMP},
       </if>
@@ -407,6 +418,7 @@
       send_url = #{record.sendUrl,jdbcType=VARCHAR},
       send_count = #{record.sendCount,jdbcType=INTEGER},
       send_status = #{record.sendStatus,jdbcType=TINYINT},
+      validity_sed = #{record.validitySed,jdbcType=INTEGER},
       validity_time = #{record.validityTime,jdbcType=TIMESTAMP},
       business_id = #{record.businessId,jdbcType=VARCHAR},
       business_name = #{record.businessName,jdbcType=VARCHAR},
@@ -455,6 +467,9 @@
       </if>
       <if test="sendStatus != null">
         send_status = #{sendStatus,jdbcType=TINYINT},
+      </if>
+      <if test="validitySed != null">
+        validity_sed = #{validitySed,jdbcType=INTEGER},
       </if>
       <if test="validityTime != null">
         validity_time = #{validityTime,jdbcType=TIMESTAMP},
@@ -515,6 +530,7 @@
       send_url = #{sendUrl,jdbcType=VARCHAR},
       send_count = #{sendCount,jdbcType=INTEGER},
       send_status = #{sendStatus,jdbcType=TINYINT},
+      validity_sed = #{validitySed,jdbcType=INTEGER},
       validity_time = #{validityTime,jdbcType=TIMESTAMP},
       business_id = #{businessId,jdbcType=VARCHAR},
       business_name = #{businessName,jdbcType=VARCHAR},

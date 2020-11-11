@@ -3,7 +3,6 @@ package com.petroun.devourerhizine.provider.gt;
 import cn.gotoil.bill.tools.encoder.Hash;
 import com.petroun.devourerhizine.model.MyParameter;
 import com.petroun.devourerhizine.model.ReqParameters;
-import com.petroun.devourerhizine.model.RequestEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -7,7 +7,7 @@ import com.petroun.devourerhizine.provider.gt.GTConfig;
 import com.petroun.devourerhizine.enums.EnumCardStatus;
 import com.petroun.devourerhizine.enums.EnumOilSendStatus;
 import com.petroun.devourerhizine.enums.EnumTranStatus;
-import com.petroun.devourerhizine.model.View.ViewCardAndUse;
+import com.petroun.devourerhizine.model.View.gt.ViewCardAndUse;
 import com.petroun.devourerhizine.model.entity.*;
 import com.petroun.devourerhizine.model.mapper.OilCardUseMapper;
 import com.petroun.devourerhizine.model.mapper.OilMobileCardInfoMapper;
@@ -41,12 +41,18 @@ public class CardServiceImpl implements CardService {
     @Autowired
     MobileCardService mobileCardService;
 
+    private OilMobileCardInfo getMobileCardCardNo(String cardNo){
+        OilMobileCardInfoExample example = new OilMobileCardInfoExample();
+        example.createCriteria().andCardNoEqualTo(cardNo);
+        List<OilMobileCardInfo> list = mobileCardMapper.selectByExample(example);
+        return list.get(0);
+    }
 
     private OilMobileCardInfo getMobileCardByUseId(String useid){
         OilMobileCardInfoExample example = new OilMobileCardInfoExample();
         example.createCriteria().andBindIdEqualTo(useid);
         List<OilMobileCardInfo> list = mobileCardMapper.selectByExample(example);
-        return list.get(0);
+        return list.size() > 0 ? list.get(0) : null;
     }
 
     private OilMobileCardInfo getAmonutLess(int amount){
@@ -244,11 +250,12 @@ public class CardServiceImpl implements CardService {
      * @return
      */
     @Override
+    @Transactional
     public boolean unbundlingNotInTrading(String useId){
         OilCardUse use = oilCardUseMapper.selectByPrimaryKey(useId);
         if(use != null && use.getStatus() != EnumTranStatus.Trading.getCode()) {
             OilMobileCardInfo card = getMobileCardByUseId(useId);
-            if(!card.getBindId().equals(useId)){
+            if(card == null || !card.getBindId().equals(useId)){
                 return false;
             }
             card.setStatus(EnumCardStatus.Enable.getCode());
@@ -259,7 +266,7 @@ public class CardServiceImpl implements CardService {
 
             if(mobileCardMapper.updateByExample(card,example)> 0){
                 if(use.getStatus() == EnumTranStatus.success.getCode()) {
-                    OilMobileCardInfo mobileCard = getMobileCardByUseId(useId);
+                    OilMobileCardInfo mobileCard = getMobileCardCardNo(use.getCardNo());
                     List<OilMobileCardDetail> details = gtGateWay.userBindCardQuery(mobileCard,gtConfig.getCopartnerId(),gtConfig.getCopartnerPassword());
                     mobileCardService.insertOrUpdateMobileCardDetails(details);
                 }

@@ -1,5 +1,6 @@
-package com.petroun.devourerhizine.model;
+package com.petroun.devourerhizine.provider.gt;
 
+import com.petroun.devourerhizine.model.ReqParameters;
 import lombok.Data;
 
 import java.util.TreeMap;

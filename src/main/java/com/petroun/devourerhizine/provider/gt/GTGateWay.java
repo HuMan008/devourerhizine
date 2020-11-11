@@ -9,9 +9,8 @@ import com.petroun.devourerhizine.enums.EnumCardStatus;
 import com.petroun.devourerhizine.enums.EnumGtOil;
 import com.petroun.devourerhizine.enums.EnumTranStatus;
 import com.petroun.devourerhizine.model.ReqParameters;
-import com.petroun.devourerhizine.model.RequestEntity;
-import com.petroun.devourerhizine.model.ResponseEntity;
-import com.petroun.devourerhizine.model.View.ViewCardAndUse;
+import com.petroun.devourerhizine.model.View.gt.ViewCardAndUse;
+import com.petroun.devourerhizine.model.View.gt.ViewQRCode;
 import com.petroun.devourerhizine.model.entity.InvokeThirdLogWithBLOBs;
 import com.petroun.devourerhizine.model.entity.OilCardUse;
 import com.petroun.devourerhizine.model.entity.OilMobileCardDetail;
@@ -104,20 +103,10 @@ public class GTGateWay {
         return null;
     }
 
-    public String getQRCode(String mobile,String sendUrl,int amount,int sed,String copartnerId,String copartnerPwd){
-        ViewCardAndUse cardAndUser = cardService.getOilCard(sendUrl,mobile,amount);
+    public ViewQRCode getQRCode(ViewCardAndUse cardAndUser,int sed,String token,String copartnerId,String copartnerPwd){
         OilMobileCardInfo mobileCard = cardAndUser.getOilMobileCardInfo();
         OilCardUse oilCardUse = cardAndUser.getOilCardUse();
-        String token = getUserToken(mobileCard.getMobile(),("06"+mobileCard.getSalt()),copartnerId,copartnerPwd);
         if(!StringUtils.isEmpty(token)){
-            //判断是否需要充值
-            if(mobileCard.getBalance().compareTo(amount) <0){
-                if(!recharge(mobileCard.getCardNo(),amount,copartnerId,copartnerPwd)){
-                    throw new BillException(9999,"充值失败");
-                }
-            }
-
-
             RequestEntity requestEntity = new RequestEntity();
             requestEntity.setRequestId("GetAPPQRcodeOrBarcode");
             requestEntity.setMoney("0");
@@ -157,10 +146,12 @@ public class GTGateWay {
                         if(StringUtils.isEmpty(strBRCode)){
                             return null;
                         }
-                        String QRCode = strBRCode;
-                        int QRCodeSed = Integer.valueOf(nQRValidSeconds);
-                        cardService.updateCardUse(oilCardUse,time,QRCodeSed,strBRCode);
-                        return QRCode;
+                        ViewQRCode viewQRCode = new ViewQRCode();
+                        viewQRCode.setNQRValidSeconds(nQRValidSeconds);
+                        viewQRCode.setStrBRCode(strBRCode);
+                        viewQRCode.setTime(time);
+
+                        return viewQRCode;
                     }
                 }else{
                     String resTxt =response == null ?"应答为空": response.body().string();
@@ -319,6 +310,7 @@ public class GTGateWay {
                 invokeThirdLogMapper.insert(queryStationLog);
             } else {
                 String stationResTxt = stationResponse == null ? "应答为空" : stationResponse.body().string();
+                queryStationLog.setResponse(stationResTxt);
                 invokeThirdLogMapper.insert(queryStationLog);
             }
         }catch (Exception e){
@@ -489,38 +481,8 @@ public class GTGateWay {
 
         GTRequestSigner.signedRequest(requestEntity,copartnerPwd);
         InvokeThirdLogWithBLOBs invokeThirdLogWithBLOBs = EntityUtil.createInvokeThirdLog(cardNo, EnumGtOil.Recharge.getCode(),requestEntity.getRequestId());
-        try{
-            ResponseEntity responseEntity = null;
 
-            String ex = XmlUtils.toStr(requestEntity,false,true);
-            invokeThirdLogWithBLOBs.setRequest(ex);
-            logger.debug("请求request-->{}", ex);
-
-            Response response = HttpUtils.okHttpPost(gtConfig.getUrl(),ex);
-            if (response != null && response.isSuccessful()) {
-                String resTxt = response.body().string();
-                invokeThirdLogWithBLOBs.setResponse(resTxt);
-                responseEntity = XmlUtils.parseBean(resTxt,ResponseEntity.class);
-                if(responseEntity.getCode().equals("0")){
-                    OilMobileCardInfo cardInfo = mobileCardService.getMobileCardInfoByCardNo(cardNo);
-                    List<OilMobileCardDetail> insertDetails = userBindCardQuery(cardInfo,copartnerId,copartnerPwd);
-                    if(insertDetails == null){
-                        throw new BillException(9999,"查询卡信息失败");
-                    }
-                    return mobileCardService.insertOrUpdateMobileCardDetails(insertDetails);
-                }
-
-            }else{
-                String resTxt = response == null ?"应答为空": response.body().string();
-                invokeThirdLogWithBLOBs.setResponse(resTxt);
-            }
-        }catch (Exception ex){
-            logger.error("{}", ex);
-            invokeThirdLogWithBLOBs.setResponse(ex.toString());
-        }finally {
-            invokeThirdLogMapper.insert(invokeThirdLogWithBLOBs);
-        }
-        return false;
+        return responseResult(requestEntity,invokeThirdLogWithBLOBs);
     }
 
     public boolean setPayPwd(String mobile,String pwd,String copartnerId,String copartnerPwd){
@@ -540,34 +502,7 @@ public class GTGateWay {
         GTRequestSigner.signedRequest(requestEntity,copartnerPwd);
         InvokeThirdLogWithBLOBs invokeThirdLogWithBLOBs = EntityUtil.createInvokeThirdLog(mobile, EnumGtOil.SetPayPwd.getCode(),requestEntity.getRequestId());
 
-        try{
-            ResponseEntity responseEntity = null;
-
-            String ex = XmlUtils.toStr(requestEntity,false,true);
-            invokeThirdLogWithBLOBs.setRequest(ex);
-            logger.debug("请求request-->{}", ex);
-
-            Response response = HttpUtils.okHttpPost(gtConfig.getUrl(),ex);
-            if (response != null && response.isSuccessful()) {
-                String resTxt = response.body().string();
-                //System.out.println(resTxt);
-                invokeThirdLogWithBLOBs.setResponse(resTxt);
-                responseEntity = XmlUtils.parseBean(resTxt,ResponseEntity.class);
-                if(responseEntity.getCode().equals("0")){
-                   return true;
-                }
-            }else{
-                String resTxt = response == null ?"应答为空": response.body().string();
-                invokeThirdLogWithBLOBs.setResponse(resTxt);
-            }
-        }catch (Exception ex){
-            logger.error("{}", ex);
-            invokeThirdLogWithBLOBs.setResponse(ex.toString());
-        }finally {
-            invokeThirdLogMapper.insert(invokeThirdLogWithBLOBs);
-        }
-
-        return false;
+        return responseResult(requestEntity,invokeThirdLogWithBLOBs);
     }
 
     public boolean registerCard40(String mobile,String copartnerId,String copartnerPwd){
@@ -586,6 +521,10 @@ public class GTGateWay {
         requestEntity.setReqParameters(reqParameters);
         GTRequestSigner.signedRequest(requestEntity,copartnerPwd);
         InvokeThirdLogWithBLOBs invokeThirdLogWithBLOBs = EntityUtil.createInvokeThirdLog(mobile, EnumGtOil.RegisterCard40.getCode(),requestEntity.getRequestId());
+        return responseResult(requestEntity,invokeThirdLogWithBLOBs);
+    }
+
+    private boolean responseResult(RequestEntity requestEntity,InvokeThirdLogWithBLOBs invokeThirdLogWithBLOBs){
         try{
             ResponseEntity responseEntity = null;
 

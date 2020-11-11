@@ -14,9 +14,8 @@ import com.petroun.devourerhizine.classes.tools.EntityUtil;
 import com.petroun.devourerhizine.classes.tools.XmlUtils;
 import com.petroun.devourerhizine.enums.EnumTranStatus;
 import com.petroun.devourerhizine.model.ReqParameters;
-import com.petroun.devourerhizine.model.RequestEntity;
-import com.petroun.devourerhizine.model.ResponseEntity;
-import com.petroun.devourerhizine.model.View.OilTransView;
+import com.petroun.devourerhizine.provider.gt.RequestEntity;
+import com.petroun.devourerhizine.provider.gt.ResponseEntity;
 import com.petroun.devourerhizine.model.entity.CnpcOrder;
 import com.petroun.devourerhizine.model.entity.OilCardUse;
 import com.petroun.devourerhizine.provider.petroun.Rhizine;
@@ -24,10 +23,8 @@ import com.petroun.devourerhizine.web.message.request.sinopec.Promo;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 /**
  * 单元测试
