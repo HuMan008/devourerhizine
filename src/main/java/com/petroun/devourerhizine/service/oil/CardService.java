@@ -28,6 +28,13 @@ public interface CardService {
     boolean updateOilCardUse(OilCardUse use);
 
     /**
+     * 解绑使用中的卡
+     * @param useId
+     * @return
+     */
+    boolean unbundlingByUseing(String useId);
+
+    /**
      * 解除卡绑定
      * @param useId
      * @return

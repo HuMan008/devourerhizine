@@ -231,7 +231,8 @@ public class CardServiceImpl implements CardService {
      * @param useId
      * @return
      */
-    private boolean unbundlingByUseing(String useId){
+    @Override
+    public boolean unbundlingByUseing(String useId){
         OilMobileCardInfo card = getMobileCardByUseId(useId);
         if(!card.getBindId().equals(useId)){
             return false;
