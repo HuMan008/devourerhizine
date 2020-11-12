@@ -73,7 +73,7 @@ public class GTGateWay {
         String redisToken = stringRedisTemplate.opsForValue().get(OILUSERTOKEN+cardNo);
         long timeout = stringRedisTemplate.getExpire(OILUSERTOKEN+cardNo);
 
-        if(!StringUtils.isEmpty(redisToken) && timeout > 60 ){
+        if(!StringUtils.isEmpty(redisToken) && timeout > 60 * 2 ){
             return redisToken;
         }
 
