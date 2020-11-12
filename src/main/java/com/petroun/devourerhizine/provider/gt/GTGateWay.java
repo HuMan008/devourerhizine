@@ -243,8 +243,10 @@ public class GTGateWay {
                     /**
                      * BusiExtend 返回报文描述：
                      * 每个字段之间以“~”隔开，每一行已“|”隔开，报文格式如下：
-                     * 终端号码~交易时间~业务id~业务名称~交易价值~交易商户~交易后余额~交易流水号~用户油库交易时平均单价
-                     * ~消费油量~交易后油量~交易金额~代理流水~加油币编号~加油币名称~油品当前单价|
+                     * ~终端号码  ~交易时间  ~业务id   ~业务名称            ~交易价值
+                     * ~交易商户  ~交易后余额~交易流水号~用户油库交易时平均单价~消费油量
+                     * ~交易后油量~交易金额  ~代理流水 ~加油币编号           ~加油币名称
+                     * ~油品当前单价|
                      */
                     String str = EntityUtil.ReqParametersByKey(responseEntity.getReqParameters(), "BusiExtend");
                     List<String[]> result = EntityUtil.formatResult(str);
@@ -259,12 +261,12 @@ public class GTGateWay {
 
                     updateOilCardUser.setFace(MathUtils.multiply100(resultDetail[4]));
                     updateOilCardUser.setMerchant(resultDetail[5]);
-                    updateOilCardUser.setBalance(Integer.valueOf(resultDetail[6]));
+                    updateOilCardUser.setBalance(MathUtils.multiply100(resultDetail[6]));
                     updateOilCardUser.setFlowid(resultDetail[7]);
-                    updateOilCardUser.setRise(resultDetail[8]);
-                    updateOilCardUser.setRiseAfter(resultDetail[9]);
-                    updateOilCardUser.setAmount(Integer.valueOf(resultDetail[10]));
-                    updateOilCardUser.setOilPrice(MathUtils.multiply100(resultDetail[11]));
+                    updateOilCardUser.setRise(resultDetail[9]);
+                    updateOilCardUser.setRiseAfter(resultDetail[10]);
+                    updateOilCardUser.setAmount(MathUtils.multiply100(resultDetail[11]));
+                    updateOilCardUser.setOilPrice(MathUtils.multiply100(resultDetail[15]));
 
                     String stationName = queryStaionName(updateOilCardUser.getStation(), copartnerId, copartnerPwd);
                     if(!StringUtils.isEmpty(stationName)){
