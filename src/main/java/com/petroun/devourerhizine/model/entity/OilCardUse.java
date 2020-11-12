@@ -31,6 +31,8 @@ public class OilCardUse {
 
     private String businessName;
 
+    private String terminalId;
+
     private String station;
 
     private String stationName;
@@ -167,6 +169,14 @@ public class OilCardUse {
         this.businessName = businessName == null ? null : businessName.trim();
     }
 
+    public String getTerminalId() {
+        return terminalId;
+    }
+
+    public void setTerminalId(String terminalId) {
+        this.terminalId = terminalId == null ? null : terminalId.trim();
+    }
+
     public String getStation() {
         return station;
     }
@@ -283,6 +293,7 @@ public class OilCardUse {
         sb.append(", validityTime=").append(validityTime);
         sb.append(", businessId=").append(businessId);
         sb.append(", businessName=").append(businessName);
+        sb.append(", terminalId=").append(terminalId);
         sb.append(", station=").append(station);
         sb.append(", stationName=").append(stationName);
         sb.append(", flowid=").append(flowid);

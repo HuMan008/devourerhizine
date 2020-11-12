@@ -4,6 +4,7 @@ import cn.gotoil.bill.exception.BillException;
 import com.petroun.devourerhizine.classes.tools.DateUtils;
 import com.petroun.devourerhizine.enums.EnumTranStatus;
 import com.petroun.devourerhizine.model.View.gt.ViewCardAndUse;
+import com.petroun.devourerhizine.model.View.gt.ViewOilTrans;
 import com.petroun.devourerhizine.model.View.gt.ViewQRCode;
 import com.petroun.devourerhizine.model.entity.OilCardUse;
 import com.petroun.devourerhizine.model.entity.OilMobileCardDetail;
@@ -162,9 +163,24 @@ public class OilServceImpl implements OilService {
         if(cardUse == null){
             return null;
         }
-        OilCardUse query = gtGateWay.queryCardUserByRemote(cardUse.getId(), gtConfig.getCopartnerId(), gtConfig.getCopartnerPassword());
+
+        GTCopartnerConfig config = new GTCopartnerConfig();
+        OilCardUse query = gtGateWay.queryCardUserByRemote(cardUse.getId(),config.getCopartnerId(), config.getCopartnerPwd());
+
         if(query != null){
-            if(query.getStatus() != EnumTranStatus.success.getCode()
+            if(query.getStatus() == EnumTranStatus.success.getCode()) {
+                ViewOilTrans viewOilTrans = gtGateWay.queryStaionName(query.getTerminalId(), config.getCopartnerId(), config.getCopartnerPwd());
+                if (viewOilTrans != null) {
+                    query.setStation(viewOilTrans.getStationId());
+                    query.setStationName(viewOilTrans.getStationName());
+                }
+
+                if (cardService.updateOilCardUse(query)) {
+                    if (cardService.unbundlingNotInTrading(query.getId())) {
+                        return cardService.queryById(useId);
+                    }
+                }
+            }else if(query.getStatus() != EnumTranStatus.success.getCode()
                     && now.compareTo(DateUtils.DateAddSed(cardUse.getValidityTime(),60)) > 0){
                 cardService.updateOilCardUseStatusAndunbundling(cardUse.getId(),EnumTranStatus.fail.getCode());
             }

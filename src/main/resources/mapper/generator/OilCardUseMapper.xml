@@ -16,6 +16,7 @@
     <result column="validity_time" jdbcType="TIMESTAMP" property="validityTime" />
     <result column="business_id" jdbcType="VARCHAR" property="businessId" />
     <result column="business_name" jdbcType="VARCHAR" property="businessName" />
+    <result column="terminal_id" jdbcType="VARCHAR" property="terminalId" />
     <result column="station" jdbcType="VARCHAR" property="station" />
     <result column="station_name" jdbcType="VARCHAR" property="stationName" />
     <result column="flowid" jdbcType="VARCHAR" property="flowid" />
@@ -26,7 +27,7 @@
     <result column="rise" jdbcType="VARCHAR" property="rise" />
     <result column="rise_after" jdbcType="VARCHAR" property="riseAfter" />
     <result column="oil_price" jdbcType="INTEGER" property="oilPrice" />
-    <result column="transaction_time" jdbcType="DATE" property="transactionTime" />
+    <result column="transaction_time" jdbcType="TIMESTAMP" property="transactionTime" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -89,9 +90,9 @@
   </sql>
   <sql id="Base_Column_List">
     id, card_no, card_mobile, mobile, qrcode, qrcode_amount, status, send_url, send_count, 
-    send_status, validity_sed, validity_time, business_id, business_name, station, station_name, 
-    flowid, face, amount, merchant, balance, rise, rise_after, oil_price, transaction_time, 
-    created_at
+    send_status, validity_sed, validity_time, business_id, business_name, terminal_id, 
+    station, station_name, flowid, face, amount, merchant, balance, rise, rise_after, 
+    oil_price, transaction_time, created_at
   </sql>
   <select id="selectByExample" parameterType="com.petroun.devourerhizine.model.entity.OilCardUseExample" resultMap="BaseResultMap">
     select
@@ -136,20 +137,22 @@
       mobile, qrcode, qrcode_amount, 
       status, send_url, send_count, 
       send_status, validity_sed, validity_time, 
-      business_id, business_name, station, 
-      station_name, flowid, face, 
-      amount, merchant, balance, 
-      rise, rise_after, oil_price, 
-      transaction_time, created_at)
+      business_id, business_name, terminal_id, 
+      station, station_name, flowid, 
+      face, amount, merchant, 
+      balance, rise, rise_after, 
+      oil_price, transaction_time, created_at
+      )
     values (#{id,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}, #{cardMobile,jdbcType=VARCHAR}, 
       #{mobile,jdbcType=VARCHAR}, #{qrcode,jdbcType=VARCHAR}, #{qrcodeAmount,jdbcType=INTEGER}, 
       #{status,jdbcType=TINYINT}, #{sendUrl,jdbcType=VARCHAR}, #{sendCount,jdbcType=INTEGER}, 
       #{sendStatus,jdbcType=TINYINT}, #{validitySed,jdbcType=INTEGER}, #{validityTime,jdbcType=TIMESTAMP}, 
-      #{businessId,jdbcType=VARCHAR}, #{businessName,jdbcType=VARCHAR}, #{station,jdbcType=VARCHAR}, 
-      #{stationName,jdbcType=VARCHAR}, #{flowid,jdbcType=VARCHAR}, #{face,jdbcType=INTEGER}, 
-      #{amount,jdbcType=INTEGER}, #{merchant,jdbcType=VARCHAR}, #{balance,jdbcType=INTEGER}, 
-      #{rise,jdbcType=VARCHAR}, #{riseAfter,jdbcType=VARCHAR}, #{oilPrice,jdbcType=INTEGER}, 
-      #{transactionTime,jdbcType=DATE}, #{createdAt,jdbcType=TIMESTAMP})
+      #{businessId,jdbcType=VARCHAR}, #{businessName,jdbcType=VARCHAR}, #{terminalId,jdbcType=VARCHAR}, 
+      #{station,jdbcType=VARCHAR}, #{stationName,jdbcType=VARCHAR}, #{flowid,jdbcType=VARCHAR}, 
+      #{face,jdbcType=INTEGER}, #{amount,jdbcType=INTEGER}, #{merchant,jdbcType=VARCHAR}, 
+      #{balance,jdbcType=INTEGER}, #{rise,jdbcType=VARCHAR}, #{riseAfter,jdbcType=VARCHAR}, 
+      #{oilPrice,jdbcType=INTEGER}, #{transactionTime,jdbcType=TIMESTAMP}, #{createdAt,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.petroun.devourerhizine.model.entity.OilCardUse">
     insert into de_oil_card_use
@@ -195,6 +198,9 @@
       </if>
       <if test="businessName != null">
         business_name,
+      </if>
+      <if test="terminalId != null">
+        terminal_id,
       </if>
       <if test="station != null">
         station,
@@ -276,6 +282,9 @@
       <if test="businessName != null">
         #{businessName,jdbcType=VARCHAR},
       </if>
+      <if test="terminalId != null">
+        #{terminalId,jdbcType=VARCHAR},
+      </if>
       <if test="station != null">
         #{station,jdbcType=VARCHAR},
       </if>
@@ -307,7 +316,7 @@
         #{oilPrice,jdbcType=INTEGER},
       </if>
       <if test="transactionTime != null">
-        #{transactionTime,jdbcType=DATE},
+        #{transactionTime,jdbcType=TIMESTAMP},
       </if>
       <if test="createdAt != null">
         #{createdAt,jdbcType=TIMESTAMP},
@@ -365,6 +374,9 @@
       <if test="record.businessName != null">
         business_name = #{record.businessName,jdbcType=VARCHAR},
       </if>
+      <if test="record.terminalId != null">
+        terminal_id = #{record.terminalId,jdbcType=VARCHAR},
+      </if>
       <if test="record.station != null">
         station = #{record.station,jdbcType=VARCHAR},
       </if>
@@ -396,7 +408,7 @@
         oil_price = #{record.oilPrice,jdbcType=INTEGER},
       </if>
       <if test="record.transactionTime != null">
-        transaction_time = #{record.transactionTime,jdbcType=DATE},
+        transaction_time = #{record.transactionTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.createdAt != null">
         created_at = #{record.createdAt,jdbcType=TIMESTAMP},
@@ -422,6 +434,7 @@
       validity_time = #{record.validityTime,jdbcType=TIMESTAMP},
       business_id = #{record.businessId,jdbcType=VARCHAR},
       business_name = #{record.businessName,jdbcType=VARCHAR},
+      terminal_id = #{record.terminalId,jdbcType=VARCHAR},
       station = #{record.station,jdbcType=VARCHAR},
       station_name = #{record.stationName,jdbcType=VARCHAR},
       flowid = #{record.flowid,jdbcType=VARCHAR},
@@ -432,7 +445,7 @@
       rise = #{record.rise,jdbcType=VARCHAR},
       rise_after = #{record.riseAfter,jdbcType=VARCHAR},
       oil_price = #{record.oilPrice,jdbcType=INTEGER},
-      transaction_time = #{record.transactionTime,jdbcType=DATE},
+      transaction_time = #{record.transactionTime,jdbcType=TIMESTAMP},
       created_at = #{record.createdAt,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -480,6 +493,9 @@
       <if test="businessName != null">
         business_name = #{businessName,jdbcType=VARCHAR},
       </if>
+      <if test="terminalId != null">
+        terminal_id = #{terminalId,jdbcType=VARCHAR},
+      </if>
       <if test="station != null">
         station = #{station,jdbcType=VARCHAR},
       </if>
@@ -511,7 +527,7 @@
         oil_price = #{oilPrice,jdbcType=INTEGER},
       </if>
       <if test="transactionTime != null">
-        transaction_time = #{transactionTime,jdbcType=DATE},
+        transaction_time = #{transactionTime,jdbcType=TIMESTAMP},
       </if>
       <if test="createdAt != null">
         created_at = #{createdAt,jdbcType=TIMESTAMP},
@@ -534,6 +550,7 @@
       validity_time = #{validityTime,jdbcType=TIMESTAMP},
       business_id = #{businessId,jdbcType=VARCHAR},
       business_name = #{businessName,jdbcType=VARCHAR},
+      terminal_id = #{terminalId,jdbcType=VARCHAR},
       station = #{station,jdbcType=VARCHAR},
       station_name = #{stationName,jdbcType=VARCHAR},
       flowid = #{flowid,jdbcType=VARCHAR},
@@ -544,7 +561,7 @@
       rise = #{rise,jdbcType=VARCHAR},
       rise_after = #{riseAfter,jdbcType=VARCHAR},
       oil_price = #{oilPrice,jdbcType=INTEGER},
-      transaction_time = #{transactionTime,jdbcType=DATE},
+      transaction_time = #{transactionTime,jdbcType=TIMESTAMP},
       created_at = #{createdAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>

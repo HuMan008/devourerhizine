@@ -2,7 +2,6 @@ package com.petroun.devourerhizine.model.entity;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 public class OilCardUseExample {
@@ -124,32 +123,6 @@ public class OilCardUseExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
-        }
-
-        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
-            if (value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Date(value.getTime()), property);
-        }
-
-        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
-            if (values == null || values.size() == 0) {
-                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
-            }
-            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
-            Iterator<Date> iter = values.iterator();
-            while (iter.hasNext()) {
-                dateList.add(new java.sql.Date(iter.next().getTime()));
-            }
-            addCriterion(condition, dateList, property);
-        }
-
-        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
-            if (value1 == null || value2 == null) {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
         public Criteria andIdIsNull() {
@@ -1072,6 +1045,76 @@ public class OilCardUseExample {
             return (Criteria) this;
         }
 
+        public Criteria andTerminalIdIsNull() {
+            addCriterion("terminal_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminalIdIsNotNull() {
+            addCriterion("terminal_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminalIdEqualTo(String value) {
+            addCriterion("terminal_id =", value, "terminalId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminalIdNotEqualTo(String value) {
+            addCriterion("terminal_id <>", value, "terminalId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminalIdGreaterThan(String value) {
+            addCriterion("terminal_id >", value, "terminalId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminalIdGreaterThanOrEqualTo(String value) {
+            addCriterion("terminal_id >=", value, "terminalId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminalIdLessThan(String value) {
+            addCriterion("terminal_id <", value, "terminalId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminalIdLessThanOrEqualTo(String value) {
+            addCriterion("terminal_id <=", value, "terminalId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminalIdLike(String value) {
+            addCriterion("terminal_id like", value, "terminalId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminalIdNotLike(String value) {
+            addCriterion("terminal_id not like", value, "terminalId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminalIdIn(List<String> values) {
+            addCriterion("terminal_id in", values, "terminalId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminalIdNotIn(List<String> values) {
+            addCriterion("terminal_id not in", values, "terminalId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminalIdBetween(String value1, String value2) {
+            addCriterion("terminal_id between", value1, value2, "terminalId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminalIdNotBetween(String value1, String value2) {
+            addCriterion("terminal_id not between", value1, value2, "terminalId");
+            return (Criteria) this;
+        }
+
         public Criteria andStationIsNull() {
             addCriterion("station is null");
             return (Criteria) this;
@@ -1743,52 +1786,52 @@ public class OilCardUseExample {
         }
 
         public Criteria andTransactionTimeEqualTo(Date value) {
-            addCriterionForJDBCDate("transaction_time =", value, "transactionTime");
+            addCriterion("transaction_time =", value, "transactionTime");
             return (Criteria) this;
         }
 
         public Criteria andTransactionTimeNotEqualTo(Date value) {
-            addCriterionForJDBCDate("transaction_time <>", value, "transactionTime");
+            addCriterion("transaction_time <>", value, "transactionTime");
             return (Criteria) this;
         }
 
         public Criteria andTransactionTimeGreaterThan(Date value) {
-            addCriterionForJDBCDate("transaction_time >", value, "transactionTime");
+            addCriterion("transaction_time >", value, "transactionTime");
             return (Criteria) this;
         }
 
         public Criteria andTransactionTimeGreaterThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("transaction_time >=", value, "transactionTime");
+            addCriterion("transaction_time >=", value, "transactionTime");
             return (Criteria) this;
         }
 
         public Criteria andTransactionTimeLessThan(Date value) {
-            addCriterionForJDBCDate("transaction_time <", value, "transactionTime");
+            addCriterion("transaction_time <", value, "transactionTime");
             return (Criteria) this;
         }
 
         public Criteria andTransactionTimeLessThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("transaction_time <=", value, "transactionTime");
+            addCriterion("transaction_time <=", value, "transactionTime");
             return (Criteria) this;
         }
 
         public Criteria andTransactionTimeIn(List<Date> values) {
-            addCriterionForJDBCDate("transaction_time in", values, "transactionTime");
+            addCriterion("transaction_time in", values, "transactionTime");
             return (Criteria) this;
         }
 
         public Criteria andTransactionTimeNotIn(List<Date> values) {
-            addCriterionForJDBCDate("transaction_time not in", values, "transactionTime");
+            addCriterion("transaction_time not in", values, "transactionTime");
             return (Criteria) this;
         }
 
         public Criteria andTransactionTimeBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("transaction_time between", value1, value2, "transactionTime");
+            addCriterion("transaction_time between", value1, value2, "transactionTime");
             return (Criteria) this;
         }
 
         public Criteria andTransactionTimeNotBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("transaction_time not between", value1, value2, "transactionTime");
+            addCriterion("transaction_time not between", value1, value2, "transactionTime");
             return (Criteria) this;
         }
 

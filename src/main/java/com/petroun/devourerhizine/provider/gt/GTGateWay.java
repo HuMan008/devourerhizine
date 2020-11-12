@@ -11,6 +11,7 @@ import com.petroun.devourerhizine.enums.EnumGtOil;
 import com.petroun.devourerhizine.enums.EnumTranStatus;
 import com.petroun.devourerhizine.model.ReqParameters;
 import com.petroun.devourerhizine.model.View.gt.ViewCardAndUse;
+import com.petroun.devourerhizine.model.View.gt.ViewOilTrans;
 import com.petroun.devourerhizine.model.View.gt.ViewQRCode;
 import com.petroun.devourerhizine.model.entity.InvokeThirdLogWithBLOBs;
 import com.petroun.devourerhizine.model.entity.OilCardUse;
@@ -271,7 +272,7 @@ public class GTGateWay {
                     OilCardUse updateOilCardUser = new OilCardUse();
                     updateOilCardUser.setId(oilCardUse.getId());
                     updateOilCardUser.setStatus(EnumTranStatus.success.getCode());
-                    updateOilCardUser.setStation(resultDetail[0]);
+                    updateOilCardUser.setTerminalId(resultDetail[0]);
                     updateOilCardUser.setTransactionTime(DateUtils.simpleDatetimeFormatter().parse(resultDetail[1]));
                     updateOilCardUser.setBusinessId(resultDetail[2]);
                     updateOilCardUser.setBusinessName(resultDetail[3]);
@@ -285,15 +286,7 @@ public class GTGateWay {
                     updateOilCardUser.setAmount(MathUtils.multiply100(resultDetail[11]));
                     updateOilCardUser.setOilPrice(MathUtils.multiply100(resultDetail[15]));
 
-                    String stationName = queryStaionName(updateOilCardUser.getStation(), copartnerId, copartnerPwd);
-                    if(!StringUtils.isEmpty(stationName)){
-                        updateOilCardUser.setStationName(stationName);
-                    }
-                    if(cardService.updateOilCardUse(updateOilCardUser)) {
-                        if (cardService.unbundlingNotInTrading(updateOilCardUser.getId())) {
-                            return updateOilCardUser;
-                        }
-                    }
+                    return updateOilCardUser;
                 }
 
             }else{
@@ -314,12 +307,12 @@ public class GTGateWay {
 
     /**
      * 站点查询
-     * @param stationId
+     * @param terminalId
      * @param copartnerId
      * @param copartnerPwd
      * @return
      */
-    public String queryStaionName(String stationId,String copartnerId,String copartnerPwd){
+    public ViewOilTrans queryStaionName(String terminalId,String copartnerId,String copartnerPwd){
 
         RequestEntity requestEntity = new RequestEntity();
         requestEntity.setRequestId("StationQueryByID");
@@ -330,11 +323,11 @@ public class GTGateWay {
         requestEntity.setCard("GtdeFUser001");
         requestEntity.setExtend("");
         ReqParameters StatsionreqParameters = new ReqParameters();
-        StatsionreqParameters.add("BuExtend1",stationId);
+        StatsionreqParameters.add("BuExtend1",terminalId);
         requestEntity.setReqParameters(StatsionreqParameters);
 
         GTRequestSigner.signedRequest(requestEntity,copartnerPwd);
-        InvokeThirdLogWithBLOBs queryStationLog = EntityUtil.createInvokeThirdLog(stationId, EnumGtOil.QueryStation.getCode(), requestEntity.getRequestId());
+        InvokeThirdLogWithBLOBs queryStationLog = EntityUtil.createInvokeThirdLog(terminalId, EnumGtOil.QueryStation.getCode(), requestEntity.getRequestId());
         try {
             String ex = XmlUtils.toStr(requestEntity,false,true);
             queryStationLog.setRequest(ex);
@@ -349,10 +342,13 @@ public class GTGateWay {
                      *             List<String[]> result = EntityUtil.formatResult(str);
                      *             String[] resultDetail = result.get(0);
                      */
+                    ViewOilTrans viewOilTrans = new ViewOilTrans();
                     String stationstr = EntityUtil.ReqParametersByKey(responseEntity.getReqParameters(), "BusiExtend");
                     List<String[]> stationStrs = EntityUtil.formatResult(stationstr);
                     String[] stationResultDetail = stationStrs.get(0);
-                    return stationResultDetail[2];
+                    viewOilTrans.setStationId(stationResultDetail[1]);
+                    viewOilTrans.setStationName(stationResultDetail[2]);
+                    return viewOilTrans;
                 }
                 queryStationLog.setResponse(resTxt);
                 invokeThirdLogMapper.insert(queryStationLog);

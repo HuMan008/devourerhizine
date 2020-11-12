@@ -371,7 +371,7 @@ public class RabbitMQRunner implements CommandLineRunner {
                 if(queryCardUse != null) {
                     if (queryCardUse.getStatus() == EnumTranStatus.Trading.getCode()) {
                         gotoilService.appendGotoilQueryQueue(useId);
-                    } else {
+                    } else if(queryCardUse.getStatus() == EnumTranStatus.success.getCode()){
                         gotoilService.appendGotoilTransSucessQueue(useId,0);
                     }
                 }
