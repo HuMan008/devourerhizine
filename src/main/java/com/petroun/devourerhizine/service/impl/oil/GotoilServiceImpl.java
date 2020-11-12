@@ -39,7 +39,7 @@ public class GotoilServiceImpl implements com.petroun.devourerhizine.service.oil
     @Override
     public boolean appendGotoilQueryQueue(String id) {
 
-        MQPublisher.DelayInterval delayInterval = MQPublisher.DelayInterval.IMMEDIATELY;
+        MQPublisher.DelayInterval delayInterval = MQPublisher.DelayInterval.S5;
 
         return publishToGotoilExchange(MQDefiner.RK_GOTOIL_QUERY, id, delayInterval);
     }

@@ -65,6 +65,7 @@ public class MQDefiner {
 
 
     public static final String EX_DEAD_LETTERS = "dead.letters";
+    public static final String DELAY_5SEC = "DELAY_5SEC";
     public static final String DELAY_30SEC = "DELAY_30SEC";
     public static final String DELAY_1MIN = "DELAY_1MIN";
     public static final String DELAY_2MIN = "DELAY_2MIN";
@@ -168,6 +169,7 @@ public class MQDefiner {
             Channel channel = defineChannel(connection, 1);
             channel.exchangeDeclare(EX_DEAD_LETTERS, "topic", true, false, false, null);
 
+            defineDelayQueue(channel, DELAY_5SEC, 5);
             defineDelayQueue(channel, DELAY_30SEC, 30);
             defineDelayQueue(channel, DELAY_1MIN, 60);
             defineDelayQueue(channel, DELAY_2MIN, 120);
@@ -205,7 +207,7 @@ public class MQDefiner {
     private static void defineDelayQueue(Channel channel, String name, int sec) throws Exception {
         String queueName = DelayQueueName(name);
         String exchangeName = DelayExchangeName(name);
-        logger.info("Define delay exchange:{}  queue:{}", exchangeName, queueName);
+        logger.info("Define delay exchange:{}  queue    :{}", exchangeName, queueName);
 
         channel.exchangeDeclare(exchangeName, "fanout", true, false, false, null);
 

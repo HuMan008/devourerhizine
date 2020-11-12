@@ -35,9 +35,12 @@ public class MQPublisher {
     private static boolean useThreadLocalStorageChannel = false;
 
     public enum DelayInterval {
-        IMMEDIATELY, S30, M1, M2, M5, M10, M30;
+        IMMEDIATELY, S5, S30, M1, M2, M5, M10, M30;
 
         public String exchangeName() {
+            if (this.equals(DelayInterval.S5)) {
+                return MQDefiner.DelayExchangeName(MQDefiner.DELAY_5SEC);
+            }
             if (this.equals(DelayInterval.S30)) {
                 return MQDefiner.DelayExchangeName(MQDefiner.DELAY_30SEC);
             }
