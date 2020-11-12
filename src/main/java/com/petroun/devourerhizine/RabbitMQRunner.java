@@ -292,37 +292,38 @@ public class RabbitMQRunner implements CommandLineRunner {
                     updateUse.setId(use.getId());
                     updateUse.setStatus(EnumOilSendStatus.fail.getCode());
                     cardService.updateUse(use);
-                }
-                if(use.getStatus() == EnumTranStatus.success.getCode()){
-                    ViewOilTrans oilTransView = new ViewOilTrans();
-                    oilTransView.setStationId(use.getStation());
-                    oilTransView.setStationName(use.getStationName());
-                    oilTransView.setId(use.getId());
-                    oilTransView.setFee(String.valueOf(use.getAmount()));
-                    oilTransView.setMobile(use.getMobile());
-                    ObjectMapper mapper = new ObjectMapper();
-                    Response response = HttpUtils.okHttpPostByString(use.getSendUrl(),mapper.writeValueAsString(oilTransView));
-                    boolean ok = false;
-                    if (response != null && response.isSuccessful()) {
-                        String result  = response.message();
-                        if("ok".equalsIgnoreCase(result)){
+                }else {
+                    if (use.getSendStatus() == EnumOilSendStatus.Sending.getCode() && use.getStatus() == EnumTranStatus.success.getCode()) {
+                        ViewOilTrans oilTransView = new ViewOilTrans();
+                        oilTransView.setStationId(use.getStation());
+                        oilTransView.setStationName(use.getStationName());
+                        oilTransView.setId(use.getId());
+                        oilTransView.setFee(String.valueOf(use.getAmount()));
+                        oilTransView.setMobile(use.getMobile());
+                        ObjectMapper mapper = new ObjectMapper();
+                        Response response = HttpUtils.okHttpPostByString(use.getSendUrl(), mapper.writeValueAsString(oilTransView));
+                        boolean ok = false;
+                        if (response != null && response.isSuccessful()) {
+                            String result = response.message();
+                            if ("ok".equalsIgnoreCase(result)) {
+                                OilCardUse updateUse = new OilCardUse();
+                                updateUse.setId(use.getId());
+                                updateUse.setSendStatus(EnumOilSendStatus.success.getCode());
+                                cardService.updateUse(updateUse);
+                                ok = true;
+                            }
+                        }
+                        logger.info("国通加油通知", response.toString());
+                        if (!ok) {
+                            int count = use.getSendCount() + 1;
+                            gotoilService.appendGotoilTransSucessQueue(use.getId(), count);
+
                             OilCardUse updateUse = new OilCardUse();
                             updateUse.setId(use.getId());
-                            updateUse.setSendStatus(EnumOilSendStatus.success.getCode());
+                            updateUse.setSendCount(count);
                             cardService.updateUse(updateUse);
-                            ok = true;
+
                         }
-                    }
-                    logger.info("国通加油通知",response.toString());
-                    if(!ok){
-                        int count = use.getSendCount() + 1;
-                        gotoilService.appendGotoilTransSucessQueue(use.getId(), count);
-
-                        OilCardUse updateUse = new OilCardUse();
-                        updateUse.setId(use.getId());
-                        updateUse.setSendCount(count);
-                        cardService.updateUse(updateUse);
-
                     }
                 }
                 //use.getSendUrl();
@@ -364,7 +365,7 @@ public class RabbitMQRunner implements CommandLineRunner {
                 String useId = ObjectHelper.getObjectMapper().readValue(body, String.class);
                 OilCardUse queryCardUse = oilService.queryMobileCardTrans(useId);
                 /**
-                 * 获取二维码后，查询1易结果
+                 * 获取二维码后，查询交易结果
                  * 成功后加入通知成功队列
                  */
                 if(queryCardUse != null) {
