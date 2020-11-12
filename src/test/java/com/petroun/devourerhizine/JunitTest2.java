@@ -64,15 +64,15 @@ public class JunitTest2 {
 
     @Test
     public void t3(){
-       // gtGateWay.getQRCode("12345678901","www.baidu.com",20000,60,gtConfig.getCopartnerId(), gtConfig.getCopartnerPassword());
+       //gtGateWay.getQRCode("12345678901","www.baidu.com",20000,60,gtConfig.getCopartnerId(), gtConfig.getCopartnerPassword());
         //gtGateWay.queryCardUserByRemote("202011111047110671849",gtConfig.getCopartnerId(), gtConfig.getCopartnerPassword());
-        String code = oilService.getQRCode("http://grusgrus.dbbank.xyz:60000/qrcode/notify",5000,60*2,"12345678901");
-        System.out.println(code);
+       // String code = oilService.getQRCode("http://grusgrus.dbbank.xyz:60000/qrcode/notify",5000,60*2,"12345678901");
+        //System.out.println(code);
     }
 
     @Test
     public void t4(){
-
+            oilService.queryMobileCardTrans("202011120931502052172");
 
 
     }

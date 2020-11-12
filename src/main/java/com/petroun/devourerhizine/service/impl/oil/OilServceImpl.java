@@ -16,8 +16,10 @@ import com.petroun.devourerhizine.service.oil.CardService;
 import com.petroun.devourerhizine.service.oil.GotoilService;
 import com.petroun.devourerhizine.service.oil.MobileCardService;
 import com.petroun.devourerhizine.service.oil.OilService;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import java.util.*;
@@ -52,7 +54,7 @@ public class OilServceImpl implements OilService {
      * 绑卡之后不能充值
      */
     @Override
-    @Transactional
+    @Transactional(noRollbackFor = BillException.class)
     public String getQRCode(String sendUrl, int amount, int sed, String mobile){
         ViewCardAndUse cardAndUser = cardService.getOilCard(sendUrl,sed,mobile,amount);
         OilMobileCardInfo mobileCard = cardAndUser.getOilMobileCardInfo();
@@ -164,7 +166,7 @@ public class OilServceImpl implements OilService {
             return null;
         }
 
-        GTCopartnerConfig config = new GTCopartnerConfig();
+        GTCopartnerConfig config = getGTConfig();
         OilCardUse query = gtGateWay.queryCardUserByRemote(cardUse.getId(),config.getCopartnerId(), config.getCopartnerPwd());
 
         if(query != null){
