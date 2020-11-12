@@ -1,6 +1,8 @@
 package com.petroun.devourerhizine.service.impl.oil;
 
 import cn.gotoil.bill.exception.BillException;
+import com.petroun.devourerhizine.classes.tools.DateUtils;
+import com.petroun.devourerhizine.enums.EnumTranStatus;
 import com.petroun.devourerhizine.model.View.gt.ViewCardAndUse;
 import com.petroun.devourerhizine.model.View.gt.ViewQRCode;
 import com.petroun.devourerhizine.model.entity.OilCardUse;
@@ -10,6 +12,7 @@ import com.petroun.devourerhizine.provider.gt.GTConfig;
 import com.petroun.devourerhizine.provider.gt.GTCopartnerConfig;
 import com.petroun.devourerhizine.provider.gt.GTGateWay;
 import com.petroun.devourerhizine.service.oil.CardService;
+import com.petroun.devourerhizine.service.oil.GotoilService;
 import com.petroun.devourerhizine.service.oil.MobileCardService;
 import com.petroun.devourerhizine.service.oil.OilService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,9 @@ public class OilServceImpl implements OilService {
 
     @Autowired
     MobileCardService mobileCardService;
+
+    @Autowired
+    GotoilService gotoilService;
 
     /**
      * 获取二维码
@@ -56,9 +62,9 @@ public class OilServceImpl implements OilService {
         String token = gtGateWay.getUserToken(mobileCard.getMobile(),("06"+mobileCard.getSalt()),gtConfig.getCopartnerId(),gtConfig.getCopartnerPwd());
 
         if(!StringUtils.isEmpty(token)){
+            Integer cardBalance = queryCardBalace(mobileCard, amount);
             if("new".equals(cardAndUser.getType())){
                 //判断实际卡的余额是否大于消费金额
-                Integer cardBalance = queryCardBalace(mobileCard, amount);
                 if (cardBalance == null) {
                     throw new BillException(9999, "卡查询失败");
                 }
@@ -70,21 +76,33 @@ public class OilServceImpl implements OilService {
                         throw new BillException(9999,"充值失败");
                     }
                 }
+            }else{
+                if(cardBalance.compareTo(amount) < 0){
+                    if(!recharge(mobileCard.getCardNo(),(amount-cardBalance))){
+                        throw new BillException(9999,"充值失败");
+                    }
+                }
             }
 
             ViewQRCode QRCode = gtGateWay.getQRCode(cardAndUser,sed,token,gtConfig.getCopartnerId(),gtConfig.getCopartnerPwd());
             if(QRCode != null) {
                 if(cardService.updateCardUse(oilCardUse, QRCode.getTime(), sed, QRCode.getStrBRCode())){
+                    gotoilService.appendGotoilQueryQueue(oilCardUse.getId());
                     return QRCode.getStrBRCode();
                 }
             }
         }else{
-            if(StringUtils.isEmpty(oilCardUse.getQrcode()) && oilCardUse.getCreatedAt() == null){
-                cardService.unbundlingByUseing(oilCardUse.getId());
-            }
+            oilCardUseClear(oilCardUse);
         }
 
         return null;
+    }
+
+    private boolean oilCardUseClear(OilCardUse use){
+        if(StringUtils.isEmpty(use.getQrcode()) && use.getCreatedAt() == null){
+            return cardService.unbundlingByUseing(use.getId());
+        }
+        return false;
     }
 
     /**
@@ -130,5 +148,31 @@ public class OilServceImpl implements OilService {
         config.setCopartnerId(gtConfig.getCopartnerId());
         config.setCopartnerPwd(gtConfig.getCopartnerPassword());
         return config;
+    }
+
+    /**
+     * 查询交易结果
+     * @param useId
+     * @return
+     */
+    @Override
+    public OilCardUse queryMobileCardTrans(String useId){
+        Date now = new Date();
+        OilCardUse cardUse = cardService.queryById(useId);
+        if(cardUse == null){
+            return null;
+        }
+        OilCardUse query = gtGateWay.queryCardUserByRemote(cardUse.getId(), gtConfig.getCopartnerId(), gtConfig.getCopartnerPassword());
+        if(query != null){
+            if(query.getStatus() != EnumTranStatus.success.getCode()
+                    && now.compareTo(DateUtils.DateAddSed(cardUse.getValidityTime(),60)) > 0){
+                cardService.updateOilCardUseStatusAndunbundling(cardUse.getId(),EnumTranStatus.fail.getCode());
+            }
+        }else{
+            if(now.compareTo(DateUtils.DateAddSed(cardUse.getValidityTime(),60)) > 0){
+                cardService.updateOilCardUseStatusAndunbundling(cardUse.getId(),EnumTranStatus.fail.getCode());
+            }
+        }
+        return cardService.queryById(useId);
     }
 }

@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.petroun.devourerhizine.classes.rabbitmq.MQDefiner;
 import com.petroun.devourerhizine.classes.rabbitmq.SuppressRabbitConsumer;
+import com.petroun.devourerhizine.classes.tools.DateUtils;
 import com.petroun.devourerhizine.classes.tools.HttpUtils;
 import com.petroun.devourerhizine.enums.EnumOilSendStatus;
 import com.petroun.devourerhizine.enums.EnumTranStatus;
@@ -27,6 +28,7 @@ import com.petroun.devourerhizine.service.OptionService;
 import com.petroun.devourerhizine.service.cnpc.CnpcRechargeService;
 import com.petroun.devourerhizine.service.oil.CardService;
 import com.petroun.devourerhizine.service.oil.GotoilService;
+import com.petroun.devourerhizine.service.oil.OilService;
 import com.rabbitmq.client.*;
 import okhttp3.Response;
 import org.slf4j.Logger;
@@ -57,10 +59,11 @@ public class RabbitMQRunner implements CommandLineRunner {
     @Autowired
     private GotoilService gotoilService;
 
-
     @Autowired
     private CardService cardService;
 
+    @Autowired
+    private OilService oilService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -273,6 +276,7 @@ public class RabbitMQRunner implements CommandLineRunner {
         public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
                                    byte[] body) throws IOException {
             try {
+                //todo 国通加油通知
                 logger.info("国通加油通知{}", new String(body));
                 String useId = ObjectHelper.getObjectMapper().readValue(body, String.class);
                 OilCardUse use = cardService.queryById(useId);
@@ -352,9 +356,13 @@ public class RabbitMQRunner implements CommandLineRunner {
         public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
                                    byte[] body) throws IOException {
             try {
+                //todo 国通交易查询通知
                 logger.info("国通交易查询通知{}", new String(body));
-
-
+                String useId = ObjectHelper.getObjectMapper().readValue(body, String.class);
+                OilCardUse queryCardUse = oilService.queryMobileCardTrans(useId);
+                if(queryCardUse != null && queryCardUse.getStatus() == EnumTranStatus.Trading.getCode()){
+                    gotoilService.appendGotoilQueryQueue(useId);
+                }
                 getChannel().basicAck(envelope.getDeliveryTag(), false);
             } catch (InvalidFormatException ex) {
                 logger.info("{}", ex);

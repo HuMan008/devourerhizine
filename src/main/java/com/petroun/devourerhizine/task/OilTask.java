@@ -1,5 +1,6 @@
 package com.petroun.devourerhizine.task;
 
+import com.petroun.devourerhizine.RabbitMQRunner;
 import com.petroun.devourerhizine.classes.tools.DateUtils;
 import com.petroun.devourerhizine.provider.gt.GTConfig;
 import com.petroun.devourerhizine.enums.EnumCardStatus;
@@ -9,6 +10,8 @@ import com.petroun.devourerhizine.model.entity.OilMobileCardInfo;
 import com.petroun.devourerhizine.provider.gt.GTGateWay;
 import com.petroun.devourerhizine.service.oil.CardService;
 import com.petroun.devourerhizine.service.oil.MobileCardService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -18,6 +21,8 @@ import java.util.*;
 
 @Component
 public class OilTask {
+
+    private static Logger logger = LoggerFactory.getLogger(OilTask.class);
 
     @Autowired
     CardService cardService;
@@ -60,6 +65,7 @@ public class OilTask {
                 gtGateWay.phoneRegister(gtConfig.getCopartnerId(),gtConfig.getCopartnerPassword());
             }
         }
+        logger.info("增加可用卡--->总数={},目前可用={},增加卡数={}",count,usecount,b2);
     }
 
     /**
@@ -79,13 +85,12 @@ public class OilTask {
     }
 
     /**
-     * 查询交易状态
+     * 交易记录
      */
     @Scheduled(initialDelay = 60000, fixedDelay = 1000 * 30)
     public void checkCardUse(){
         List<OilCardUse> list = cardService.queryCardUseByStatus(EnumTranStatus.Trading.getCode());
         if(list != null){
-            Date now = new Date();
             for(OilCardUse cardUse : list){
                 //没有有效时间表示二维码获取失败，直接解绑
                 if(cardUse.getValidityTime() == null){
@@ -94,21 +99,7 @@ public class OilTask {
                     update.setStatus(EnumTranStatus.fail.getCode());
                     cardService.updateOilCardUse(update);
                     cardService.unbundlingNotInTrading(cardUse.getId());
-                }else{
-
-                    OilCardUse query = gtGateWay.queryCardUserByRemote(cardUse.getId(), gtConfig.getCopartnerId(), gtConfig.getCopartnerPassword());
-                    if(query != null){
-                        if(query.getStatus() != EnumTranStatus.success.getCode()
-                                && now.compareTo(DateUtils.DateAddSed(cardUse.getValidityTime(),60)) > 0){
-                            cardService.updateOilCardUseStatusAndunbundling(cardUse.getId(),EnumTranStatus.fail.getCode());
-                        }
-                    }else{
-                        if(now.compareTo(DateUtils.DateAddSed(cardUse.getValidityTime(),60 * 2)) > 0){
-                            cardService.updateOilCardUseStatusAndunbundling(cardUse.getId(),EnumTranStatus.fail.getCode());
-                        }
-                    }
                 }
-
             }
         }
     }
