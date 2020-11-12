@@ -168,7 +168,7 @@ public class OilServceImpl implements OilService {
         OilCardUse query = gtGateWay.queryCardUserByRemote(cardUse.getId(),config.getCopartnerId(), config.getCopartnerPwd());
 
         if(query != null){
-            if(query.getStatus() == EnumTranStatus.success.getCode()) {
+            if(query.getStatus() == EnumTranStatus.Success.getCode()) {
                 ViewOilTrans viewOilTrans = gtGateWay.queryStaionName(query.getTerminalId(), config.getCopartnerId(), config.getCopartnerPwd());
                 if (viewOilTrans != null) {
                     query.setStation(viewOilTrans.getStationId());
@@ -180,13 +180,18 @@ public class OilServceImpl implements OilService {
                         return cardService.queryById(useId);
                     }
                 }
-            }else if(query.getStatus() != EnumTranStatus.success.getCode()
-                    && now.compareTo(DateUtils.DateAddSed(cardUse.getValidityTime(),60)) > 0){
-                cardService.updateOilCardUseStatusAndunbundling(cardUse.getId(),EnumTranStatus.fail.getCode());
+            }else{
+                if(now.compareTo(DateUtils.DateAddSed(cardUse.getValidityTime(),60)) > 0) {
+                    Byte status = EnumTranStatus.Overdue.getCode();
+                    if(query.getStatus() != null){
+                        status = query.getStatus();
+                    }
+                    cardService.updateOilCardUseStatusAndunbundling(cardUse.getId(),status);
+                }
             }
         }else{
             if(now.compareTo(DateUtils.DateAddSed(cardUse.getValidityTime(),60)) > 0){
-                cardService.updateOilCardUseStatusAndunbundling(cardUse.getId(),EnumTranStatus.fail.getCode());
+                cardService.updateOilCardUseStatusAndunbundling(cardUse.getId(),EnumTranStatus.Overdue.getCode());
             }
         }
         return cardService.queryById(useId);

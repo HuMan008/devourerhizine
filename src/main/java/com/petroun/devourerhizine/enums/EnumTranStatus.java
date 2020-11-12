@@ -9,8 +9,9 @@ import lombok.ToString;
 @AllArgsConstructor
 public enum EnumTranStatus {
     Trading((byte)0,"交易中"),
-    fail((byte)1,"失败"),
-    success((byte)2,"成功"),
+    Overdue((byte)1,"过期"),
+    Success((byte)2,"成功"),
+    QueryFail((byte)3,"查询失败"),
     ;
 
 

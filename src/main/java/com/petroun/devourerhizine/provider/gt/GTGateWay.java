@@ -242,7 +242,7 @@ public class GTGateWay {
          * BuExtend7	结束条数
          */
 
-
+        String resCode ="-1";
         try{
             ResponseEntity responseEntity = null;
 
@@ -251,13 +251,20 @@ public class GTGateWay {
             invokeThirdLogWithBLOBs.setRequest(ex);
             Response response = HttpUtils.okHttpPost(gtConfig.getUrl(),ex);
 
+
             //成功
             if (response != null && response.isSuccessful()) {
                 String resTxt = response.body().string();
                 invokeThirdLogWithBLOBs.setResponse(resTxt);
+
                 logger.debug("应答response-->{}",resTxt);
+
+
+
                 responseEntity = XmlUtils.parseBean(resTxt,ResponseEntity.class);
+                resCode = responseEntity.getCode();
                 if("0".equals(responseEntity.getCode())) {
+
                     /**
                      * BusiExtend 返回报文描述：
                      * 每个字段之间以“~”隔开，每一行已“|”隔开，报文格式如下：
@@ -269,9 +276,10 @@ public class GTGateWay {
                     String str = EntityUtil.ReqParametersByKey(responseEntity.getReqParameters(), "BusiExtend");
                     List<String[]> result = EntityUtil.formatResult(str);
                     String[] resultDetail = result.get(0);
+
                     OilCardUse updateOilCardUser = new OilCardUse();
                     updateOilCardUser.setId(oilCardUse.getId());
-                    updateOilCardUser.setStatus(EnumTranStatus.success.getCode());
+                    updateOilCardUser.setStatus(EnumTranStatus.Success.getCode());
                     updateOilCardUser.setTerminalId(resultDetail[0]);
                     updateOilCardUser.setTransactionTime(DateUtils.simpleDatetimeFormatter().parse(resultDetail[1]));
                     updateOilCardUser.setBusinessId(resultDetail[2]);
@@ -299,6 +307,12 @@ public class GTGateWay {
             invokeThirdLogWithBLOBs.setResponse(ex.toString());
         }finally {
             invokeThirdLogMapper.insert(invokeThirdLogWithBLOBs);
+        }
+        if(!"60009".equals(resCode)){//网络异常   60009=无记录
+            OilCardUse updateOilCardUser = new OilCardUse();
+            updateOilCardUser.setId(oilCardUse.getId());
+            updateOilCardUser.setStatus(EnumTranStatus.QueryFail.getCode());
+            return updateOilCardUser;
         }
 
         return null;
@@ -335,6 +349,7 @@ public class GTGateWay {
             if (stationResponse != null && stationResponse.isSuccessful()) {
                 String resTxt = stationResponse.body().string();
                 logger.debug("应答response-->{}", resTxt);
+                queryStationLog.setResponse(resTxt);
                 ResponseEntity responseEntity = XmlUtils.parseBean(resTxt,ResponseEntity.class);
                 if ("0".equals(responseEntity.getCode())) {
                     /**
@@ -350,8 +365,6 @@ public class GTGateWay {
                     viewOilTrans.setStationName(stationResultDetail[2]);
                     return viewOilTrans;
                 }
-                queryStationLog.setResponse(resTxt);
-                invokeThirdLogMapper.insert(queryStationLog);
             } else {
                 String stationResTxt = stationResponse == null ? "应答为空" : stationResponse.body().string();
                 queryStationLog.setResponse(stationResTxt);

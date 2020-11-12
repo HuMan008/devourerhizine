@@ -1,7 +1,5 @@
 package com.petroun.devourerhizine.task;
 
-import com.petroun.devourerhizine.RabbitMQRunner;
-import com.petroun.devourerhizine.classes.tools.DateUtils;
 import com.petroun.devourerhizine.provider.gt.GTConfig;
 import com.petroun.devourerhizine.enums.EnumCardStatus;
 import com.petroun.devourerhizine.enums.EnumTranStatus;
@@ -10,6 +8,7 @@ import com.petroun.devourerhizine.model.entity.OilMobileCardInfo;
 import com.petroun.devourerhizine.provider.gt.GTGateWay;
 import com.petroun.devourerhizine.service.oil.CardService;
 import com.petroun.devourerhizine.service.oil.MobileCardService;
+import com.petroun.devourerhizine.service.oil.OilService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +34,9 @@ public class OilTask {
 
     @Autowired
     MobileCardService mobileCardService;
+
+    @Autowired
+    OilService oilService;
 
     /**
      * 检查是否需要新增卡
@@ -96,10 +98,23 @@ public class OilTask {
                 if(cardUse.getValidityTime() == null){
                     OilCardUse update = new OilCardUse();
                     update.setId(cardUse.getId());
-                    update.setStatus(EnumTranStatus.fail.getCode());
+                    update.setStatus(EnumTranStatus.Overdue.getCode());
                     cardService.updateOilCardUse(update);
                     cardService.unbundlingNotInTrading(cardUse.getId());
                 }
+            }
+        }
+    }
+
+    /**
+     * 交易记录查询失败重新查
+     */
+    @Scheduled(initialDelay = 60000, fixedDelay = 1000 * 60)
+    public void checkCardUseQueryFail(){
+        List<OilCardUse> list = cardService.queryCardUseByStatus(EnumTranStatus.QueryFail.getCode());
+        if(list != null){
+            for(OilCardUse cardUse : list){
+                oilService.queryMobileCardTrans(cardUse.getId());
             }
         }
     }

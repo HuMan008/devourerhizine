@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.petroun.devourerhizine.classes.BitMask;
 import com.petroun.devourerhizine.classes.tools.EntityUtil;
+import com.petroun.devourerhizine.classes.tools.MathUtils;
 import com.petroun.devourerhizine.classes.tools.XmlUtils;
 import com.petroun.devourerhizine.enums.EnumTranStatus;
 import com.petroun.devourerhizine.model.ReqParameters;
@@ -192,7 +193,7 @@ public class JunitTest {
             String[] resultDetail = result.get(0);
             OilCardUse updateOilCardUser = new OilCardUse();
             updateOilCardUser.setId("11");
-            updateOilCardUser.setStatus(EnumTranStatus.success.getCode());
+            updateOilCardUser.setStatus(EnumTranStatus.Success.getCode());
             updateOilCardUser.setStation(resultDetail[0]);
             updateOilCardUser.setTransactionTime(DateUtils.simpleDatetimeFormatter().parse(resultDetail[1]));
             updateOilCardUser.setBusinessId(resultDetail[2]);
@@ -210,5 +211,11 @@ public class JunitTest {
         }
 
 
+    }
+
+    @Test
+    public void t7(){
+        String str = "0.01001";
+        System.out.println(MathUtils.multiply100(str));
     }
 }

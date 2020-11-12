@@ -270,7 +270,7 @@ public class CardServiceImpl implements CardService {
             example.createCriteria().andMobileEqualTo(use.getCardMobile()).andStatusEqualTo(EnumCardStatus.Useing.getCode());
 
             if(mobileCardMapper.updateByExample(card,example)> 0){
-                if(use.getStatus() == EnumTranStatus.success.getCode()) {
+                if(use.getStatus() == EnumTranStatus.Success.getCode()) {
                     OilMobileCardInfo mobileCard = getMobileCardCardNo(use.getCardNo());
                     List<OilMobileCardDetail> details = gtGateWay.userBindCardQuery(mobileCard,gtConfig.getCopartnerId(),gtConfig.getCopartnerPassword());
                     mobileCardService.insertOrUpdateMobileCardDetails(details);
@@ -290,7 +290,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public boolean updateOilCardUseStatusAndunbundling(String useId, Byte status){
-        if(EnumTranStatus.success.getCode() == status || EnumTranStatus.fail.getCode() == status ){
+        if(EnumTranStatus.Success.getCode() == status || EnumTranStatus.Overdue.getCode() == status ){
             OilCardUse use = new OilCardUse();
             use.setId(useId);
             use.setStatus(status);

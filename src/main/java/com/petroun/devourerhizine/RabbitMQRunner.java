@@ -293,7 +293,7 @@ public class RabbitMQRunner implements CommandLineRunner {
                     updateUse.setStatus(EnumOilSendStatus.fail.getCode());
                     cardService.updateUse(use);
                 }else {
-                    if (use.getSendStatus() == EnumOilSendStatus.Sending.getCode() && use.getStatus() == EnumTranStatus.success.getCode()) {
+                    if (use.getSendStatus() == EnumOilSendStatus.Sending.getCode() && use.getStatus() == EnumTranStatus.Success.getCode()) {
                         ViewOilTrans oilTransView = new ViewOilTrans();
                         oilTransView.setStationId(use.getStation());
                         oilTransView.setStationName(use.getStationName());
@@ -371,7 +371,7 @@ public class RabbitMQRunner implements CommandLineRunner {
                 if(queryCardUse != null) {
                     if (queryCardUse.getStatus() == EnumTranStatus.Trading.getCode()) {
                         gotoilService.appendGotoilQueryQueue(useId);
-                    } else if(queryCardUse.getStatus() == EnumTranStatus.success.getCode()){
+                    } else if(queryCardUse.getStatus() == EnumTranStatus.Success.getCode()){
                         gotoilService.appendGotoilTransSucessQueue(useId,0);
                     }
                 }
