@@ -24,12 +24,14 @@ import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class GTGateWay {
@@ -52,6 +54,11 @@ public class GTGateWay {
     @Autowired
     GotoilService gotoilService;
 
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
+
+    private static final String OILUSERTOKEN = "OilUserToken:";
+
 
     /**
      * 获取usertoken
@@ -62,6 +69,14 @@ public class GTGateWay {
      * @return
      */
     public String getUserToken(String cardNo,String pwd,String copartnerId,String copartnerPwd){
+
+        String redisToken = stringRedisTemplate.opsForValue().get(OILUSERTOKEN+cardNo);
+        long timeout = stringRedisTemplate.getExpire(OILUSERTOKEN+cardNo);
+
+        if(!StringUtils.isEmpty(redisToken) && timeout > 60 ){
+            return redisToken;
+        }
+
         RequestEntity requestEntity = new RequestEntity();
         requestEntity.setRequestId("UserPayLogonNew");
         requestEntity.setMoney("0");
@@ -96,6 +111,8 @@ public class GTGateWay {
                     }
                     String[] codeAndSed = strExtend4.split("\\|");
                     token = codeAndSed[0];
+                    String sed = codeAndSed[1];
+                    stringRedisTemplate.opsForValue().set(OILUSERTOKEN+cardNo,token,Long.valueOf(sed), TimeUnit.SECONDS);
                     return token;
                 }
             }else{
