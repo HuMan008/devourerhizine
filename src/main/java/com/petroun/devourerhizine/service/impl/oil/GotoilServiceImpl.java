@@ -22,7 +22,7 @@ public class GotoilServiceImpl implements com.petroun.devourerhizine.service.oil
     private ConnectionFactory connectionFactory;
 
     @Override
-    public boolean appendGotoilRefuelQueue(String id, int redo) {
+    public boolean appendGotoilTransSucessQueue(String id, int redo) {
 
         MQPublisher.DelayInterval delayInterval = MQPublisher.DelayInterval.IMMEDIATELY;
         if (redo == 0) {

@@ -12,10 +12,7 @@ import com.petroun.devourerhizine.web.message.reqeust.gotoil.QRRefuelRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -54,11 +51,11 @@ public class GotoilController extends Controller {
         return new BillApiResponse(qrcode);
     }
 
-    @GetMapping("mq1")
+   /* @GetMapping("mq1")
     @Authentication(authenticationType = AuthenticationType.None)
-    public Object as1Action(String id, int redo) {
+    public Object as1Action(String id,int redo) {
         System.out.println(DateUtils.simpleDateTimeWithMilliSecondNoSymbolFormatter().format(new Date()) + "\t" + id);
-        return gotoilService.appendGotoilRefuelQueue(id, redo);
+        return gotoilService.appendGotoilTransSucessQueue(id, redo);
     }
 
     @GetMapping("mq2")
@@ -66,5 +63,5 @@ public class GotoilController extends Controller {
     public Object as2Action(String id, int redo) {
         System.out.println(DateUtils.simpleDateTimeWithMilliSecondNoSymbolFormatter().format(new Date()) + "\t" + id);
         return gotoilService.appendGotoilQueryQueue(id);
-    }
+    }*/
 }

@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.petroun.devourerhizine.classes.rabbitmq.MQDefiner;
 import com.petroun.devourerhizine.classes.rabbitmq.SuppressRabbitConsumer;
-import com.petroun.devourerhizine.classes.tools.DateUtils;
 import com.petroun.devourerhizine.classes.tools.HttpUtils;
 import com.petroun.devourerhizine.enums.EnumOilSendStatus;
 import com.petroun.devourerhizine.enums.EnumTranStatus;
@@ -276,7 +275,10 @@ public class RabbitMQRunner implements CommandLineRunner {
         public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
                                    byte[] body) throws IOException {
             try {
-                //todo 国通加油通知
+                //todo 交易成功后国通加油通知
+                /**
+                 * 交易成功后，通知可伶
+                 */
                 logger.info("国通加油通知{}", new String(body));
                 String useId = ObjectHelper.getObjectMapper().readValue(body, String.class);
                 OilCardUse use = cardService.queryById(useId);
@@ -311,9 +313,10 @@ public class RabbitMQRunner implements CommandLineRunner {
                             ok = true;
                         }
                     }
+                    logger.info("国通加油通知",response.toString());
                     if(!ok){
                         int count = use.getSendCount() + 1;
-                        gotoilService.appendGotoilRefuelQueue(use.getId(), count);
+                        gotoilService.appendGotoilTransSucessQueue(use.getId(), count);
 
                         OilCardUse updateUse = new OilCardUse();
                         updateUse.setId(use.getId());
@@ -360,8 +363,16 @@ public class RabbitMQRunner implements CommandLineRunner {
                 logger.info("国通交易查询通知{}", new String(body));
                 String useId = ObjectHelper.getObjectMapper().readValue(body, String.class);
                 OilCardUse queryCardUse = oilService.queryMobileCardTrans(useId);
-                if(queryCardUse != null && queryCardUse.getStatus() == EnumTranStatus.Trading.getCode()){
-                    gotoilService.appendGotoilQueryQueue(useId);
+                /**
+                 * 获取二维码后，查询1易结果
+                 * 成功后加入通知成功队列
+                 */
+                if(queryCardUse != null) {
+                    if (queryCardUse.getStatus() == EnumTranStatus.Trading.getCode()) {
+                        gotoilService.appendGotoilQueryQueue(useId);
+                    } else {
+                        gotoilService.appendGotoilTransSucessQueue(useId,0);
+                    }
                 }
                 getChannel().basicAck(envelope.getDeliveryTag(), false);
             } catch (InvalidFormatException ex) {

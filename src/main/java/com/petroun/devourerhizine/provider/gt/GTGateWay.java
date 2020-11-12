@@ -272,8 +272,6 @@ public class GTGateWay {
                     }
                     if(cardService.updateOilCardUse(updateOilCardUser)) {
                         if (cardService.unbundlingNotInTrading(updateOilCardUser.getId())) {
-                            //todo 成功通知
-                            gotoilService.appendGotoilRefuelQueue(updateOilCardUser.getId(), 0);
                             return updateOilCardUser;
                         }
                     }
